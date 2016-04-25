@@ -1,2 +1,2 @@
-# meshblu-connector-factory-service
-Meshblu Connector Factory Service
+# meshblu-connector-factory-ui
+Meshblu Connector Factory UI

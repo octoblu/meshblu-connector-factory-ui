@@ -5,6 +5,7 @@ import cookie from 'react-cookie'
 import {
   CLIENT_ID,
   PROVIDER_URI,
+  MESHBLU_PORT,
   MESHBLU_HOSTNAME
 } from '../constants/config'
 
@@ -14,7 +15,7 @@ export function getBearerToken() {
 
 export function getMeshbluConfig(){
   const bearerToken = getBearerToken()
-  const parts = btoa(bearerToken)
+  const parts = atob(bearerToken).split(':')
   return {
     hostname: MESHBLU_HOSTNAME,
     port: MESHBLU_PORT,
@@ -29,6 +30,7 @@ export function fetchOctobluUser(callback) {
   }
 
   let meshbluConfig = getMeshbluConfig()
+  console.log(meshbluConfig)
   let meshbluHttp = new MeshbluHttp(meshbluConfig)
   meshbluHttp.whoami(callback)
 }

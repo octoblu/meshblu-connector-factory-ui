@@ -1,4 +1,4 @@
-let clientId = '123'
+let clientId = '6ad6eb46-e23e-4a6d-8a89-99e5c00d41c3'
 let providerUri = 'https://oauth.octoblu.dev'
 let meshbluHostname = 'meshblu.octoblu.dev'
 let meshbluPort = 443

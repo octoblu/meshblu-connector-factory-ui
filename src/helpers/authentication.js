@@ -30,7 +30,6 @@ export function fetchOctobluUser(callback) {
   }
 
   let meshbluConfig = getMeshbluConfig()
-  console.log(meshbluConfig)
   let meshbluHttp = new MeshbluHttp(meshbluConfig)
   meshbluHttp.whoami(callback)
 }

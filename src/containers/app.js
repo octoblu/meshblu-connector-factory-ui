@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
+import OctobluOauth from './octoblu-oauth'
 
 export default class App extends Component {
   render() {
     return (
-      <div>
-        <h1>Zooid App</h1>
+      <OctobluOauth>
+        <h1>Connector Factory</h1>
         {this.props.children}
-      </div>
+      </OctobluOauth>
     )
   }
 }

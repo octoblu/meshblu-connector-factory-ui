@@ -3,6 +3,7 @@ import { Route, IndexRoute } from 'react-router';
 import App from '../containers/app';
 import Home from '../containers/home';
 import Create from '../containers/create';
+import Download from '../containers/download';
 import NotFound from '../components/NotFound/NotFound';
 import { storeAuthentication } from '../helpers/authentication';
 
@@ -12,6 +13,7 @@ export default (
     <Route path="/" component={App}>
       <IndexRoute component={Home} />
       <Route path="/create/:connector" component={Create} />
+      <Route path="/download/:key" component={Download} />
     </Route>
     <Route path="*" status={404} component={NotFound} />
   </Route>

@@ -1,10 +1,12 @@
 import request from 'superagent';
 
-const CONNECTOR_SERVICE_URI = 'https://connector.octoblu.com';
+const OTP_SERVICE_URI = 'https://meshblu-otp.octoblu.com';
 
-export function connectorDetails({ connector }, callback) {
+export function generateOtp({ uuid, token, metadata }, callback) {
   return request
-    .get(`${CONNECTOR_SERVICE_URI}/${connector}`)
+    .post(`${OTP_SERVICE_URI}/generate`)
+    .auth(uuid, token)
+    .send(metadata)
     .end((error, response) => {
       if (error) return callback(error);
       if (!response.ok) return callback(new Error('Invalid Response'));

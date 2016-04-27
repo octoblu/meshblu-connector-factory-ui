@@ -13,9 +13,12 @@ import {
 } from '../helpers/authentication'
 
 export default class OctobluOauth extends Component {
-  state = {
-    error: null,
-    octobluUser: null
+  constructor(props) {
+    super(props);
+    this.state = {
+      octobluUser: null,
+      error: null
+    }
   }
 
   componentDidMount() {

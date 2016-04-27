@@ -1,21 +1,22 @@
 import React, { PropTypes } from 'react';
 import styles from './VersionInfo.css';
-import _  from 'lodash';
 
 const propTypes = {
-  info: PropTypes.object.isRequired
+  info: PropTypes.object.isRequired,
 };
 
 const VersionInfo = ({ info }) => {
-  const { version, pkg, latest } = info;
+  const { version, latest } = info;
 
   let title = `v${version}`;
-  if(latest) title = `${title} (latest)`;
+  if (latest) title = `${title} (latest)`;
   return (
-    <div>
+    <div className={styles.root}>
       {title}
     </div>
   );
 };
+
+VersionInfo.propTypes = propTypes;
 
 export default VersionInfo;

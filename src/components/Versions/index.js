@@ -1,3 +1,3 @@
-import Versions from './Versions'
+import Versions from './Versions';
 
-export default Versions
+export default Versions;

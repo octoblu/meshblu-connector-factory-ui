@@ -14,7 +14,7 @@
     "test": "npm run mocha",
     "test:watch": "npm run mocha -- -wR mocha-multi --reporter-options spec=-,mocha-osx-reporter=-"
   },
-  "keywords":[
+  "keywords": [
     "zooid",
     "zooid-app",
     "react",
@@ -35,7 +35,9 @@
   "dependencies": {
     "react": "^15.0.1",
     "react-dom": "^15.0.1",
-    "react-router": "^2.0.1"
+    "react-router": "^2.0.1",
+    "superagent": "^1.8.3",
+    "zooid-ui": "^4.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",

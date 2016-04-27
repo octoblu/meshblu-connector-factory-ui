@@ -4,7 +4,7 @@ import App from '../containers/app';
 import Home from '../containers/home';
 import Create from '../containers/create';
 import NotFound from '../components/NotFound/NotFound';
-import { storeAuthentication } from '../helpers/authentication'
+import { storeAuthentication } from '../helpers/authentication';
 
 export default (
   <Route>

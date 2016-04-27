@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
-import styles from './Versions.css';
 import _  from 'lodash';
 import VersionInfo from '../VersionInfo'
+
+import './Versions.css';
 
 const propTypes = {
   versions: PropTypes.array.isRequired,
@@ -25,7 +26,7 @@ const Versions = ({ versions, select }) => {
   });
   return (
     <div>
-      <h1 className={styles.root}>Versions</h1>
+      <h1>Versions</h1>
       <ul>
         {versionsList}
       </ul>

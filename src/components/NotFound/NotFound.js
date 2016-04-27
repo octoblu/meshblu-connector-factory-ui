@@ -1,8 +1,9 @@
 import React from 'react';
-import styles from './NotFound.css';
+
+import './NotFound.css';
 
 const NotFound = () => {
-  return <h1 className={styles.root}>Not Found :(</h1>;
+  return <h1>Not Found :(</h1>;
 };
 
 export default NotFound;

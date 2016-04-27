@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
-import styles from './VersionInfo.css';
 import _  from 'lodash';
+
+import './VersionInfo.css';
 
 const propTypes = {
   info: PropTypes.object.isRequired

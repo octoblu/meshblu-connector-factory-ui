@@ -10,9 +10,9 @@ import {
 import Versions from '../components/Versions';
 import VersionInfo from '../components/VersionInfo';
 
-import { connectorDetails } from '../helpers/connector-detail-service';
-import { registerConnector } from '../helpers/device-service';
-import { generateOtp } from '../helpers/otp-service';
+import { connectorDetails } from '../services/connector-detail-service';
+import { registerConnector } from '../services/device-service';
+import { generateOtp } from '../services/otp-service';
 import { getConnectorMetadata } from '../helpers/connector-metadata';
 
 export default class Create extends Component {

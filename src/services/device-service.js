@@ -1,5 +1,5 @@
-import { getMeshbluConfig } from './authentication'
-import { getConnectorName } from './connector-metadata'
+import { getMeshbluConfig } from '../helpers/authentication'
+import { getConnectorName } from '../helpers/connector-metadata'
 
 export function registerConnector({ connector }, callback) {
   const meshbluConfig = getMeshbluConfig()

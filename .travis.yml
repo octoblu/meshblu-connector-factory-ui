@@ -9,7 +9,8 @@ env:
 branches:
   only:
   - "/^v[0-9]/"
-after_success:
+before_deploy:
+- npm run build
 - cp index.html dist
 - for file in `find dist -type f`; do gzip --best $file && mv $file.gz $file; done
 after_deploy:

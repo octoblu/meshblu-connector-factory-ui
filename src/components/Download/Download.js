@@ -6,8 +6,11 @@ import {
   Spinner,
   ErrorState,
   Button,
-  Icon,
 } from 'zooid-ui';
+
+import FaApple from 'react-icons/lib/fa/apple';
+import FaWindows from 'react-icons/lib/fa/windows';
+import FaLinux from 'react-icons/lib/fa/linux';
 
 import {
   getInstallerUri,
@@ -76,11 +79,11 @@ export default class Download extends Component {
     }
     return this.renderContent(
       <div>
-        <Button onClick={this.download('darwin-amd64')}>Download <Icon type="fa" name="FaApple" /></Button>
-        <Button onClick={this.download('windows-amd64')}>Download <Icon type="fa" name="FaWindows" /> 64bit</Button>
-        <Button onClick={this.download('windows-386')}>Download <Icon type="fa" name="FaWindows" /> 32bit</Button>
-        <Button onClick={this.download('linux-amd64')}>Download <Icon type="fa" name="FaLinux" /> 64bit</Button>
-        <Button onClick={this.download('linux-386')}>Download <Icon type="fa" name="FaLinux" /> 32bit</Button>
+        <Button onClick={this.download('darwin-amd64')}>Download <FaApple /></Button>
+        <Button onClick={this.download('windows-amd64')}>Download <FaWindows /> 64bit</Button>
+        <Button onClick={this.download('windows-386')}>Download <FaWindows /> 32bit</Button>
+        <Button onClick={this.download('linux-amd64')}>Download <FaLinux /> 64bit</Button>
+        <Button onClick={this.download('linux-386')}>Download <FaLinux /> 32bit</Button>
       </div>
     );
   }

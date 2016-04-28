@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist",
-    "build:webpack": "NODE_ENV=production webpack --config webpack.config.prod.js",
+    "build:webpack": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
     "build": "npm run clean && npm run build:webpack",
     "start": "node dev-server.js",
     "lint": "eslint src",
@@ -37,10 +37,11 @@
     "react": "^15.0.1",
     "react-cookie": "^0.4.5",
     "react-dom": "^15.0.1",
+    "react-icons": "^2.0.1",
     "react-router": "^2.0.1",
     "superagent": "^1.8.3",
     "zooid-meshblu-device-editor": "^5.0.0",
-    "zooid-ui": "^4.1.0"
+    "zooid-ui": "^5.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",

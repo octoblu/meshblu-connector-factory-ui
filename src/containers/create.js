@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
+
 import {
   Page,
   PageHeader,
@@ -12,9 +14,7 @@ import VersionInfo from '../components/VersionInfo';
 import Download from '../components/Download';
 
 import { connectorDetails } from '../services/connector-detail-service';
-import { registerConnector } from '../services/device-service';
-import { generateOtp } from '../services/otp-service';
-import { getConnectorMetadata } from '../helpers/connector-metadata';
+import { createConnector } from '../helpers/connector-creator';
 
 export default class Create extends Component {
   constructor(props) {
@@ -25,6 +25,7 @@ export default class Create extends Component {
       selectedVersion: null,
       generated: false,
       otp: null,
+      uuid: null,
       loading: true,
     };
     this.versionSelect = this.versionSelect.bind(this);
@@ -41,23 +42,14 @@ export default class Create extends Component {
   createDevice() {
     const { connector } = this.props.params;
     const { pkg } = this.state.selectedVersion;
-    this.setState({ loading: true })
-    registerConnector({ connector }, (error, device) => {
+    this.setState({ loading: true });
+    createConnector({ connector, pkg }, (error, response) => {
       if (error) {
         this.setState({ error, loading: false });
-        return;
+        return
       }
-      const { uuid, token } = device;
-      const metadata = getConnectorMetadata({ pkg });
-
-      generateOtp({ uuid, token, metadata  }, (error, response) => {
-        if (error) {
-          this.setState({ error, loading: false });
-          return;
-        }
-        const { key } = response;
-        this.setState({ otp: key, generated: true, loading: false })
-      });
+      const { key, uuid } = response;
+      this.setState({ error, otp: key, uuid, generated: true, loading: false });
     })
   }
 
@@ -83,6 +75,7 @@ export default class Create extends Component {
       selectedVersion,
       generated,
       otp,
+      uuid,
     } = this.state;
 
     if (error) {
@@ -92,7 +85,13 @@ export default class Create extends Component {
       return this.renderContent(<Spinner size="large" />);
     }
     if (generated) {
-      return this.renderContent(<Download otp={otp} />);
+      const configureUri = `/configure/${uuid}`;
+      return this.renderContent(
+        <div>
+          <Download otp={otp} />
+          <Link to={configureUri}>Configure Device</Link>
+        </div>
+      );
     }
     if (selectedVersion) {
       return this.renderContent(<h1>

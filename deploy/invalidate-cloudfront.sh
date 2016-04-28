@@ -17,13 +17,11 @@ configure_awscli(){
 create_invalidation(){
   local git_tag=$1
   aws cloudfront create-invalidation \
-    --distribution-id E8R5DJPWNNJ14 \
-    --invalidation-batch "{\"Paths\": {\"Quantity\": 3, \"Items\": [\"/index.html\", \"/dist/bundle.js\", \"/dist/bundle.js.map\"]}, \"CallerReference\": \"travis-$git_tag\"}"
+    --distribution-id EEZR7362A9WQ7 \
+    --invalidation-batch "{\"Paths\": {\"Quantity\": 3, \"Items\": [\"/index.html\", \"/bundle.js\", \"/bundle.js.map\"]}, \"CallerReference\": \"travis-$git_tag\"}"
 }
 
 main(){
-  echo "Disabled for now"
-  exit 0
   local aws_access_key_id=$1
   local aws_secret_access_key=$2
   local git_tag=$3

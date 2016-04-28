@@ -9,6 +9,7 @@ import {
 
 import Versions from '../components/Versions';
 import VersionInfo from '../components/VersionInfo';
+import Download from '../components/Download';
 
 import { connectorDetails } from '../services/connector-detail-service';
 import { registerConnector } from '../services/device-service';
@@ -23,7 +24,7 @@ export default class Create extends Component {
       details: null,
       selectedVersion: null,
       generated: false,
-      key: null,
+      otp: null,
       loading: true,
     };
     this.versionSelect = this.versionSelect.bind(this);
@@ -55,7 +56,7 @@ export default class Create extends Component {
           return;
         }
         const { key } = response;
-        this.setState({ key, generated: true, loading: false })
+        this.setState({ otp: key, generated: true, loading: false })
       });
     })
   }
@@ -81,7 +82,7 @@ export default class Create extends Component {
       details,
       selectedVersion,
       generated,
-      key,
+      otp,
     } = this.state;
 
     if (error) {
@@ -91,8 +92,7 @@ export default class Create extends Component {
       return this.renderContent(<Spinner size="large" />);
     }
     if (generated) {
-      const downloadLink = `/download/${key}`;
-      return this.renderContent(<Button href={downloadLink}>Download</Button>);
+      return this.renderContent(<Download otp={otp} />);
     }
     if (selectedVersion) {
       return this.renderContent(<h1>

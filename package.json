@@ -33,12 +33,14 @@
   },
   "license": "MIT",
   "dependencies": {
+    "lodash": "^4.11.1",
     "react": "^15.0.1",
     "react-cookie": "^0.4.5",
     "react-dom": "^15.0.1",
     "react-router": "^2.0.1",
     "superagent": "^1.8.3",
-    "zooid-ui": "^4.0.3"
+    "zooid-meshblu-device-editor": "^3.1.1",
+    "zooid-ui": "^4.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",

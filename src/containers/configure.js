@@ -17,7 +17,9 @@ import {
   FormInput,
 } from 'zooid-ui';
 
-import { SchemaContainer } from 'zooid-meshblu-device-editor';
+import {
+  SchemaContainer,
+} from 'zooid-meshblu-device-editor';
 
 import {
   getDevice,
@@ -139,12 +141,12 @@ export default class Configure extends Component {
       return this.renderContent(<Spinner size="large" />);
     }
 
-    const getSchema = () => {
-      const schema = _.get(device, 'device.schema.configure') || _.get(device, 'device.optionsSchema');
+    const getDeviceSchema = () => {
+      const schema = _.get(device, 'schema.configure') || _.get(device, 'optionsSchema');
       if(_.isEmpty(schema)) {
-        return <EmptyState title="[ No Schema ]"></EmptyState>
+        return <EmptyState title="[ No Device Schema ]"></EmptyState>
       }
-      return <SchemaContainer
+      return  <SchemaContainer
         device={device}
         schema={schema}
         onSubmit={this.handleConfig}
@@ -159,7 +161,7 @@ export default class Configure extends Component {
         <FormActions>
           <Button onClick={this.handleNameChange} kind="primary">Change Name</Button>
         </FormActions>
-        {getSchema()}
+        {getDeviceSchema()}
         <h4>{message}</h4>
       </div>
     );

@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 export function getSchema({ pkg }, callback) {
   if (!_.get(pkg, 'meshbluConnector.schemasUrl')) {
-    console.log('No schema url', pkg.meshbluConnector)
+    console.error('No schema url', pkg.meshbluConnector)
     callback(null, {});
     return
   }

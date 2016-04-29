@@ -7,9 +7,8 @@ import {
   TopBarTitle,
 } from 'zooid-ui';
 
-import '../styles/style.css';
-
 import 'zooid-ui/dist/style.css';
+import '../styles/style.css';
 
 const propTypes = {
   children: PropTypes.element.isRequired,

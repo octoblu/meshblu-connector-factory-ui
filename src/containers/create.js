@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { browserHistory } from 'react-router';
 
 import {
   Page,
@@ -15,6 +15,7 @@ import Versions from '../components/Versions';
 import VersionInfo from '../components/VersionInfo';
 import Download from '../components/Download';
 import SelectedVersion from '../components/SelectedVersion';
+import ConfigureCard from '../components/ConfigureCard';
 
 import { connectorDetails } from '../services/connector-detail-service';
 import { createConnector } from '../helpers/connector-creator';
@@ -27,9 +28,6 @@ export default class Create extends Component {
       error: null,
       details: null,
       selectedVersion: null,
-      generated: false,
-      otp: null,
-      uuid: null,
       loading: true,
       nodeType: null,
     };
@@ -58,7 +56,7 @@ export default class Create extends Component {
         return
       }
       const { key, uuid } = response;
-      this.setState({ error, otp: key, uuid, generated: true, loading: false });
+      browserHistory.push(`/connectors/generated/${uuid}/${key}`);
     })
   }
 
@@ -89,8 +87,7 @@ export default class Create extends Component {
       error,
       loading,
       details,
-      selectedVersion,
-      generated
+      selectedVersion
     } = this.state;
 
     if (error) {
@@ -99,17 +96,6 @@ export default class Create extends Component {
 
     if (loading) {
       return this.renderContent(<Spinner size="large" />);
-    }
-
-    if (generated) {
-      const { uuid, otp } = this.state;
-      const configureUri = `/connectors/configure/${uuid}`;
-      return this.renderContent(
-        <div>
-          <Download otp={otp} />
-          <Link to={configureUri}>Configure Device</Link>
-        </div>
-      );
     }
 
     if (selectedVersion) {

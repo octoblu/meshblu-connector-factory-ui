@@ -11,14 +11,14 @@ import {
   PageTitle
 } from 'zooid-ui';
 
-import Connectors from '../components/Connectors';
+import NodeTypes from '../components/NodeTypes';
 
 export default class Available extends Component {
   constructor(props) {
     super(props)
     this.state = {
       loading: true,
-      connectors: null,
+      nodeTypes: null,
       error: null,
     }
   }
@@ -26,8 +26,8 @@ export default class Available extends Component {
   componentDidMount() {
     this.setState({ loading: true });
 
-    getAvailableConnectors((error, connectors)=>{
-      this.setState({ error, connectors, loading: false });
+    getAvailableNodeTypes((error, nodeTypes)=>{
+      this.setState({ error, nodeTypes, loading: false });
     });
   }
 
@@ -43,11 +43,11 @@ export default class Available extends Component {
   }
 
   render() {
-    const { loading, error, connectors } = this.state;
+    const { loading, error, nodeTypes } = this.state;
 
     if (loading) return this.renderContent(<Spinner size="large"/>);
     if (error) return this.renderContent(<ErrorState title={error.message} />);
 
-    return this.renderContent(<Connectors connectors={connectors} />);
+    return this.renderContent(<NodeTypes nodeTypes={nodeTypes} />);
   }
 }

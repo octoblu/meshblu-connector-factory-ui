@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+
 import _ from 'lodash';
 import {
   Page,
   PageHeader,
+  PageActions,
   PageTitle,
   Spinner,
   ErrorState,
+  EmptyState,
   Button,
+  Form,
+  FormActions,
+  FormField,
+  FormInput,
 } from 'zooid-ui';
 
 import { SchemaContainer } from 'zooid-meshblu-device-editor';
@@ -28,6 +36,7 @@ export default class Configure extends Component {
       message: null
     };
     this.handleConfig  = this.handleConfig.bind(this);
+    this.handleNameChange  = this.handleNameChange.bind(this);
     this.sendPingAndUpdate  = this.sendPingAndUpdate.bind(this);
   }
 
@@ -35,8 +44,8 @@ export default class Configure extends Component {
     const { uuid } = this.props.params;
     getDevice({ uuid }, (error, device) => {
       this.setState({ error, device, lastPong: device.lastPong, loading: false });
+      this.sendPingAndUpdate({ uuid })
     });
-    this.sendPingAndUpdate({ uuid })
   }
 
   sendPingAndUpdate({ uuid }) {
@@ -70,16 +79,40 @@ export default class Configure extends Component {
     })
   }
 
-  getStatus({ lastPong }) {
+  handleNameChange() {
+    const ref = this.refs.deviceName;
+    const deviceName = ReactDOM.findDOMNode(ref).value;
+    this.handleConfig({ name: deviceName });
+  }
+
+  getStatusInfo() {
+    const { lastPong } = this.state;
+    if (!lastPong) {
+      const { online } = this.state.device;
+      if (online) {
+        return { statusText: 'device is online', online: true }
+      } else {
+        return { statusText: 'device is offline', online: false }
+      }
+    }
     const { date, response } = lastPong;
     const { running } = response;
     const oneMinAgo = Date.now() - (1000 * 60);
     if(date > oneMinAgo) {
       if(running) {
-        return `device is responding to pings`
+        return { statusText: 'device is responding to pings', online: true }
       }
     }
-    return 'device may be unavailable'
+    return { statusText: 'device may be unavailable', online: false }
+  }
+
+  getStatus() {
+    if(!this.state.device) return null;
+    const { statusText, online } = this.getStatusInfo()
+    if (online) {
+      return <Button kind="hollow-primary">{statusText}</Button>;
+    }
+    return <Button kind="hollow-danger">{statusText}</Button>;
   }
 
   renderContent(content) {
@@ -88,6 +121,7 @@ export default class Configure extends Component {
       <Page>
         <PageHeader>
           <PageTitle>Configure Device</PageTitle>
+          <PageActions>{this.getStatus()}</PageActions>
         </PageHeader>
         {content}
       </Page>
@@ -105,22 +139,28 @@ export default class Configure extends Component {
       return this.renderContent(<Spinner size="large" />);
     }
 
-    let messageEl = '';
-    if (message) {
-      messageEl = <h4>{message}</h4>;
+    const getSchema = () => {
+      const schema = _.get(device, 'device.schema.configure') || _.get(device, 'device.optionsSchema');
+      if(_.isEmpty(schema)) {
+        return <EmptyState title="[ No Schema ]"></EmptyState>
+      }
+      return <SchemaContainer
+        device={device}
+        schema={schema}
+        onSubmit={this.handleConfig}
+      />
     }
-
-    const status = this.getStatus({ lastPong });
 
     return this.renderContent(
       <div>
-        <h2><strong>Device Status:</strong> {status}</h2>
-        <SchemaContainer
-          device={device}
-          schema={device.schemas.configure}
-          onSubmit={this.handleConfig}
-        />
-        {messageEl}
+        <FormField label="Device Name" name="deviceName">
+          <FormInput type="text" ref="deviceName" name="deviceName" defaultValue={device.name} />
+        </FormField>
+        <FormActions>
+          <Button onClick={this.handleNameChange} kind="primary">Change Name</Button>
+        </FormActions>
+        {getSchema()}
+        <h4>{message}</h4>
       </div>
     );
   }

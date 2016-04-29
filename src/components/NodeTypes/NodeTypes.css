@@ -1,4 +1,4 @@
-.Connectors {
+.NodeTypes {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -7,7 +7,7 @@
   margin: 24px auto;
 }
 
-.Connector {
+.NodeType {
   display: flex;
   flex: 1;
   flex-direction: row;
@@ -28,28 +28,28 @@
   box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
 }
 
-.Connector-name {
+.NodeType-name {
   margin: 0 0 12px;
   padding: 0;
   font-size: 18px;
 }
 
-.Connector .Connector-icon {
+.NodeType .NodeType-icon {
   max-width: 100px;
 }
 
-.Connector-main {
+.NodeType-main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
 }
 
-.Connector-body {
+.NodeType-body {
   padding: 16px;
 }
 
-.Connector-footer {
+.NodeType-footer {
   display: flex;
   justify-content: space-between;
   margin-top: 48px;
@@ -60,10 +60,10 @@
   border-top: 1px solid #EEF1F2;
 }
 
-.Connector-footer .Connector-button {
+.NodeType-footer .NodeType-button {
   margin-left: auto;
 }
 
-.Connector-button {
+.NodeType-button {
   min-height: 42px;
 }

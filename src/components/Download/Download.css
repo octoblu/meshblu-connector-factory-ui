@@ -1,3 +1,17 @@
-.root {
-  
+.Download--actions {
+  margin: 10px;
+  padding: 10px;
+}
+
+.Download--row {
+
+}
+
+.Download--actions .Button {
+  margin: 10px;
+  padding-top: 7px;
+}
+
+.Download--icon {
+  font-size: 1.3rem;
 }

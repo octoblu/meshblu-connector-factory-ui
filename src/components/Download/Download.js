@@ -28,6 +28,8 @@ export default class Download extends Component {
       loading: true,
     };
     this.download = this.download.bind(this);
+    this.getButtonRow = this.getButtonRow.bind(this);
+    this.getButton = this.getButton.bind(this);
   }
 
   componentDidMount() {
@@ -60,6 +62,43 @@ export default class Download extends Component {
     );
   }
 
+  getButtonRow(os, platforms) {
+    const buttons = _.map(platforms, (platform) => {
+      return this.getButton(platform)
+    });
+    return (
+      <div className="Download--row">
+        <h4>{os}</h4>
+        {buttons}
+      </div>
+    );
+  }
+
+  getButton(platform) {
+    let Icon = null;
+    if (/^darwin/.test(platform)) {
+      Icon = <FaApple />
+    }
+    if (/^windows/.test(platform)) {
+      Icon = <FaWindows />
+    }
+    if (/^linux/.test(platform)) {
+      Icon = <FaLinux />
+    }
+    let arch = '[x64]';
+    if (/386$/.test(platform)) {
+      arch = '[x86]';
+    }
+    return (
+      <Button
+        key={platform}
+        kind="hollow-primary"
+        onClick={this.download(platform)}
+        ><i className="Download--icon">{Icon}</i> {arch} Download
+      </Button>
+    );
+  }
+
   render() {
     const {
       error,
@@ -77,13 +116,12 @@ export default class Download extends Component {
         </div>
       );
     }
+
     return this.renderContent(
-      <div>
-        <Button onClick={this.download('darwin-amd64')}>Download <FaApple /></Button>
-        <Button onClick={this.download('windows-amd64')}>Download <FaWindows /> 64bit</Button>
-        <Button onClick={this.download('windows-386')}>Download <FaWindows /> 32bit</Button>
-        <Button onClick={this.download('linux-amd64')}>Download <FaLinux /> 64bit</Button>
-        <Button onClick={this.download('linux-386')}>Download <FaLinux /> 32bit</Button>
+      <div className="Download--actions">
+        {this.getButtonRow('Mac OS', ['darwin-amd64'])}
+        {this.getButtonRow('Windows', ['windows-amd64', 'windows-386'])}
+        {this.getButtonRow('Linux', ['linux-amd64', 'linux-386'])}
       </div>
     );
   }

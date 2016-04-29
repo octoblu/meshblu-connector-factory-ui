@@ -19,6 +19,6 @@ app.get('*', function(req, res) {
 });
 
 app.listen(PORT, function(err) {
-  if (err) return console.log(err);
-  console.log('Hello, Zooid APP! I\'m running at http://localhost:' + PORT);
+  if (err) return console.error(err);
+  console.log('Hello, Connector Factory! I\'m running at http://localhost:' + PORT);
 });

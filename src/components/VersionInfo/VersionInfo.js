@@ -10,12 +10,12 @@ const propTypes = {
 const VersionInfo = ({ info }) => {
   const { version, latest } = info;
 
-  let title = `v${version}`;
-  if (latest) title = `${title} (latest)`;
+  let theVersion = `v${version}`;
+  if (latest) return (<span className="VersionInfo"><strong>{theVersion}</strong> [ latest ]</span>);
   return (
-    <div>
-      {title}
-    </div>
+    <span className="VersionInfo">
+      {theVersion}
+    </span>
   );
 };
 

@@ -1,0 +1,17 @@
+.DeviceActions {
+  float: right;
+}
+
+.DeviceActions--action .Icon {
+  font-size: 25px;
+}
+
+.DeviceActions .Button--hollow-approve, .DeviceActions .Button--hollow-neutral, .DeviceActions .Button--hollow-danger {
+   padding-left: 15px;
+   padding-right: 15px;
+}
+
+.DeviceActions .Button {
+  margin-right: 10px;
+  padding-top: 4px;
+}

@@ -1,2 +1,8 @@
-.root {
+.Versions {
+  max-width: 250px;
+}
+
+.Versions--icon {
+  font-size: 1.5rem;
+  float: right;
 }

@@ -38,3 +38,13 @@ export function sendPing({ uuid }, callback) {
     topic: 'ping',
   }, callback);
 }
+
+export function getDevices(callback) {
+  const meshbluConfig = getMeshbluConfig();
+  const meshblu = new MeshbluHttp(meshbluConfig);
+  meshblu.devices({
+    owner: meshbluConfig.uuid,
+    connector: { $exists: true },
+    type: { $ne: 'device:gateblu' }
+  }, callback);
+}

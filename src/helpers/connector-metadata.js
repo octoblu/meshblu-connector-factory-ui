@@ -2,14 +2,19 @@ import _ from 'lodash';
 
 export function getConnectorMetadata({ pkg }) {
   const { version, name } = pkg;
-  const legacy = _.isEmpty(pkg.meshbluConnector);
   const connector = getConnectorName(name);
+  const legacy = _.isEmpty(pkg.meshbluConnector);
+  let metadata = getLegacyMetadata({ pkg });
+
+  if (!legacy) {
+    metadata = getNewMetadata({ pkg });
+  }
 
   const {
     githubSlug,
     connectorAssemblerVersion,
     dependencyManagerVersion,
-  } = pkg.meshbluConnector;
+  } = metadata;
 
   const tag = `v${version}`;
 
@@ -22,6 +27,17 @@ export function getConnectorMetadata({ pkg }) {
     dependencyManagerVersion,
   };
 }
+
+function getLegacyMetadata({ pkg }) {
+  return {
+    githubSlug: `octoblu/${pkg.name}`
+  };
+}
+
+function getNewMetadata({ pkg }) {
+  return pkg.meshbluConnector;
+}
+
 
 export function getConnectorName(connector) {
   return connector.replace(/^meshblu\-(connector\-)*/, '');

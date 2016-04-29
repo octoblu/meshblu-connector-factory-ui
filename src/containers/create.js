@@ -4,17 +4,21 @@ import { Link } from 'react-router';
 import {
   Page,
   PageHeader,
+  PageTitle,
   Spinner,
   ErrorState,
   Button,
+  DeviceIcon,
 } from 'zooid-ui';
 
 import Versions from '../components/Versions';
 import VersionInfo from '../components/VersionInfo';
 import Download from '../components/Download';
+import SelectedVersion from '../components/SelectedVersion';
 
 import { connectorDetails } from '../services/connector-detail-service';
 import { createConnector } from '../helpers/connector-creator';
+import { getNodeType } from '../services/node-type-service';
 
 export default class Create extends Component {
   constructor(props) {
@@ -27,6 +31,7 @@ export default class Create extends Component {
       otp: null,
       uuid: null,
       loading: true,
+      nodeType: null,
     };
     this.versionSelect = this.versionSelect.bind(this);
     this.createDevice = this.createDevice.bind(this);
@@ -35,8 +40,12 @@ export default class Create extends Component {
   componentDidMount() {
     const { connector } = this.props.params;
     connectorDetails({ connector }, (error, details) => {
-      this.setState({ error, details, loading: false });
+      this.setState({ error, details });
+      getNodeType({ connector }, (error, nodeType) => {
+        this.setState({ error, nodeType, loading: false });
+      });
     });
+
   }
 
   createDevice() {
@@ -59,9 +68,17 @@ export default class Create extends Component {
 
   renderContent(content) {
     const { connector } = this.props.params;
+    let ConnectorIcon = null
+    if (this.state.nodeType) {
+      const { type } = this.state.nodeType;
+      ConnectorIcon = <DeviceIcon className="ConnectorIcon" type={type} />
+    }
     return (
       <Page>
-        <PageHeader>Creating connector: {connector}</PageHeader>
+        <PageHeader>
+          {ConnectorIcon}
+          <PageTitle>Create: {connector}</PageTitle>
+        </PageHeader>
         {content}
       </Page>
     );
@@ -73,19 +90,20 @@ export default class Create extends Component {
       loading,
       details,
       selectedVersion,
-      generated,
-      otp,
-      uuid,
+      generated
     } = this.state;
 
     if (error) {
       return this.renderContent(<ErrorState description={error.message} />);
     }
+
     if (loading) {
       return this.renderContent(<Spinner size="large" />);
     }
+
     if (generated) {
-      const configureUri = `/configure/${uuid}`;
+      const { uuid, otp } = this.state;
+      const configureUri = `/connectors/configure/${uuid}`;
       return this.renderContent(
         <div>
           <Download otp={otp} />
@@ -93,11 +111,12 @@ export default class Create extends Component {
         </div>
       );
     }
+
     if (selectedVersion) {
-      return this.renderContent(<h1>
-        Selected <VersionInfo info={selectedVersion} />
-        <Button onClick={this.createDevice} >Create</Button>
-      </h1>);
+      const { type } = this.state.nodeType;
+      return this.renderContent(
+        <SelectedVersion info={selectedVersion} createDevice={this.createDevice} type={type} />
+      );
     }
 
     return this.renderContent(<Versions versions={details.versions} select={this.versionSelect} />);

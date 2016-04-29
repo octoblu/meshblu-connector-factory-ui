@@ -2,6 +2,13 @@ import React, { PropTypes } from 'react';
 import _  from 'lodash';
 import VersionInfo from '../VersionInfo';
 
+import {
+  List,
+  ListItem,
+} from 'zooid-ui';
+
+import MdNavigateNext from 'react-icons/lib/md/navigate-next';
+
 import './Versions.css';
 
 const propTypes = {
@@ -9,8 +16,29 @@ const propTypes = {
   select: PropTypes.func.isRequired,
 };
 
+function majorAndMinorList(versions) {
+  let majorMinors = {};
+  _.each(versions, (version) => {
+    const [major, minor] = version.split('.');
+    majorMinors[`${major}.${minor}`] = false;
+  });
+  return majorMinors;
+}
+
+function filterAndSortVersions(_versions) {
+  const sortedAndReversed = _.reverse(_.keys(_versions));
+  let majorMinors = majorAndMinorList(sortedAndReversed);
+  _.each(sortedAndReversed, (version) => {
+    const [major, minor] = version.split('.');
+    if(majorMinors[`${major}.${minor}`]) return;
+    majorMinors[`${major}.${minor}`] = version;
+  });
+  return _.values(majorMinors);
+}
+
 const Versions = ({ versions, select }) => {
-  const versionKeys = _.reverse(_.keys(versions));
+  const versionKeys = filterAndSortVersions(versions);
+
   const versionsList = _.map(versionKeys, (version, i) => {
     const pkg = versions[version];
     const latest = !i;
@@ -19,17 +47,20 @@ const Versions = ({ versions, select }) => {
       select(versionInfo);
     };
     return (
-      <li key={version} onClick={selectEvent}>
-        <VersionInfo info={versionInfo} />
-      </li>
+      <ListItem key={version}>
+        <div onClick={selectEvent}>
+          <VersionInfo info={versionInfo} />
+          <i className="Versions--icon" role="icon"><MdNavigateNext /></i>
+        </div>
+      </ListItem>
     );
   });
   return (
-    <div>
-      <h1>Versions</h1>
-      <ul>
+    <div className="Versions">
+      <h4>Select Version:</h4>
+      <List>
         {versionsList}
-      </ul>
+      </List>
     </div>
   );
 };

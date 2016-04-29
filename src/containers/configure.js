@@ -3,6 +3,7 @@ import _ from 'lodash';
 import {
   Page,
   PageHeader,
+  PageTitle,
   Spinner,
   ErrorState,
   Button,
@@ -85,7 +86,9 @@ export default class Configure extends Component {
     const { connector } = this.props.params;
     return (
       <Page>
-        <PageHeader><h1>Configure Device</h1></PageHeader>
+        <PageHeader>
+          <PageTitle>Configure Device</PageTitle>
+        </PageHeader>
         {content}
       </Page>
     );

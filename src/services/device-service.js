@@ -9,6 +9,7 @@ export function registerConnector({ connector, schema }, callback) {
   const deviceProps = _.defaults({
     type: `device:${connectorName}`,
     connector: connector,
+    owner: meshbluConfig.uuid,
     discoverWhitelist: [meshbluConfig.uuid],
     configureWhitelist: [meshbluConfig.uuid],
     sendWhitelist: [meshbluConfig.uuid],

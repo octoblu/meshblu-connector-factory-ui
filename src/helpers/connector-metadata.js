@@ -14,6 +14,7 @@ export function getConnectorMetadata({ pkg }) {
     githubSlug,
     connectorAssemblerVersion,
     dependencyManagerVersion,
+    ignitionVersion,
   } = metadata;
 
   const tag = `v${version}`;
@@ -25,6 +26,7 @@ export function getConnectorMetadata({ pkg }) {
     githubSlug,
     connectorAssemblerVersion,
     dependencyManagerVersion,
+    ignitionVersion,
   };
 }
 

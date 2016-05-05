@@ -1,9 +1,13 @@
+import { connectorDetails } from '../services/connector-detail-service';
 const INSTALLER_BASE_URI = 'https://github.com/octoblu/electron-meshblu-connector-installer';
-const INSTALLER_TAG = 'v5.1.0';
 
-export function getInstallerUri({ platform }) {
-  const ext = getFileExtension({ platform });
-  return `${INSTALLER_BASE_URI}/releases/download/${INSTALLER_TAG}/MeshbluConnectorInstaller-${platform}.${ext}`;
+export function getInstallerUri({ platform }, callback) {
+  connectorDetails({ connector: 'electron-meshblu-connector-installer' }, (error, info) => {
+    if(error) return callback(error)
+    const tag = info['dist-tags'].latest
+    const ext = getFileExtension({ platform });
+    callback(null, `${INSTALLER_BASE_URI}/releases/download/v${tag}/MeshbluConnectorInstaller-${platform}.${ext}`);
+  })
 }
 
 export function getDownloadUri({ uri, fileName }) {

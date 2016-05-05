@@ -44,12 +44,16 @@ export default class Download extends Component {
     const { otp } = this.props;
     return () => {
       this.setState({ loading: true });
-      const uri = getInstallerUri({ platform });
-      const fileName = getFileName({ otp, platform });
-      const link = document.createElement('a');
-      link.download = fileName;
-      link.href = getDownloadUri({ uri, fileName });
-      link.click();
+      getInstallerUri({ platform }, (error, uri) => {
+        if(error) {
+          return this.setState({ error });
+        }
+        const fileName = getFileName({ otp, platform });
+        const link = document.createElement('a');
+        link.download = fileName;
+        link.href = getDownloadUri({ uri, fileName });
+        link.click();
+      });
     }
   }
 

@@ -26,6 +26,7 @@ export default class Download extends Component {
     this.state = {
       error: null,
       loading: true,
+      downloadURI: null,
     };
     this.download = this.download.bind(this);
     this.getButtonRow = this.getButtonRow.bind(this);
@@ -50,8 +51,12 @@ export default class Download extends Component {
         }
         const fileName = getFileName({ otp, platform });
         const link = document.createElement('a');
-        link.download = fileName;
-        link.href = getDownloadUri({ uri, fileName });
+        if (!_.isUndefined(link.download)) {
+          link.download = fileName;
+        }
+        const downloadURI = getDownloadUri({ uri, fileName });
+        this.setState({ downloadURI });
+        link.href = downloadURI;
         link.click();
       });
     }
@@ -113,10 +118,12 @@ export default class Download extends Component {
       return this.renderContent(<ErrorState description={error.message} />);
     }
     if (loading) {
+      const { downloadURI } = this.state;
       return this.renderContent(
         <div>
           <Spinner size="large" />
           <h1>Downloading...</h1>
+          <Button href={downloadURI} kind="hollow-neutral">Manual Download Link</Button>
         </div>
       );
     }

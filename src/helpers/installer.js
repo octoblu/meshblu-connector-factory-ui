@@ -1,5 +1,5 @@
 const INSTALLER_BASE_URI = 'https://github.com/octoblu/electron-meshblu-connector-installer';
-const INSTALLER_TAG = 'v5.0.0';
+const INSTALLER_TAG = 'v5.1.0';
 
 export function getInstallerUri({ platform }) {
   const ext = getFileExtension({ platform });

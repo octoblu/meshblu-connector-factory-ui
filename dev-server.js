@@ -20,5 +20,5 @@ app.get('*', function(req, res) {
 
 app.listen(PORT, function(err) {
   if (err) return console.error(err);
-  console.log('Hello, Connector Factory! I\'m running at http://localhost:' + PORT);
+  console.log('Hello, I\'m the Connector Factory! Running at http://localhost:' + PORT);
 });

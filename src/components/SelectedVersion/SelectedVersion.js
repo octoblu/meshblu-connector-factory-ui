@@ -13,7 +13,7 @@ import './SelectedVersion.css';
 
 const propTypes = {
   info: PropTypes.object.isRequired,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
   createDevice: PropTypes.func.isRequired,
 };
 

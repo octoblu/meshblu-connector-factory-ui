@@ -67,8 +67,9 @@ export default class Create extends Component {
   renderContent(content) {
     const { connector } = this.props.params;
     let ConnectorIcon = null
-    if (this.state.nodeType) {
-      const { type } = this.state.nodeType;
+    const { nodeType } = this.state;
+    if (nodeType) {
+      const { type } = nodeType;
       ConnectorIcon = <DeviceIcon className="ConnectorIcon" type={type} />
     }
     return (
@@ -99,7 +100,11 @@ export default class Create extends Component {
     }
 
     if (selectedVersion) {
-      const { type } = this.state.nodeType;
+      const { nodeType } = this.state;
+      let type = null
+      if(nodeType) {
+        type = nodeType.type;
+      }
       return this.renderContent(
         <SelectedVersion info={selectedVersion} createDevice={this.createDevice} type={type} />
       );

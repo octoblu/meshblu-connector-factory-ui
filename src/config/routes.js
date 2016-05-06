@@ -18,11 +18,14 @@ export default (
       <IndexRoute component={Home} />
       <Route path="/connectors" component={Authenticated}>
         <IndexRoute component={Installed} />
-        <Route path="/connectors/installed" component={Installed} />
-        <Route path="/connectors/available" component={Available} />
         <Route path="/connectors/create/:connector" component={Create} />
         <Route path="/connectors/generated/:uuid/:key" component={Generated} />
-        <Route path="/connectors/configure/:uuid" component={Configure} />
+      </Route>
+      <Route path="/things" component={Authenticated}>
+        <IndexRoute component={Installed} />
+        <Route path="/things/available" component={Available} />
+        <Route path="/things/installed" component={Installed} />
+        <Route path="/things/configure/:uuid" component={Configure} />
       </Route>
     </Route>
     <Route path="*" status={404} component={NotFound} />

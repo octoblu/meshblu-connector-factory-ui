@@ -21,8 +21,8 @@ export default class App extends React.Component {
         <TopBar>
           <TopBarTitle>Meshblu Connector Factory</TopBarTitle>
           <Link className="TopBar--link" to="/">Home</Link>
-          <Link className="TopBar--link" to="/connectors/installed">My Connectors</Link>
-          <Link className="TopBar--link" to="/connectors/available">Available Connectors</Link>
+          <Link className="TopBar--link" to="/things/installed">My Things</Link>
+          <Link className="TopBar--link" to="/things/available">Available Things</Link>
         </TopBar>
         <div className="Container">
           {this.props.children}

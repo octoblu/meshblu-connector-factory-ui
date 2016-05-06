@@ -24,7 +24,7 @@ const ConfigureCard = ({ uuid }) => {
             </div>
           </div>
           <footer className="ConfigureCard-footer">
-            <Link className="ConfigureCard-button Button Button--hollow-approve" to={`/connectors/configure/${uuid}`}>Configure Device</Link>
+            <Link className="ConfigureCard-button Button Button--hollow-approve" to={`/things/configure/${uuid}`}>Configure Thing</Link>
           </footer>
         </main>
       </Card>

@@ -23,13 +23,13 @@ export default class Home extends Component {
         </PageHeader>
         <div className="Home">
           <h2>Getting Started</h2>
-          <p>Welcome to the Meshblu Connector Factory. Here you will find a new way of creating, installing and managing Meshblu Connectors.</p>
+          <p>Welcome to the Meshblu Connector Factory. Here you will find a new way of creating, installing and managing Things.</p>
           <p>
             Running Meshblu Connectors independently allows us to simplify the installation and management process.
           </p>
           <div className="ButtonActions">
-            <Link to="/connectors/available" className="Button Button--hollow-primary">See Available Connectors</Link>
-            <Link to="/connectors/installed" className="Button Button--hollow-primary">See Installed Connectors</Link>
+            <Link to="/things/available" className="Button Button--hollow-primary">See Compatible Things</Link>
+            <Link to="/things/installed" className="Button Button--hollow-primary">See Installed Things</Link>
           </div>
           <h2>Why?</h2>
           <p>

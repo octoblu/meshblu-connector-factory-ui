@@ -35,7 +35,7 @@ export default class Available extends Component {
     return (
       <Page>
         <PageHeader>
-          <PageTitle>Available Connectors</PageTitle>
+          <PageTitle>Available Things</PageTitle>
         </PageHeader>
         {content}
       </Page>
@@ -50,9 +50,9 @@ export default class Available extends Component {
 
     return this.renderContent(
       <div>
-        <h3>New Connectors</h3>
+        <h3>Compatible with the new Connector Installer</h3>
         <NodeTypes nodeTypes={nodeTypes.new} />
-        <h3>Legacy Connectors</h3>
+        <h3>Backwards compatible with Connector Installer</h3>
         <NodeTypes nodeTypes={nodeTypes.old} />
       </div>
     );

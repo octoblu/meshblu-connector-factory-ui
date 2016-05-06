@@ -35,7 +35,7 @@ export default class Installed extends Component {
     return (
       <Page>
         <PageHeader>
-          <PageTitle>Installed Devices</PageTitle>
+          <PageTitle>Installed Things</PageTitle>
         </PageHeader>
         {content}
       </Page>

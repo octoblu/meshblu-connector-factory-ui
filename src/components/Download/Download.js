@@ -56,6 +56,7 @@ export default class Download extends Component {
         }
         const downloadURI = getDownloadUri({ uri, fileName });
         _.delay(() => {
+          this.props.onDownload()
           this.setState({ downloadURI , downloading: false });
         }, 10000)
         link.href = downloadURI;
@@ -149,5 +150,6 @@ export default class Download extends Component {
 }
 
 Download.propTypes = {
-  otp: PropTypes.string.isRequired
+  otp: PropTypes.string.isRequired,
+  onDownload: PropTypes.func.isRequired,
 };

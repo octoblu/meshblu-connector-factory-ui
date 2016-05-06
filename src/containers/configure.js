@@ -35,6 +35,7 @@ export default class Configure extends Component {
       device: null,
       loading: true,
       lastPong: null,
+      online: false,
       message: null
     };
     this.handleConfig  = this.handleConfig.bind(this);
@@ -45,7 +46,7 @@ export default class Configure extends Component {
   componentDidMount() {
     const { uuid } = this.props.params;
     getDevice({ uuid }, (error, device) => {
-      this.setState({ error, device, lastPong: device.lastPong, loading: false });
+      this.setState({ error, device, online: device.online, lastPong: device.lastPong, loading: false });
       this.sendPingAndUpdate({ uuid })
     });
   }
@@ -57,8 +58,8 @@ export default class Configure extends Component {
       _.delay(() => {
         getDevice({uuid}, (error, device) => {
           if(error) return;
-          const { lastPong } = device;
-          this.setState({ lastPong })
+          const { lastPong, online } = device;
+          this.setState({ lastPong, online })
           _.delay(this.sendPingAndUpdate, 5000, { uuid });
         })
       }, 2000);
@@ -89,23 +90,22 @@ export default class Configure extends Component {
 
   getStatusInfo() {
     const { lastPong } = this.state;
-    if (!lastPong) {
-      const { online } = this.state.device;
-      if (online) {
-        return { statusText: 'device is online', online: true }
-      } else {
-        return { statusText: 'device is offline', online: false }
+
+    if (lastPong) {
+      const { date, response } = lastPong;
+      const { running } = response;
+      const oneMinAgo = Date.now() - (1000 * 60);
+      if(date > oneMinAgo) {
+        if(running) {
+          return { statusText: 'connector is responding to pings', online: true }
+        }
       }
     }
-    const { date, response } = lastPong;
-    const { running } = response;
-    const oneMinAgo = Date.now() - (1000 * 60);
-    if(date > oneMinAgo) {
-      if(running) {
-        return { statusText: 'device is responding to pings', online: true }
-      }
+    const { online } = this.state;
+    if (online) {
+      return { statusText: 'thing is online', online: true }
     }
-    return { statusText: 'device may be unavailable', online: false }
+    return { statusText: 'thing is offline', online: false }
   }
 
   getStatus() {
@@ -122,7 +122,7 @@ export default class Configure extends Component {
     return (
       <Page>
         <PageHeader>
-          <PageTitle>Configure Device</PageTitle>
+          <PageTitle>Configure Thing</PageTitle>
           <PageActions>{this.getStatus()}</PageActions>
         </PageHeader>
         {content}

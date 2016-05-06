@@ -1,0 +1,25 @@
+.Home {
+}
+
+.Home p {
+  margin-bottom: 1rem;
+}
+
+.Home h1, h2, h3 {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+
+.Home--action .Icon {
+  font-size: 25px;
+}
+
+.Home .Button--hollow-approve, .Home .Button--hollow-neutral, .Home .Button--hollow-danger {
+   padding-left: 15px;
+   padding-right: 15px;
+}
+
+.Home .Button {
+  margin-right: 10px;
+}

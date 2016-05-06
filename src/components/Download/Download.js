@@ -25,7 +25,7 @@ export default class Download extends Component {
     super(props);
     this.state = {
       error: null,
-      loading: true,
+      downloading: true,
       downloadURI: null,
     };
     this.download = this.download.bind(this);
@@ -38,13 +38,13 @@ export default class Download extends Component {
     if(!otp) {
       this.setState({ error: new Error('Invalid Key') })
     }
-    this.setState({ loading: false });
+    this.setState({ downloading: false });
   }
 
   download(platform) {
     const { otp } = this.props;
     return () => {
-      this.setState({ loading: true });
+      this.setState({ downloading: true });
       getInstallerUri({ platform }, (error, uri) => {
         if(error) {
           return this.setState({ error });
@@ -55,7 +55,9 @@ export default class Download extends Component {
           link.download = fileName;
         }
         const downloadURI = getDownloadUri({ uri, fileName });
-        this.setState({ downloadURI });
+        _.delay(() => {
+          this.setState({ downloadURI , downloading: false });
+        }, 5000)
         link.href = downloadURI;
         link.click();
       });
@@ -111,19 +113,27 @@ export default class Download extends Component {
   render() {
     const {
       error,
-      loading,
+      downloading,
+      downloadURI,
     } = this.state;
 
     if (error) {
       return this.renderContent(<ErrorState description={error.message} />);
     }
-    if (loading) {
-      const { downloadURI } = this.state;
+    if (downloading) {
       return this.renderContent(
         <div>
           <Spinner size="large" />
           <h1>Downloading...</h1>
-          <Button href={downloadURI} kind="hollow-neutral">Manual Download Link</Button>
+        </div>
+      );
+    }
+
+    if (downloadURI) {
+      return this.renderContent(
+        <div>
+          <h2>If download hasn't started, use link below.</h2>
+          <a href={downloadURI}>manual download link</a>
         </div>
       );
     }

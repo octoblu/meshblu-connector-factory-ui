@@ -57,7 +57,7 @@ const Versions = ({ versions, select }) => {
   });
   return (
     <div className="Versions">
-      <h4>Select Version:</h4>
+      <h2>Select Version:</h2>
       <List>
         {versionsList}
       </List>

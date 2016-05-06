@@ -32,6 +32,7 @@ export default class Create extends Component {
       nodeType: null,
     };
     this.versionSelect = this.versionSelect.bind(this);
+    this.selectDefaultVersion = this.selectDefaultVersion.bind(this);
     this.createDevice = this.createDevice.bind(this);
   }
 
@@ -41,6 +42,7 @@ export default class Create extends Component {
       this.setState({ error, details });
       getNodeType({ connector }, (error, nodeType) => {
         this.setState({ error, nodeType, loading: false });
+        this.selectDefaultVersion()
       });
     });
 
@@ -60,8 +62,27 @@ export default class Create extends Component {
     })
   }
 
+  selectDefaultVersion() {
+    const { details } = this.state;
+    const latestVersion = details['dist-tags'].latest;
+    this.versionSelect({ version: latestVersion, latest: true, pkg: details.versions[latestVersion] })
+  }
+
   versionSelect(versionInfo) {
     this.setState({ selectedVersion: versionInfo });
+  }
+
+  getSelectedVersion() {
+    const { selectedVersion } = this.state;
+    if (selectedVersion) {
+      const { nodeType } = this.state;
+      let type = null
+      if(nodeType) {
+        type = nodeType.type;
+      }
+      return <SelectedVersion info={selectedVersion} createDevice={this.createDevice} type={type} />
+    }
+    return null;
   }
 
   renderContent(content) {
@@ -88,7 +109,6 @@ export default class Create extends Component {
       error,
       loading,
       details,
-      selectedVersion
     } = this.state;
 
     if (error) {
@@ -99,17 +119,12 @@ export default class Create extends Component {
       return this.renderContent(<Spinner size="large" />);
     }
 
-    if (selectedVersion) {
-      const { nodeType } = this.state;
-      let type = null
-      if(nodeType) {
-        type = nodeType.type;
-      }
-      return this.renderContent(
-        <SelectedVersion info={selectedVersion} createDevice={this.createDevice} type={type} />
-      );
-    }
-
-    return this.renderContent(<Versions versions={details.versions} select={this.versionSelect} />);
+    return this.renderContent(
+      <div className="CenterIt">
+        {this.getSelectedVersion()}
+        <h3>-- OR --</h3>
+        <Versions versions={details.versions} select={this.versionSelect} />
+      </div>
+    );
   }
 }

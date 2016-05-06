@@ -18,13 +18,17 @@ const propTypes = {
 };
 
 const SelectedVersion = ({ info, type, createDevice }) => {
+  let title = "Selected"
+  if (info.latest) {
+    title = "Latest Version"
+  }
   return (
     <div className="SelectedVersion--container">
       <Card className="SelectedVersion">
         <main className="SelectedVersion-main">
           <div className="SelectedVersion-body">
             <div className="SelectedVersion-name">
-              <h3>Selected:</h3>
+              <h3>{title}</h3>
               <VersionInfo info={info} />
             </div>
           </div>

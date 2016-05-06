@@ -142,7 +142,7 @@ export default class Configure extends Component {
     }
 
     const getDeviceSchema = () => {
-      const schema = _.get(device, 'schema.configure') || _.get(device, 'optionsSchema');
+      const schema = _.get(device, 'schemas.configure') || _.get(device, 'optionsSchema');
       if(_.isEmpty(schema)) {
         return <EmptyState title="[ No Device Schema ]"></EmptyState>
       }

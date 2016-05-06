@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from '../containers/app';
+import Authenticated from '../containers/authenticated';
 import Home from '../containers/home';
 import Create from '../containers/create';
 import Configure from '../containers/configure';
@@ -15,11 +16,14 @@ export default (
     <Route path="/authenticated" onEnter={storeAuthentication} />
     <Route path="/" component={App}>
       <IndexRoute component={Home} />
-      <Route path="/connectors/installed" component={Installed} />
-      <Route path="/connectors/available" component={Available} />
-      <Route path="/connectors/create/:connector" component={Create} />
-      <Route path="/connectors/generated/:uuid/:key" component={Generated} />
-      <Route path="/connectors/configure/:uuid" component={Configure} />
+      <Route path="/connectors" component={Authenticated}>
+        <IndexRoute component={Installed} />
+        <Route path="/connectors/installed" component={Installed} />
+        <Route path="/connectors/available" component={Available} />
+        <Route path="/connectors/create/:connector" component={Create} />
+        <Route path="/connectors/generated/:uuid/:key" component={Generated} />
+        <Route path="/connectors/configure/:uuid" component={Configure} />
+      </Route>
     </Route>
     <Route path="*" status={404} component={NotFound} />
   </Route>

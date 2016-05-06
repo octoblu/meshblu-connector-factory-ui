@@ -1,5 +1,7 @@
 .Versions {
-  max-width: 250px;
+  width: 350px;
+  margin: auto;
+  padding-left: 30px;
 }
 
 .Versions--icon {

@@ -47,7 +47,7 @@ module.exports = {
       {
         test: /\.svg$/,
         loader: "file-loader"
-      }
+      },
     ]
   },
   postcss: function (webpack) {

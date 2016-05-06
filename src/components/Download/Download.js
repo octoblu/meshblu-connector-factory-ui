@@ -57,7 +57,7 @@ export default class Download extends Component {
         const downloadURI = getDownloadUri({ uri, fileName });
         _.delay(() => {
           this.setState({ downloadURI , downloading: false });
-        }, 5000)
+        }, 10000)
         link.href = downloadURI;
         link.click();
       });

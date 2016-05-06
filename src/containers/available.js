@@ -48,6 +48,13 @@ export default class Available extends Component {
     if (loading) return this.renderContent(<Spinner size="large"/>);
     if (error) return this.renderContent(<ErrorState title={error.message} />);
 
-    return this.renderContent(<NodeTypes nodeTypes={nodeTypes} />);
+    return this.renderContent(
+      <div>
+        <h3>New Connectors</h3>
+        <NodeTypes nodeTypes={nodeTypes.new} />
+        <h3>Legacy Connectors</h3>
+        <NodeTypes nodeTypes={nodeTypes.old} />
+      </div>
+    );
   }
 }

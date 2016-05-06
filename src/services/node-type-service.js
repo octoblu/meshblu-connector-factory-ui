@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import request from 'superagent';
 import { getMeshbluConfig } from '../helpers/authentication';
-
+import { newConnectors } from '../assets/new-connectors';
 const OCTOBLU_URL = 'https://api.octoblu.com';
 
 export function getAvailableNodeTypes(callback){
@@ -17,7 +17,7 @@ export function getAvailableNodeTypes(callback){
         if(connector.connector) return true
         return false
       })
-      callback(null, connectors)
+      callback(null, { old: connectors, new: newConnectors })
     })
 }
 

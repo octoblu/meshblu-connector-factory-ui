@@ -35,20 +35,37 @@ export default class Configure extends Component {
       device: null,
       loading: true,
       lastPong: null,
+      configureSchema: null,
       online: false,
       message: null
     };
     this.handleConfig  = this.handleConfig.bind(this);
     this.handleNameChange  = this.handleNameChange.bind(this);
     this.sendPingAndUpdate  = this.sendPingAndUpdate.bind(this);
+    this.getDevice  = this.getDevice.bind(this);
   }
 
   componentDidMount() {
     const { uuid } = this.props.params;
-    getDevice({ uuid }, (error, device) => {
-      this.setState({ error, device, online: device.online, lastPong: device.lastPong, loading: false });
+    this.getDevice(() => {
+      const { device } = this.state;
+      new SchemaTransmogrifier({ device, schemaType: 'configure' }).convert((error, configureSchema) => {
+        this.setState({ error, configureSchema, loading: false })
+      })
       this.sendPingAndUpdate({ uuid })
-    });
+    })
+
+  }
+
+  getDevice(callback) {
+    if(!callback) callback = _.noop;
+    const { uuid } = this.props.params;
+    getDevice({ uuid }, (error, device) => {
+      if(error) return this.setState({ error })
+      const { lastPong, online } = device;
+      this.setState({ device, lastPong, online })
+      callback()
+    })
   }
 
   sendPingAndUpdate({ uuid }) {
@@ -56,10 +73,7 @@ export default class Configure extends Component {
     sendPing({ uuid }, (error) => {
       if (error) return;
       _.delay(() => {
-        getDevice({uuid}, (error, device) => {
-          if(error) return;
-          const { lastPong, online } = device;
-          this.setState({ lastPong, online })
+        this.getDevice(() => {
           _.delay(this.sendPingAndUpdate, 5000, { uuid });
         })
       }, 2000);
@@ -142,13 +156,13 @@ export default class Configure extends Component {
     }
 
     const getDeviceSchema = () => {
-      const schema = _.get(device, 'schemas.configure') || _.get(device, 'optionsSchema');
-      if(_.isEmpty(schema)) {
-        return <EmptyState title="[ No Device Schema ]"></EmptyState>
+      const { configureSchema } = this.state;
+      if(_.isEmpty(configureSchema)) {
+        return <EmptyState title="[ No Configure Schema ]"></EmptyState>
       }
       return  <SchemaContainer
         device={device}
-        schema={schema}
+        schema={configureSchema.schema}
         onSubmit={this.handleConfig}
       />
     }

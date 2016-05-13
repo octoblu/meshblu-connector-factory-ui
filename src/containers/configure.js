@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
+import FaStop from 'react-icons/lib/fa/stop';
+import FaPlay from 'react-icons/lib/fa/play';
+
 import _ from 'lodash';
 import {
   Page,
@@ -37,9 +40,12 @@ export default class Configure extends Component {
       lastPong: null,
       configureSchema: null,
       online: false,
+      connectorMetadata: null,
       message: null
     };
     this.handleConfig  = this.handleConfig.bind(this);
+    this.stopConnector  = this.stopConnector.bind(this);
+    this.startConnector  = this.startConnector.bind(this);
     this.handleNameChange  = this.handleNameChange.bind(this);
     this.sendPingAndUpdate  = this.sendPingAndUpdate.bind(this);
     this.getDevice  = this.getDevice.bind(this);
@@ -62,8 +68,8 @@ export default class Configure extends Component {
     const { uuid } = this.props.params;
     getDevice({ uuid }, (error, device) => {
       if(error) return this.setState({ error })
-      const { lastPong, online } = device;
-      this.setState({ device, lastPong, online })
+      const { lastPong, online, connectorMetadata } = device;
+      this.setState({ device, lastPong, online, connectorMetadata })
       callback()
     })
   }
@@ -102,6 +108,18 @@ export default class Configure extends Component {
     this.handleConfig({ name: deviceName });
   }
 
+  startConnector() {
+    let { connectorMetadata } = this.state;
+    connectorMetadata.stopped = false;
+    this.handleConfig({ connectorMetadata })
+  }
+
+  stopConnector() {
+    let { connectorMetadata } = this.state;
+    connectorMetadata.stopped = true;
+    this.handleConfig({ connectorMetadata })
+  }
+
   getStatusInfo() {
     const { lastPong } = this.state;
 
@@ -131,6 +149,44 @@ export default class Configure extends Component {
     return <Button kind="hollow-danger">{statusText}</Button>;
   }
 
+  getStateButton(type, info) {
+    if(type == "stopped") {
+      return <Button kind="hollow-danger">Device Stopped</Button>;
+    }
+    if(type == "started") {
+      return <Button kind="hollow-approve">Device Started</Button>;
+    }
+    if(type == "version") {
+      return <Button kind="hollow-neutral">Version {info}</Button>;
+    }
+  }
+
+  getActionButton(stopped) {
+    if(stopped) {
+      return <Button kind="primary" onClick={this.startConnector}><FaPlay /></Button>
+    }
+    return <Button kind="danger" onClick={this.stopConnector}><FaStop /></Button>
+  }
+
+  getButtons() {
+    const { connectorMetadata } = this.state;
+    let buttons = [];
+    if(connectorMetadata != null) {
+      const { stopped, version } = connectorMetadata;
+      if(stopped) {
+        buttons.push(this.getActionButton("stopped"))
+      } else {
+        buttons.push(this.getActionButton("started"))
+      }
+      if(version) {
+        buttons.push(this.getActionButton("version", version))
+      }
+    }
+    return _.map(buttons, (button) => {
+      return <li>{button}</li>
+    })
+  }
+
   renderContent(content) {
     const { connector } = this.props.params;
     return (
@@ -138,6 +194,7 @@ export default class Configure extends Component {
         <PageHeader>
           <PageTitle>Configure Thing</PageTitle>
           <PageActions>{this.getStatus()}</PageActions>
+          <PageActions><ul>{this.getButtons()}</ul></PageActions>
         </PageHeader>
         {content}
       </Page>

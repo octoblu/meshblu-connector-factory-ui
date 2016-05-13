@@ -2,7 +2,7 @@ import { getMeshbluConfig } from '../helpers/authentication';
 import { getConnectorName } from '../helpers/connector-metadata';
 import _ from 'lodash';
 
-export function registerConnector({ connector, customProps }, callback) {
+export function registerConnector({ connector, version, customProps }, callback) {
   const meshbluConfig = getMeshbluConfig();
   const meshblu = new MeshbluHttp(meshbluConfig);
   const connectorName = getConnectorName(connector);
@@ -14,6 +14,10 @@ export function registerConnector({ connector, customProps }, callback) {
     configureWhitelist: [meshbluConfig.uuid],
     sendWhitelist: [meshbluConfig.uuid],
     receiveWhitelist: [meshbluConfig.uuid],
+    connectorMetadata: {
+      stopped: false,
+      version: version
+    }
   }, customProps);
   console.log(deviceProps)
   meshblu.register(deviceProps, callback);

@@ -14,13 +14,16 @@ import './SelectedVersion.css';
 const propTypes = {
   info: PropTypes.object.isRequired,
   type: PropTypes.string,
-  createDevice: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired,
 };
 
-const SelectedVersion = ({ info, type, createDevice }) => {
+const SelectedVersion = ({ info, type, onSelect }) => {
   let title = "Selected"
   if (info.latest) {
     title = "Latest Version"
+  }
+  const onSelectEvent = () => {
+    onSelect(info)
   }
   return (
     <div className="SelectedVersion--container">
@@ -33,7 +36,7 @@ const SelectedVersion = ({ info, type, createDevice }) => {
             </div>
           </div>
           <footer className="SelectedVersion-footer">
-            <Button onClick={createDevice} className="SelectedVersion-button">Create</Button>
+            <Button onClick={onSelectEvent} className="SelectedVersion-button">Select Version</Button>
           </footer>
         </main>
       </Card>

@@ -7,14 +7,15 @@ import {
 import './VersionStatus.css';
 
 const propTypes = {
+  onSelect: PropTypes.func.isRequired,
   version: PropTypes.string.isRequired,
 };
 
-const VersionStatus = ({ version }) => {
+const VersionStatus = ({ onSelect, version }) => {
   if(version == null) {
     return null
   }
-  return <Button kind="hollow-neutral">{version}</Button>;
+  return <Button kind="hollow-neutral" onClick={onSelect}>v{version}</Button>;
 };
 
 

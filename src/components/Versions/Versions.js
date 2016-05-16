@@ -13,7 +13,7 @@ import './Versions.css';
 
 const propTypes = {
   versions: PropTypes.object.isRequired,
-  select: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired,
 };
 
 function majorAndMinorList(versions) {
@@ -36,19 +36,19 @@ function filterAndSortVersions(_versions) {
   return _.values(majorMinors);
 }
 
-const Versions = ({ versions, select }) => {
+const Versions = ({ versions, onSelect }) => {
   const versionKeys = filterAndSortVersions(versions);
 
   const versionsList = _.map(versionKeys, (version, i) => {
     const pkg = versions[version];
     const latest = !i;
     const versionInfo = { version, pkg, latest };
-    const selectEvent = () => {
-      select(versionInfo);
+    const onSelectEvent = () => {
+      onSelect(versionInfo);
     };
     return (
       <ListItem key={version}>
-        <div onClick={selectEvent}>
+        <div onClick={onSelectEvent}>
           <VersionInfo info={versionInfo} />
           <i className="Versions--icon" role="icon"><MdNavigateNext /></i>
         </div>

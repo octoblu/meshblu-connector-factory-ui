@@ -11,10 +11,8 @@ import {
   DeviceIcon,
 } from 'zooid-ui';
 
-import Versions from '../components/Versions';
-import VersionInfo from '../components/VersionInfo';
+import VersionsSelect from '../components/VersionsSelect';
 import Download from '../components/Download';
-import SelectedVersion from '../components/SelectedVersion';
 import ConfigureCard from '../components/ConfigureCard';
 
 import { connectorDetails } from '../services/connector-detail-service';
@@ -72,19 +70,6 @@ export default class Create extends Component {
     this.setState({ selectedVersion: versionInfo });
   }
 
-  getSelectedVersion() {
-    const { selectedVersion } = this.state;
-    if (selectedVersion) {
-      const { nodeType } = this.state;
-      let type = null
-      if(nodeType) {
-        type = nodeType.type;
-      }
-      return <SelectedVersion info={selectedVersion} createDevice={this.createDevice} type={type} />
-    }
-    return null;
-  }
-
   renderContent(content) {
     const { connector } = this.props.params;
     let ConnectorIcon = null
@@ -109,6 +94,8 @@ export default class Create extends Component {
       error,
       loading,
       details,
+      selectedVersion,
+      nodeType,
     } = this.state;
 
     if (error) {
@@ -119,12 +106,15 @@ export default class Create extends Component {
       return this.renderContent(<Spinner size="large" />);
     }
 
-    return this.renderContent(
-      <div className="CenterIt">
-        {this.getSelectedVersion()}
-        <h3>-- OR --</h3>
-        <Versions versions={details.versions} select={this.versionSelect} />
-      </div>
-    );
+    let type = ""
+    if (nodeType) {
+      type = nodeType.type;
+    }
+
+    return this.renderContent(<VersionsSelect
+      onSelect={this.createDevice}
+      selected={selectedVersion}
+      type={type}
+      versions={details.versions} />);
   }
 }

@@ -24,6 +24,7 @@ import {
   SchemaContainer,
 } from 'zooid-meshblu-device-editor';
 
+import VersionsSelect from '../components/VersionsSelect';
 import StopStartButton from '../components/StopStartButton';
 import ConnectorStatus from '../components/ConnectorStatus';
 import VersionStatus from '../components/VersionStatus';
@@ -33,6 +34,7 @@ import {
   updateDevice,
   sendPing,
 } from '../services/device-service';
+import { connectorDetails } from '../services/connector-detail-service';
 
 export default class Configure extends Component {
   constructor(props) {
@@ -40,8 +42,11 @@ export default class Configure extends Component {
     this.state = {
       error: null,
       device: null,
+      details: null,
       loading: true,
       configureSchema: null,
+      changeVersion: false,
+      selectedVersion: null,
       message: null
     };
     this.handleConfig  = this.handleConfig.bind(this);
@@ -50,6 +55,10 @@ export default class Configure extends Component {
     this.handleNameChange  = this.handleNameChange.bind(this);
     this.sendPingAndUpdate  = this.sendPingAndUpdate.bind(this);
     this.getDevice  = this.getDevice.bind(this);
+    this.setCurrentVersion  = this.setCurrentVersion.bind(this);
+    this.updateVersion = this.updateVersion.bind(this);
+    this.changeVersion = this.changeVersion.bind(this);
+    this.versionSelect  = this.versionSelect.bind(this);
   }
 
   componentDidMount() {
@@ -59,9 +68,13 @@ export default class Configure extends Component {
       new SchemaTransmogrifier({ device, schemaType: 'configure' }).convert((error, configureSchema) => {
         this.setState({ error, configureSchema, loading: false })
       })
+      const { connector } = device;
+      connectorDetails({ connector }, (error, details) => {
+        this.setState({ details })
+        this.setCurrentVersion()
+      })
       this.sendPingAndUpdate({ uuid })
     })
-
   }
 
   getDevice(callback) {
@@ -119,8 +132,31 @@ export default class Configure extends Component {
     this.handleConfig({ connectorMetadata })
   }
 
+  updateVersion({ version }) {
+    let { connectorMetadata } = this.state.device;
+    connectorMetadata.version = version;
+    this.handleConfig({ connectorMetadata })
+    this.setState({ changeVersion: false })
+  }
+
+  changeVersion() {
+    this.setState({ changeVersion: true })
+  }
+
+  setCurrentVersion() {
+    const { details, device } = this.state;
+    if(device.connectorMetadata == null) return
+    const { version } = device.connectorMetadata;
+    const isLatest = details['dist-tags'].latest == version;
+    this.versionSelect({ version, latest: isLatest, pkg: details.versions[version] })
+  }
+
+  versionSelect(versionInfo) {
+    this.setState({ selectedVersion: versionInfo });
+  }
+
   getButtons() {
-    const { device } = this.state;
+    const { device, details } = this.state;
     if(device == null) {
       return null
     }
@@ -134,7 +170,9 @@ export default class Configure extends Component {
         stopAction={this.stopConnector}
         stopped={stopped}
       />)
-      buttons.push(<VersionStatus version={version} />)
+      if(details != null) {
+        buttons.push(<VersionStatus version={version} onSelect={this.changeVersion} />)
+      }
     }
 
     buttons.push(<Link
@@ -162,7 +200,7 @@ export default class Configure extends Component {
   }
 
   render() {
-    const { device, loading, error, message } = this.state;
+    const { device, loading, error, message, changeVersion} = this.state;
 
     if (error) {
       return this.renderContent(<ErrorState description={error.message} />);
@@ -170,6 +208,16 @@ export default class Configure extends Component {
 
     if (loading) {
       return this.renderContent(<Spinner size="large" />);
+    }
+
+    if(changeVersion) {
+      const { details, selectedVersion } = this.state;
+      const { type } = device;
+      return this.renderContent(<VersionsSelect
+        onSelect={this.updateVersion}
+        selected={selectedVersion}
+        type={type}
+        versions={details.versions} />);
     }
 
     const getDeviceSchema = () => {

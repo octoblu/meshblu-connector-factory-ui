@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-
-import FaStop from 'react-icons/lib/fa/stop';
-import FaPlay from 'react-icons/lib/fa/play';
+import { Link } from 'react-router';
 
 import _ from 'lodash';
 import {
@@ -20,9 +18,15 @@ import {
   FormInput,
 } from 'zooid-ui';
 
+import '../styles/configure.css';
+
 import {
   SchemaContainer,
 } from 'zooid-meshblu-device-editor';
+
+import StopStartButton from '../components/StopStartButton';
+import ConnectorStatus from '../components/ConnectorStatus';
+import VersionStatus from '../components/VersionStatus';
 
 import {
   getDevice,
@@ -37,10 +41,7 @@ export default class Configure extends Component {
       error: null,
       device: null,
       loading: true,
-      lastPong: null,
       configureSchema: null,
-      online: false,
-      connectorMetadata: null,
       message: null
     };
     this.handleConfig  = this.handleConfig.bind(this);
@@ -68,14 +69,12 @@ export default class Configure extends Component {
     const { uuid } = this.props.params;
     getDevice({ uuid }, (error, device) => {
       if(error) return this.setState({ error })
-      const { lastPong, online, connectorMetadata } = device;
-      this.setState({ device, lastPong, online, connectorMetadata })
+      this.setState({ device })
       callback()
     })
   }
 
   sendPingAndUpdate({ uuid }) {
-    console.log('sending ping');
     sendPing({ uuid }, (error) => {
       if (error) return;
       _.delay(() => {
@@ -109,81 +108,43 @@ export default class Configure extends Component {
   }
 
   startConnector() {
-    let { connectorMetadata } = this.state;
+    let { connectorMetadata } = this.state.device;
     connectorMetadata.stopped = false;
     this.handleConfig({ connectorMetadata })
   }
 
   stopConnector() {
-    let { connectorMetadata } = this.state;
+    let { connectorMetadata } = this.state.device;
     connectorMetadata.stopped = true;
     this.handleConfig({ connectorMetadata })
   }
 
-  getStatusInfo() {
-    const { lastPong } = this.state;
-
-    if (lastPong) {
-      const { date, response } = lastPong;
-      const { running } = response;
-      const oneMinAgo = Date.now() - (1000 * 60);
-      if(date > oneMinAgo) {
-        if(running) {
-          return { statusText: 'connector is responding to pings', online: true }
-        }
-      }
-    }
-    const { online } = this.state;
-    if (online) {
-      return { statusText: 'thing is online', online: true }
-    }
-    return { statusText: 'thing is offline', online: false }
-  }
-
-  getStatus() {
-    if(!this.state.device) return null;
-    const { statusText, online } = this.getStatusInfo()
-    if (online) {
-      return <Button kind="hollow-primary">{statusText}</Button>;
-    }
-    return <Button kind="hollow-danger">{statusText}</Button>;
-  }
-
-  getStateButton(type, info) {
-    if(type == "stopped") {
-      return <Button kind="hollow-danger">Device Stopped</Button>;
-    }
-    if(type == "started") {
-      return <Button kind="hollow-approve">Device Started</Button>;
-    }
-    if(type == "version") {
-      return <Button kind="hollow-neutral">Version {info}</Button>;
-    }
-  }
-
-  getActionButton(stopped) {
-    if(stopped) {
-      return <Button kind="primary" onClick={this.startConnector}><FaPlay /></Button>
-    }
-    return <Button kind="danger" onClick={this.stopConnector}><FaStop /></Button>
-  }
-
   getButtons() {
-    const { connectorMetadata } = this.state;
+    const { device } = this.state;
+    if(device == null) {
+      return null
+    }
+    const { connectorMetadata } = device;
     let buttons = [];
+    buttons.push(<ConnectorStatus device={device} />)
     if(connectorMetadata != null) {
       const { stopped, version } = connectorMetadata;
-      if(stopped) {
-        buttons.push(this.getActionButton("stopped"))
-      } else {
-        buttons.push(this.getActionButton("started"))
-      }
-      if(version) {
-        buttons.push(this.getActionButton("version", version))
-      }
+      buttons.push(<StopStartButton
+        startAction={this.startConnector}
+        stopAction={this.stopConnector}
+        stopped={stopped}
+      />)
+      buttons.push(<VersionStatus version={version} />)
     }
-    return _.map(buttons, (button) => {
-      return <li>{button}</li>
+
+    buttons.push(<Link
+      to={`/connectors/generate/${device.uuid}`}
+      className="Button Button--hollow-primary">
+        Generate Installer
+      </Link>);
+
+    return _.map(buttons, (button, index) => {
+      return <li key={index} className="Configure--Actions-item">{button}</li>
     })
   }
 
@@ -193,8 +154,7 @@ export default class Configure extends Component {
       <Page>
         <PageHeader>
           <PageTitle>Configure Thing</PageTitle>
-          <PageActions>{this.getStatus()}</PageActions>
-          <PageActions><ul>{this.getButtons()}</ul></PageActions>
+          <PageActions><ul className="Configure--Actions">{this.getButtons()}</ul></PageActions>
         </PageHeader>
         {content}
       </Page>
@@ -202,7 +162,7 @@ export default class Configure extends Component {
   }
 
   render() {
-    const { device, lastPong, loading, error, message } = this.state;
+    const { device, loading, error, message } = this.state;
 
     if (error) {
       return this.renderContent(<ErrorState description={error.message} />);

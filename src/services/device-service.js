@@ -19,7 +19,6 @@ export function registerConnector({ connector, version, customProps }, callback)
       version: version
     }
   }, customProps);
-  console.log(deviceProps)
   meshblu.register(deviceProps, callback);
 }
 
@@ -36,6 +35,11 @@ export function updateDevice({ uuid, properties }, callback) {
 export function sendMessage(message, callback) {
   const meshblu = new MeshbluHttp(getMeshbluConfig());
   meshblu.message(message, callback);
+}
+
+export function generateAndStoreToken({ uuid }, callback) {
+  const meshblu = new MeshbluHttp(getMeshbluConfig());
+  meshblu.generateAndStoreToken(uuid, {}, callback);
 }
 
 export function sendPing({ uuid }, callback) {

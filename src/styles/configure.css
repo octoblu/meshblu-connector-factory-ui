@@ -1,0 +1,10 @@
+.Configure--Actions {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.Configure--Actions-item {
+  display: inline;
+  padding: .2em;
+}

@@ -1,3 +1,4 @@
+import MeshbluHttp from 'browser-meshblu-http/dist/meshblu-http.js';
 import { getMeshbluConfig } from '../helpers/authentication';
 import { getConnectorName } from '../helpers/connector-metadata';
 import _ from 'lodash';

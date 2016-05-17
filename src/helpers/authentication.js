@@ -1,5 +1,6 @@
 import url from 'url';
 import cookie from 'react-cookie';
+import MeshbluHttp from 'browser-meshblu-http/dist/meshblu-http.js';
 
 import {
   CLIENT_ID,

@@ -5,6 +5,8 @@ var autoprefixer = require('autoprefixer');
 module.exports = {
   devtool: 'cheap-module-source-map',
   entry: [
+    'expose?$!expose?jQuery!jquery',
+    'bootstrap-webpack!./bootstrap.config.js',
     './src/index'
   ],
   output: {

@@ -21,7 +21,7 @@ import {
 import '../styles/configure.css';
 
 import {
-  SchemaContainer,
+  DeviceConfigureSchemaContainer
 } from 'zooid-meshblu-device-editor';
 
 import VersionsSelect from '../components/VersionsSelect';
@@ -65,12 +65,9 @@ export default class Configure extends Component {
     const { uuid } = this.props.params;
     this.getDevice(() => {
       const { device } = this.state;
-      new SchemaTransmogrifier({ device, schemaType: 'configure' }).convert((error, configureSchema) => {
-        this.setState({ error, configureSchema, loading: false })
-      })
       const { connector } = device;
       connectorDetails({ connector }, (error, details) => {
-        this.setState({ details })
+        this.setState({ details, loading: false })
         this.setCurrentVersion()
       })
       this.sendPingAndUpdate({ uuid })
@@ -98,7 +95,7 @@ export default class Configure extends Component {
     });
   }
 
-  handleConfig(properties) {
+  handleConfig({ properties, selected }) {
     const { uuid } = this.props.params;
     clearTimeout(this.messageTimeout);
     updateDevice({ uuid, properties }, (error) => {
@@ -221,13 +218,9 @@ export default class Configure extends Component {
     }
 
     const getDeviceSchema = () => {
-      const { configureSchema } = this.state;
-      if(_.isEmpty(configureSchema)) {
-        return <EmptyState title="[ No Configure Schema ]"></EmptyState>
-      }
-      return  <SchemaContainer
+      const { device } = this.state;
+      return  <DeviceConfigureSchemaContainer
         device={device}
-        schema={configureSchema.schema}
         onSubmit={this.handleConfig}
       />
     }

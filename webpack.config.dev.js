@@ -7,6 +7,8 @@ module.exports = {
   entry: [
     'eventsource-polyfill',
     'webpack-hot-middleware/client',
+    'expose?$!expose?jQuery!jquery',
+    'bootstrap-webpack!./bootstrap.config.js',
     './src/index'
   ],
   output: {

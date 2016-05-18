@@ -20,12 +20,13 @@ export function createConnector({ pkg, connector }, callback) {
     registerConnector(connectorOptions, (error, device) => {
       if (error) return callback(error);
       const { uuid, token } = device;
-      const metadata = getConnectorMetadata({ pkg });
-
-      generateOtp({ uuid, token, metadata  }, (error, response) => {
-        if (error) return callback(error);
-        const { key } = response;
-        return callback(null, { key, uuid });
+      getConnectorMetadata({ pkg }, (error, metadata) => {
+        if (error != null) return callback(error);
+        generateOtp({ uuid, token, metadata  }, (error, response) => {
+          if (error != null) return callback(error);
+          const { key } = response;
+          return callback(null, { key, uuid });
+        });
       });
     })
   });
@@ -42,14 +43,17 @@ export function updateAndGenerateKey({ pkg, connector, uuid }, callback) {
       }
     }, schema);
     updateDevice({ uuid, properties }, (error) => {
-      if (error) return callback(error);
+      if (error != null) return callback(error);
       generateAndStoreToken({ uuid }, (error, device) => {
+        if (error != null) return callback(error);
         const { uuid, token } = device;
-        const metadata = getConnectorMetadata({ pkg });
-        generateOtp({ uuid, token, metadata  }, (error, response) => {
-          if (error) return callback(error);
-          const { key } = response;
-          return callback(null, { key, uuid });
+        getConnectorMetadata({ pkg }, (error, metadata) => {
+          if (error != null) return callback(error);
+          generateOtp({ uuid, token, metadata  }, (error, response) => {
+            if (error != null) return callback(error);
+            const { key } = response;
+            return callback(null, { key, uuid });
+          });
         });
       })
     })

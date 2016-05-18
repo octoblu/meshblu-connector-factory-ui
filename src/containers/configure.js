@@ -49,12 +49,13 @@ export default class Configure extends Component {
       selectedVersion: null,
       message: null
     };
+    this.checkForUpdates = true;
     this.handleConfig  = this.handleConfig.bind(this);
     this.stopConnector  = this.stopConnector.bind(this);
     this.startConnector  = this.startConnector.bind(this);
     this.handleNameChange  = this.handleNameChange.bind(this);
     this.sendPingAndUpdate  = this.sendPingAndUpdate.bind(this);
-    this.getDevice  = this.getDevice.bind(this);
+    this.loadDevice  = this.loadDevice.bind(this);
     this.setCurrentVersion  = this.setCurrentVersion.bind(this);
     this.updateVersion = this.updateVersion.bind(this);
     this.changeVersion = this.changeVersion.bind(this);
@@ -63,7 +64,8 @@ export default class Configure extends Component {
 
   componentDidMount() {
     const { uuid } = this.props.params;
-    this.getDevice(() => {
+    this.checkForUpdates = true
+    this.loadDevice(() => {
       const { device } = this.state;
       const { connector } = device;
       connectorDetails({ connector }, (error, details) => {
@@ -74,7 +76,11 @@ export default class Configure extends Component {
     })
   }
 
-  getDevice(callback) {
+  componentWillUnmount() {
+    this.checkForUpdates = false
+  }
+
+  loadDevice(callback) {
     if(!callback) callback = _.noop;
     const { uuid } = this.props.params;
     getDevice({ uuid }, (error, device) => {
@@ -85,10 +91,12 @@ export default class Configure extends Component {
   }
 
   sendPingAndUpdate({ uuid }) {
+    if(!this.checkForUpdates) return
     sendPing({ uuid }, (error) => {
       if (error) return;
       _.delay(() => {
-        this.getDevice(() => {
+        if(!this.checkForUpdates) return
+        this.loadDevice(() => {
           _.delay(this.sendPingAndUpdate, 5000, { uuid });
         })
       }, 2000);
@@ -114,19 +122,19 @@ export default class Configure extends Component {
   handleNameChange() {
     const ref = this.refs.deviceName;
     const deviceName = ReactDOM.findDOMNode(ref).value;
-    this.handleConfig({ name: deviceName });
+    this.handleConfig({ properties: { name: deviceName } });
   }
 
   startConnector() {
     let { connectorMetadata } = this.state.device;
     connectorMetadata.stopped = false;
-    this.handleConfig({ connectorMetadata })
+    this.handleConfig({ properties: { connectorMetadata } })
   }
 
   stopConnector() {
     let { connectorMetadata } = this.state.device;
     connectorMetadata.stopped = true;
-    this.handleConfig({ connectorMetadata })
+    this.handleConfig({ properties: { connectorMetadata } })
   }
 
   updateVersion({ version }) {

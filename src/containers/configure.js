@@ -140,7 +140,7 @@ export default class Configure extends Component {
   updateVersion({ version }) {
     let { connectorMetadata } = this.state.device;
     connectorMetadata.version = version;
-    this.handleConfig({ connectorMetadata })
+    this.handleConfig({ properties: { connectorMetadata }})
     this.setState({ changeVersion: false })
   }
 

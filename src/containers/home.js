@@ -28,7 +28,7 @@ export default class Home extends Component {
             Running Meshblu Connectors independently allows us to simplify the installation and management process.
           </p>
           <div className="ButtonActions">
-            <Link to="/things/available" className="Button Button--hollow-primary">See Compatible Things</Link>
+            <Link to="/things/available" className="Button Button--hollow-primary">See Available Things</Link>
             <Link to="/things/installed" className="Button Button--hollow-primary">See Installed Things</Link>
           </div>
           <h2>Why?</h2>

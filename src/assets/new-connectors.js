@@ -17,4 +17,10 @@ export const newConnectors = [
     type: 'device:say-hello',
     connector: 'meshblu-connector-say-hello'
   },
+  {
+    _id: '4d9875f3-da4f-43f8-b5bb-c08078cffae1',
+    name: 'Chromecast',
+    type: 'device:chromecast',
+    connector: 'meshblu-connector-chromecast'
+  },
 ]

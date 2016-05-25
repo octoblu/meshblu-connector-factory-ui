@@ -125,7 +125,7 @@ export default class Download extends Component {
       return this.renderContent(
         <div>
           <Spinner size="large" />
-          <h1>Downloading...</h1>
+          <h1 className="Download--action-title">Downloading...</h1>
         </div>
       );
     }

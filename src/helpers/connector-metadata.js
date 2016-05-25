@@ -21,15 +21,14 @@ export function getConnectorMetadata({ pkg }, callback) {
   const tag = `v${version}`;
 
   getAllLatestVersions((error, versions) => {
-    console.log({ error, versions })
     if(error != null) return callback(error)
-    if(ignitionVersion == null) {
+    if(!ignitionVersion) {
       ignitionVersion = versions.ignitionVersion;
     }
-    if(dependencyManagerVersion == null) {
+    if(!dependencyManagerVersion) {
       dependencyManagerVersion = versions.dependencyManagerVersion;
     }
-    if(connectorAssemblerVersion == null) {
+    if(!connectorAssemblerVersion) {
       connectorAssemblerVersion = versions.connectorAssemblerVersion;
     }
     callback(null, {

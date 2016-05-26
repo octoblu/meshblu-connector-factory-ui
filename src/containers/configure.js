@@ -93,7 +93,7 @@ export default class Configure extends Component {
   }
 
   setDevice(device) {
-    const picked = _.pick(device, ['name', 'type', 'online', 'lastPong', 'connectorMetadata', 'statusDevice'])
+    const picked = _.pick(device, ['uuid', 'name', 'type', 'online', 'lastPong', 'connectorMetadata', 'statusDevice'])
     this.setState({ device: picked })
   }
 

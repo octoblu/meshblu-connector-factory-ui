@@ -41,4 +41,16 @@ export const newConnectors = [
     type: 'device:shell',
     connector: 'meshblu-connector-shell'
   },
+  {
+    _id: 'efa1552d-0c60-472a-981a-23b856fd3b59',
+    name: 'Johnny-Five',
+    type: 'device:johnnyfive',
+    connector: 'meshblu-connector-arduino'
+  },
+  {
+    _id: '5440604b-7062-4c2e-8f75-23b856fd3b59',
+    name: 'Phillips Hue',
+    type: 'device:hue',
+    connector: 'meshblu-connector-hue'
+  },
 ]

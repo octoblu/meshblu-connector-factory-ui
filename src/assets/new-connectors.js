@@ -29,4 +29,10 @@ export const newConnectors = [
     type: 'device:wemo',
     connector: 'meshblu-connector-wemo'
   },
+  {
+    _id: 'ff1f3686-877d-4494-9c07-c81139494855',
+    name: 'Blink1',
+    type: 'device:blink1',
+    connector: 'meshblu-connector-blink1'
+  },
 ]

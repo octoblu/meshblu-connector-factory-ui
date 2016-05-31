@@ -35,4 +35,10 @@ export const newConnectors = [
     type: 'device:blink1',
     connector: 'meshblu-connector-blink1'
   },
+  {
+    _id: '5e0c85d2-21c4-42fe-b733-815ef002afeb',
+    name: 'Shell',
+    type: 'device:shell',
+    connector: 'meshblu-connector-shell'
+  },
 ]

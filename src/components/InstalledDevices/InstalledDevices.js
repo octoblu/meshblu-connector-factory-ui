@@ -20,11 +20,13 @@ const InstalledDevices = ({ devices, children, className }) => {
     const { name, uuid } = device;
     let type = device.type || 'device:other';
 
+    const nameStr = name ? name : type;
+
     return <Card key={device.uuid} className="InstalledDevice">
       <aside><DeviceIcon type={type} className="InstalledDevice-icon" /></aside>
       <main className="InstalledDevice-main">
         <div className="InstalledDevice-body">
-          <h3 className="InstalledDevice-name">{name} <small className="InstalledDevice-status">TODO</small></h3>
+          <h3 className="InstalledDevice-name">{nameStr} <small className="InstalledDevice-status">{device.online ? 'online' : 'offline'}</small></h3>
         </div>
         <footer className="InstalledDevice-footer">
           <Link to={`/things/configure/${uuid}`} className="InstalledDevice-button">Configure Thing</Link>

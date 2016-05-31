@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import _  from 'lodash';
 import SelectedVersion from '../SelectedVersion';
 import Versions from '../Versions';
+import OrLine from '../OrLine';
 
 import './VersionsSelect.css';
 
@@ -19,7 +20,7 @@ const VersionsSelect = ({ type, selected, onSelect, versions }) => {
     selectedVersion = (
       <span>
         <SelectedVersion info={selected} onSelect={onSelect} type={type} />
-        <h3>-- OR --</h3>
+        <OrLine />
       </span>
     )
   }

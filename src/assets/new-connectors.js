@@ -23,4 +23,10 @@ export const newConnectors = [
     type: 'device:chromecast',
     connector: 'meshblu-connector-chromecast'
   },
+  {
+    _id: '8ef3cc47-e6a7-4a16-ad67-c2b43aaef8b7',
+    name: 'Wemo Switch',
+    type: 'device:wemo',
+    connector: 'meshblu-connector-wemo'
+  },
 ]

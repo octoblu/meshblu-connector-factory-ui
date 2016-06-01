@@ -53,4 +53,16 @@ export const newConnectors = [
     type: 'device:hue',
     connector: 'meshblu-connector-hue'
   },
+  {
+    _id: 'efa1552d-7062-4c2e-8f75-23b856fd3b59',
+    name: 'Serial',
+    type: 'device:serial',
+    connector: 'meshblu-connector-serial'
+  },
+  {
+    _id: 'ff1f3686-7062-4c2e-8f75-23b856fd3b59',
+    name: 'Beacon',
+    type: 'device:beacon',
+    connector: 'meshblu-connector-beacon'
+  },
 ]

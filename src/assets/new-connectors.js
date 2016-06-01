@@ -65,4 +65,10 @@ export const newConnectors = [
     type: 'device:beacon',
     connector: 'meshblu-connector-beacon'
   },
+  {
+    _id: '8ef3cc47-7062-4c2e-8f75-23b856fd3b59',
+    name: 'Initial-State',
+    type: 'device:initial-state',
+    connector: 'meshblu-connector-initial-state'
+  },
 ]

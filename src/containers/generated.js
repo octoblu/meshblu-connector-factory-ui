@@ -3,6 +3,7 @@ import {
   Page,
   PageHeader,
   PageTitle,
+  Button,
 } from 'zooid-ui';
 
 import '../styles/generated.css';
@@ -55,6 +56,7 @@ export default class Create extends Component {
               <h3>Use the One Time Password</h3>
               <h3><code>{key}</code></h3>
               <p>* Paste key into an existing installer *</p>
+              <Button onClick={this.onDownload} kind="no-style">Next Step</Button>
             </div>
           </div>
         </div>

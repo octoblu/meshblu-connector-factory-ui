@@ -31,6 +31,7 @@ import {
   updateDevice,
   sendPing,
 } from '../services/device-service';
+import { getSchema } from '../services/schema-service';
 import { connectorDetails } from '../services/connector-detail-service';
 
 export default class Configure extends Component {
@@ -162,11 +163,19 @@ export default class Configure extends Component {
     this.handleConfig({ properties: { connectorMetadata } })
   }
 
-  updateVersion({ version }) {
+  updateVersion({ version, pkg }) {
     let { connectorMetadata } = this.state.device;
     connectorMetadata.version = version;
-    this.handleConfig({ properties: { connectorMetadata }})
-    this.setState({ changeVersion: false })
+    getSchema({ pkg }, (error, schema={}) => {
+      if(error) return this.setState({ error })
+      const { schemas } = schema
+      const properties = {connectorMetadata}
+      if(schemas){
+        properties.schemas = schemas
+      }
+      this.handleConfig({ properties })
+      this.setState({ changeVersion: false })
+    });
   }
 
   changeVersion() {

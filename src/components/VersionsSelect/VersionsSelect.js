@@ -13,7 +13,6 @@ const propTypes = {
   versions: PropTypes.object.isRequired,
 };
 
-
 const VersionsSelect = ({ type, selected, onSelect, versions }) => {
   let selectedVersion = null;
   if(selected) {

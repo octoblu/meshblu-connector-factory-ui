@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './NotFound.css';
+import './index.css';
 
 const NotFound = () => {
   return <h1>Not Found :(</h1>;

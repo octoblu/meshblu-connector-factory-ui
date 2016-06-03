@@ -9,7 +9,7 @@ import Installed from '../containers/installed';
 import Available from '../containers/available';
 import Generate from '../containers/generate';
 import Generated from '../containers/generated';
-import NotFound from '../components/NotFound/NotFound';
+import NotFound from '../components/NotFound';
 import { storeAuthentication } from '../helpers/authentication';
 
 export default (

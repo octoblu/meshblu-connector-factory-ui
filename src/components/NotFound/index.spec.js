@@ -3,7 +3,7 @@ import chaiEnzyme from 'chai-enzyme';
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import NotFound from './NotFound';
+import NotFound from './';
 
 chai.use(chaiEnzyme());
 

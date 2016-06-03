@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
+import _ from 'lodash';
 
-import {
-  Page,
-  PageHeader,
-  PageTitle,
-  Spinner,
-  ErrorState,
-  Button,
-  DeviceIcon,
-} from 'zooid-ui';
+import { browserHistory } from 'react-router';
+import PageLayout from './page-layout'
 
 import VersionsSelect from '../components/VersionsSelect';
 import Download from '../components/Download';
@@ -24,7 +17,7 @@ export default class Create extends Component {
     super(props);
     this.state = {
       error: null,
-      details: null,
+      details: {},
       selectedVersion: null,
       loading: true,
       nodeType: null,
@@ -43,7 +36,6 @@ export default class Create extends Component {
         this.selectDefaultVersion()
       });
     });
-
   }
 
   createDevice() {
@@ -71,50 +63,26 @@ export default class Create extends Component {
   }
 
   renderContent(content) {
-    const { connector } = this.props.params;
-    let ConnectorIcon = null
-    const { nodeType } = this.state;
-    if (nodeType) {
-      const { type } = nodeType;
-      ConnectorIcon = <DeviceIcon className="ConnectorIcon" type={type} />
-    }
+    const { nodeType, error, loading } = this.state
+    const { connector } = this.props.params
     return (
-      <Page>
-        <PageHeader>
-          {ConnectorIcon}
-          <PageTitle>Create: {connector}</PageTitle>
-        </PageHeader>
+      <PageLayout type={_.get(nodeType, 'type')} title={`Create ${connector}`} loading={loading} error={error}>
         {content}
-      </Page>
+      </PageLayout>
     );
   }
 
   render() {
     const {
-      error,
-      loading,
       details,
       selectedVersion,
       nodeType,
     } = this.state;
 
-    if (error) {
-      return this.renderContent(<ErrorState description={error.message} />);
-    }
-
-    if (loading) {
-      return this.renderContent(<Spinner size="large" />);
-    }
-
-    let type = ""
-    if (nodeType) {
-      type = nodeType.type;
-    }
-
     return this.renderContent(<VersionsSelect
       onSelect={this.createDevice}
       selected={selectedVersion}
-      type={type}
+      type={_.get(nodeType, 'type')}
       versions={details.versions} />);
   }
 }

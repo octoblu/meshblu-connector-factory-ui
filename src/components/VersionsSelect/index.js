@@ -8,12 +8,12 @@ import './index.css';
 
 const propTypes = {
   onSelect: PropTypes.func.isRequired,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
   selected: PropTypes.object,
-  versions: PropTypes.object.isRequired,
+  versions: PropTypes.object,
 };
 
-const VersionsSelect = ({ type, selected, onSelect, versions }) => {
+const VersionsSelect = ({ type="", selected, onSelect, versions }) => {
   let selectedVersion = null;
   if(selected) {
     selectedVersion = (

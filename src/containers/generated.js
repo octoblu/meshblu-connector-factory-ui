@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
+import PageLayout from './page-layout';
+
 import {
-  Page,
-  PageHeader,
-  PageTitle,
   Button,
 } from 'zooid-ui';
 
@@ -27,9 +26,9 @@ export default class Create extends Component {
 
   renderContent(content) {
     return (
-      <Page>
+      <PageLayout>
         {content}
-      </Page>
+      </PageLayout>
     );
   }
 

@@ -15,7 +15,7 @@ export function createConnector({ pkg, connector }, callback) {
     const connectorOptions = {
       connector,
       version: pkg.version,
-      customProps: schema
+      customProps: _.assign({ name: _.startCase(connector) }, schema)
     }
     registerConnector(connectorOptions, (error, device) => {
       if (error) return callback(error);

@@ -55,5 +55,5 @@ function getNewMetadata({ pkg }) {
 
 
 export function getConnectorName(connector) {
-  return connector.replace(/^meshblu\-(connector\-)*/, '');
+  return connector.replace(/^meshblu\-(connector\-)/, '');
 }

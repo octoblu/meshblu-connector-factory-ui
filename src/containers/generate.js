@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import { browserHistory } from 'react-router';
-
-import {
-  Page,
-  PageHeader,
-  PageTitle,
-  Spinner,
-  ErrorState,
-  Button,
-  DeviceIcon,
-} from 'zooid-ui';
 
 import VersionsSelect from '../components/VersionsSelect';
 import Download from '../components/Download';
@@ -81,50 +72,25 @@ export default class Create extends Component {
   }
 
   renderContent(content) {
-    const { uuid } = this.props.params;
-    let ConnectorIcon = null
-    const { nodeType } = this.state;
-    if (nodeType) {
-      const { type } = nodeType;
-      ConnectorIcon = <DeviceIcon className="ConnectorIcon" type={type} />
-    }
+    const { nodeType, error, loading } = this.state
     return (
-      <Page>
-        <PageHeader>
-          {ConnectorIcon}
-          <PageTitle>Generate Installer</PageTitle>
-        </PageHeader>
+      <PageLayout type={_.get(nodeType, 'type')} title="Generate Installer" loading={loading} error={error}>
         {content}
-      </Page>
+      </PageLayout>
     );
   }
 
   render() {
     const {
-      error,
-      loading,
       details,
       selectedVersion,
       nodeType,
     } = this.state;
 
-    if (error) {
-      return this.renderContent(<ErrorState description={error.message} />);
-    }
-
-    if (loading) {
-      return this.renderContent(<Spinner size="large" />);
-    }
-
-    let type = ""
-    if(nodeType != null) {
-      type = nodeType.type;
-    }
-
     return this.renderContent(<VersionsSelect
       onSelect={this.updateAndGenerate}
       selected={selectedVersion}
-      type={type}
+      type={_.get(nodeType, 'type')}
       versions={details.versions} />);
   }
 }

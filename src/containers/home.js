@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 
-import {
-  Page,
-  PageHeader,
-  PageTitle,
-} from 'zooid-ui';
+import PageLayout from './page-layout'
 
 import '../styles/home.css';
 
@@ -17,10 +13,7 @@ export default class Home extends Component {
 
   render() {
     return (
-      <Page>
-        <PageHeader>
-          <PageTitle>Meshblu Connector Factory</PageTitle>
-        </PageHeader>
+      <PageLayout title="Meshblu Connector Factory">
         <div className="Home">
           <h2>Getting Started</h2>
           <p>Welcome to the Meshblu Connector Factory. Here you will find a new way of creating, installing and managing Things.</p>
@@ -65,7 +58,7 @@ export default class Home extends Component {
           <h2>Backwards Compatibility</h2>
           <p>This new way should be backwards compatible with the old way of running connectors.</p>
         </div>
-      </Page>
+      </PageLayout>
     );
 
   }

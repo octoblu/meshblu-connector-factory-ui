@@ -2,14 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 
 import { getDevices } from '../services/device-service';
-
-import {
-  Spinner,
-  ErrorState,
-  Page,
-  PageHeader,
-  PageTitle
-} from 'zooid-ui';
+import PageLayout from './page-layout';
 
 import InstalledDevices from '../components/InstalledDevices';
 
@@ -18,7 +11,7 @@ export default class Installed extends Component {
     super(props)
     this.state = {
       loading: true,
-      devices: null,
+      devices: [],
       error: null,
     }
   }
@@ -31,23 +24,12 @@ export default class Installed extends Component {
     });
   }
 
-  renderContent(content) {
-    return (
-      <Page>
-        <PageHeader>
-          <PageTitle>Installed Things</PageTitle>
-        </PageHeader>
-        {content}
-      </Page>
-    );
-  }
-
   render() {
     const { loading, error, devices } = this.state;
-
-    if (loading) return this.renderContent(<Spinner size="large"/>);
-    if (error) return this.renderContent(<ErrorState title={error.message} />);
-
-    return this.renderContent(<InstalledDevices devices={devices} />);
+    return (
+      <PageLayout title="Installed Things" loading={loading} error={error} >
+        <InstalledDevices devices={devices} />
+      </PageLayout>
+    );
   }
 }

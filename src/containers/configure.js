@@ -1,24 +1,7 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
-
+import PageLayout from './page-layout'
 import _ from 'lodash';
-import {
-  Page,
-  PageHeader,
-  PageActions,
-  PageTitle,
-  Spinner,
-  ErrorState,
-  EmptyState,
-  Button,
-  Form,
-  FormActions,
-  FormField,
-  FormInput,
-} from 'zooid-ui';
-
-import '../styles/configure.css';
 
 import DeviceSchema from '../components/DeviceSchema';
 import VersionsSelect from '../components/VersionsSelect';
@@ -28,9 +11,11 @@ import VersionStatus from '../components/VersionStatus';
 
 import {
   getDevice,
+  getStatusDevice,
   updateDevice,
   sendPing,
 } from '../services/device-service';
+
 import { getSchema } from '../services/schema-service';
 import { connectorDetails } from '../services/connector-detail-service';
 
@@ -50,10 +35,9 @@ export default class Configure extends Component {
       message: null
     };
     this.checkForUpdates = true;
+    this.getButtons  = this.getButtons.bind(this);
     this.handleConfig  = this.handleConfig.bind(this);
-    this.stopConnector  = this.stopConnector.bind(this);
-    this.startConnector  = this.startConnector.bind(this);
-    this.handleNameChange  = this.handleNameChange.bind(this);
+    this.changeConnectorState  = this.changeConnectorState.bind(this);
     this.sendPingAndUpdate  = this.sendPingAndUpdate.bind(this);
     this.loadDevice  = this.loadDevice.bind(this);
     this.loadStatusDevice  = this.loadStatusDevice.bind(this);
@@ -98,34 +82,22 @@ export default class Configure extends Component {
     this.setState({ device: picked })
   }
 
-  getStatusDeviceUUID() {
-    if(this.state.device == null) return null
-    return this.state.device.statusDevice
-  }
-
   loadStatusDevice(callback) {
-    const uuid = this.getStatusDeviceUUID()
-    if(!uuid) return
-    getDevice({ uuid }, (error, statusDevice) => {
+    const { device } = this.state
+    getDevice(device, (error, statusDevice) => {
       if(error) return this.setState({ error })
-      this.setState({ statusDevice: _.pick(statusDevice, ['lastPong', 'online']) })
+      this.setState({ statusDevice })
       callback()
     })
   }
 
   sendPingAndUpdate() {
     if(!this.checkForUpdates) return
-    const uuid = this.getStatusDeviceUUID()
-    if(!uuid) return
-    sendPing({ uuid }, (error) => {
+    sendPing(this.state.device, (error, statusDevice) => {
       if (error) return console.error(error);
-      _.delay(() => {
-        if(!this.checkForUpdates) return
-        this.loadStatusDevice(() => {
-          _.delay(this.sendPingAndUpdate, 5000);
-        })
-        this.loadDevice()
-      }, 2000);
+      this.setState({ statusDevice })
+      _.delay(this.sendPingAndUpdate, 5000);
+      this.loadDevice()
     });
   }
 
@@ -145,21 +117,9 @@ export default class Configure extends Component {
     })
   }
 
-  handleNameChange() {
-    const ref = this.refs.deviceName;
-    const deviceName = ReactDOM.findDOMNode(ref).value;
-    this.handleConfig({ properties: { name: deviceName } });
-  }
-
-  startConnector() {
+  changeConnectorState({ stopped }) {
     let { connectorMetadata } = this.state.device;
-    connectorMetadata.stopped = false;
-    this.handleConfig({ properties: { connectorMetadata } })
-  }
-
-  stopConnector() {
-    let { connectorMetadata } = this.state.device;
-    connectorMetadata.stopped = true;
+    connectorMetadata.stopped = stopped;
     this.handleConfig({ properties: { connectorMetadata } })
   }
 
@@ -179,7 +139,7 @@ export default class Configure extends Component {
   }
 
   changeVersion() {
-    this.setState({ changeVersion: true })
+    this.setState({ changeVersion: true, selectedVersion: null })
   }
 
   setCurrentVersion() {
@@ -210,8 +170,7 @@ export default class Configure extends Component {
     if(connectorMetadata != null) {
       const { stopped, version } = connectorMetadata;
       buttons.push(<StopStartButton
-        startAction={this.startConnector}
-        stopAction={this.stopConnector}
+        changeState={this.changeConnectorState}
         stopped={stopped}
       />)
       if(details != null) {
@@ -226,33 +185,25 @@ export default class Configure extends Component {
       </Link>);
 
     return _.map(buttons, (button, index) => {
-      return <li key={index} className="Configure--Actions-item">{button}</li>
+      return <li key={index}>{button}</li>
     })
   }
 
   renderContent(content) {
-    const { connector } = this.props.params;
+    const { loading, error } = this.state;
     return (
-      <Page>
-        <PageHeader>
-          <PageTitle>Configure Thing</PageTitle>
-          <PageActions><ul className="Configure--Actions">{this.getButtons()}</ul></PageActions>
-        </PageHeader>
+      <PageLayout
+        title="Configure Thing"
+        loading={loading}
+        error={error}
+        actions={this.getButtons()}>
         {content}
-      </Page>
+      </PageLayout>
     );
   }
 
   render() {
-    const { device, model, loading, error, message, changeVersion} = this.state;
-
-    if (error) {
-      return this.renderContent(<ErrorState description={error.message} />);
-    }
-
-    if (loading) {
-      return this.renderContent(<Spinner size="large" />);
-    }
+    const { device, model, message, changeVersion } = this.state;
 
     if(changeVersion) {
       const { details, selectedVersion } = this.state;
@@ -266,16 +217,7 @@ export default class Configure extends Component {
 
     return this.renderContent(
       <div>
-        <FormField label="Device Name" name="deviceName">
-          <FormInput type="text" ref="deviceName" name="deviceName" defaultValue={device.name} />
-        </FormField>
-        <FormActions>
-          <Button onClick={this.handleNameChange} kind="primary">Change Name</Button>
-        </FormActions>
-        <DeviceSchema
-          device={model}
-          onSubmit={this.handleConfig}
-          />
+        <DeviceSchema device={model} onSubmit={this.handleConfig} />
         <h4>{message}</h4>
       </div>
     );

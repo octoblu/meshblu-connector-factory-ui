@@ -19,6 +19,7 @@
   max-width: 360px;
   height: 150px;
   margin: 12px;
+  padding: 2rem;
 
   text-align: left;
   text-decoration: none;
@@ -47,12 +48,12 @@
 
 .InstalledDevice-body {
   padding: 16px;
+  height: 32rem;
 }
 
 .InstalledDevice-footer {
   display: flex;
   justify-content: space-between;
-  margin-top: 48px;
   padding: 8px 16px;
   width: 100%;
 

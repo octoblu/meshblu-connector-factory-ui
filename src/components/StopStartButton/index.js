@@ -10,16 +10,15 @@ import {
 import './index.css';
 
 const propTypes = {
-  startAction: PropTypes.func.isRequired,
-  stopAction: PropTypes.func.isRequired,
+  changeState: PropTypes.func.isRequired,
   stopped: PropTypes.bool.isRequired,
 };
 
-const StopStartButton = ({ startAction, stopAction, stopped }) => {
+const StopStartButton = ({ changeState, stopped }) => {
   if (stopped) {
-    return <Button kind="hollow-approve" onClick={startAction}><FaPlay /></Button>
+    return <Button kind="hollow-approve" onClick={() => { changeState({ stopped: false }) }}><FaPlay /></Button>
   }
-  return <Button kind="hollow-danger" onClick={stopAction}><FaStop /></Button>
+  return <Button kind="hollow-danger" onClick={() => { changeState({ stopped: true }) }}><FaStop /></Button>
 };
 
 StopStartButton.propTypes = propTypes;

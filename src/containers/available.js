@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import PageLayout from './page-layout';
 
 import { getAvailableNodeTypes } from '../services/node-type-service';
-
-import {
-  Spinner,
-  ErrorState,
-  Page,
-  PageHeader,
-  PageTitle
-} from 'zooid-ui';
 
 import NodeTypes from '../components/NodeTypes';
 
@@ -18,7 +10,10 @@ export default class Available extends Component {
     super(props)
     this.state = {
       loading: true,
-      nodeTypes: null,
+      nodeTypes: {
+        new: [],
+        old: [],
+      },
       error: null,
     }
   }
@@ -31,30 +26,16 @@ export default class Available extends Component {
     });
   }
 
-  renderContent(content) {
-    return (
-      <Page>
-        <PageHeader>
-          <PageTitle>Available Things</PageTitle>
-        </PageHeader>
-        {content}
-      </Page>
-    );
-  }
-
   render() {
     const { loading, error, nodeTypes } = this.state;
 
-    if (loading) return this.renderContent(<Spinner size="large"/>);
-    if (error) return this.renderContent(<ErrorState title={error.message} />);
-
-    return this.renderContent(
+    return <PageLayout title="Available Things" loading={loading} error={error}>
       <div>
         <h3>Compatible with the new Connector Installer</h3>
         <NodeTypes nodeTypes={nodeTypes.new} />
         <h3>Backwards compatible with Connector Installer</h3>
         <NodeTypes nodeTypes={nodeTypes.old} />
       </div>
-    );
+    </PageLayout>
   }
 }

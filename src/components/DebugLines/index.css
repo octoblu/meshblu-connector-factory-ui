@@ -1,0 +1,9 @@
+.DebugLines {
+  text-align: left;
+  color: #243743;
+  padding: 0.5rem 1rem;
+}
+
+.DebugLines--console {
+  overflow-y: scroll;
+}

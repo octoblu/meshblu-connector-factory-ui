@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import PageLayout from './PageLayout'
+import PageLayout from './PageLayout';
 import _ from 'lodash';
+
+import {
+  EmptyState
+} from 'zooid-ui'
 
 import DeviceSchema from '../components/DeviceSchema';
 import VersionsSelect from '../components/VersionsSelect';
 import StopStartButton from '../components/StopStartButton';
 import ConnectorStatus from '../components/ConnectorStatus';
 import VersionStatus from '../components/VersionStatus';
+import StatusDeviceErrors from '../components/StatusDeviceErrors';
 
 import {
   getDevice,
@@ -30,7 +35,8 @@ export default class Configure extends Component {
       configureSchema: null,
       changeVersion: false,
       selectedVersion: null,
-      statusDevice: null,
+      statusDevice: {},
+      showErrors: false,
       model: null,
       message: null
     };
@@ -40,11 +46,11 @@ export default class Configure extends Component {
     this.changeConnectorState  = this.changeConnectorState.bind(this);
     this.sendPingAndUpdate  = this.sendPingAndUpdate.bind(this);
     this.loadDevice  = this.loadDevice.bind(this);
-    this.loadStatusDevice  = this.loadStatusDevice.bind(this);
     this.setCurrentVersion  = this.setCurrentVersion.bind(this);
     this.updateVersion = this.updateVersion.bind(this);
     this.changeVersion = this.changeVersion.bind(this);
     this.versionSelect  = this.versionSelect.bind(this);
+    this.showErrors = this.showErrors.bind(this);
   }
 
   componentDidMount() {
@@ -80,15 +86,6 @@ export default class Configure extends Component {
   setDevice(device) {
     const picked = _.pick(device, ['uuid', 'name', 'type', 'online', 'lastPong', 'connectorMetadata', 'statusDevice'])
     this.setState({ device: picked })
-  }
-
-  loadStatusDevice(callback) {
-    const { device } = this.state
-    getDevice(device, (error, statusDevice) => {
-      if(error) return this.setState({ error })
-      this.setState({ statusDevice })
-      callback()
-    })
   }
 
   sendPingAndUpdate() {
@@ -140,6 +137,10 @@ export default class Configure extends Component {
 
   changeVersion() {
     this.setState({ changeVersion: true, selectedVersion: null })
+  }
+
+  showErrors() {
+    this.setState({ showErrors: true })
   }
 
   setCurrentVersion() {
@@ -203,7 +204,7 @@ export default class Configure extends Component {
   }
 
   render() {
-    const { device, model, message, changeVersion } = this.state;
+    const { device, model, message, changeVersion, showErrors, statusDevice } = this.state;
 
     if(changeVersion) {
       const { details, selectedVersion } = this.state;
@@ -213,6 +214,13 @@ export default class Configure extends Component {
         selected={selectedVersion}
         type={type}
         versions={details.versions} />);
+    }
+
+    if(!_.isEmpty(statusDevice.errors)){
+      if(showErrors) {
+        return this.renderContent(<StatusDeviceErrors statusDevice={statusDevice} />)
+      }
+      return this.renderContent(<EmptyState action={this.showErrors} cta="Show Errors" title="Device Errored"/>)
     }
 
     return this.renderContent(

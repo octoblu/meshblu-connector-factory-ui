@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import ReactDOM from 'react-dom';
 import _  from 'lodash';
 
@@ -23,7 +23,7 @@ import {
   DeviceConfigureSchemaContainer
 } from 'zooid-meshblu-device-editor';
 
-class DeviceSchema extends React.Component {
+class DeviceSchema extends Component {
   constructor(props) {
     super(props)
     this.handleNameChange  = this.handleNameChange.bind(this);

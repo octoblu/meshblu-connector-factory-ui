@@ -7,20 +7,41 @@ export function registerConnector({ connector, version, customProps }, callback)
   const meshbluConfig = getMeshbluConfig();
   const meshblu = new MeshbluHttp(meshbluConfig);
   const connectorName = getConnectorName(connector);
+  const owner = meshbluConfig.uuid
   const deviceProps = _.assign({
     type: `device:${connectorName}`,
     connector: connector,
-    owner: meshbluConfig.uuid,
-    discoverWhitelist: [meshbluConfig.uuid],
-    configureWhitelist: [meshbluConfig.uuid],
-    sendWhitelist: [meshbluConfig.uuid],
-    receiveWhitelist: [meshbluConfig.uuid],
+    owner: owner,
+    discoverWhitelist: [owner],
+    configureWhitelist: [owner],
+    sendWhitelist: [owner],
+    receiveWhitelist: [owner],
     connectorMetadata: {
       stopped: false,
       version: version
     }
   }, customProps);
-  meshblu.register(deviceProps, callback);
+  meshblu.register(deviceProps, (error, device) => {
+    if(error != null) return callback(error)
+    const { uuid } = device
+    registerStatusDevice({ owner, uuid }, (error) => {
+      if(error != null) return callback(error)
+      callback(null, device)
+    })
+  });
+}
+
+export function registerStatusDevice({ owner, uuid }, callback) {
+  const meshbluConfig = getMeshbluConfig()
+  const meshblu = new MeshbluHttp(meshbluConfig)
+  meshblu.register({
+    type: 'connector-status-device',
+    owner: uuid,
+    discoverWhitelist: [ uuid, owner ],
+    configureWhitelist: [ uuid, owner ],
+    sendWhitelist: [ uuid, owner ],
+    receiveWhitelist: [ uuid, owner ],
+  }, callback)
 }
 
 export function getDevice({ uuid }, callback) {
@@ -34,7 +55,7 @@ export function getStatusDevice(device, callback) {
   const meshblu = new MeshbluHttp(getMeshbluConfig());
   meshblu.device(device.statusDevice, (error, statusDevice) => {
     if(error) return callback(error)
-    callback(null, _.pick(statusDevice, ['lastPong', 'online']))
+    callback(null, _.pick(statusDevice, ['lastPong', 'online', 'errors']))
   });
 }
 

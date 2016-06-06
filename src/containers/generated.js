@@ -5,7 +5,7 @@ import {
   Button,
 } from 'zooid-ui';
 
-import '../styles/Generated.css';
+import '../styles/generated.css';
 
 import Download from '../components/Download';
 import ConfigureCard from '../components/ConfigureCard';

@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import PageLayout from './page-layout'
 
-import '../styles/Home.css';
+import '../styles/home.css';
 
 export default class Home extends Component {
   constructor(props) {

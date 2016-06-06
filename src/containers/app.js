@@ -7,7 +7,7 @@ import {
 } from 'zooid-ui';
 
 import 'zooid-ui/dist/style.css';
-import '../styles/app.css';
+import '../styles/the-app.css';
 
 const propTypes = {
   children: PropTypes.element.isRequired,

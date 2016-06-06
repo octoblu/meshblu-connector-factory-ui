@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-import OctobluOauth from './octoblu-oauth';
+import OctobluOauth from './OctobluOauth';
 
 const propTypes = {
   children: PropTypes.element.isRequired,

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import PageLayout from './page-layout'
+import PageLayout from './PageLayout'
 import _ from 'lodash';
 
 import DeviceSchema from '../components/DeviceSchema';

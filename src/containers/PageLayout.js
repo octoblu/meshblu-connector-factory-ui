@@ -10,7 +10,8 @@ import {
   DeviceIcon,
 } from 'zooid-ui';
 
-import '../styles/page-layout.css';
+import '../styles/PageLayout.css';
+
 const propTypes = {
   children: PropTypes.element.isRequired,
   title: PropTypes.string,

@@ -1,14 +1,14 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
-import App from '../containers/app';
-import Authenticated from '../containers/authenticated';
-import Home from '../containers/home';
-import Create from '../containers/create';
-import Configure from '../containers/configure';
-import Installed from '../containers/installed';
-import Available from '../containers/available';
-import Generate from '../containers/generate';
-import Generated from '../containers/generated';
+import App from '../containers/App';
+import Authenticated from '../containers/Authenticated';
+import Home from '../containers/Home';
+import Create from '../containers/Create';
+import Configure from '../containers/Configure';
+import Installed from '../containers/Installed';
+import Available from '../containers/Available';
+import Generate from '../containers/Generate';
+import Generated from '../containers/Generated';
 import NotFound from '../components/NotFound';
 import { storeAuthentication } from '../helpers/authentication';
 

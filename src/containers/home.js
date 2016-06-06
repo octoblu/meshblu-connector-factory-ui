@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 
-import PageLayout from './page-layout'
+import PageLayout from './PageLayout'
 
-import '../styles/home.css';
+import '../styles/Home.css';
 
 export default class Home extends Component {
   constructor(props) {

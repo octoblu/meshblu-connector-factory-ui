@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import PageLayout from './page-layout';
+import PageLayout from './PageLayout';
 
 import {
   Button,
 } from 'zooid-ui';
 
-import '../styles/generated.css';
+import '../styles/Generated.css';
 
 import Download from '../components/Download';
 import ConfigureCard from '../components/ConfigureCard';

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PageLayout from './PageLayout';
+import PageLayout from './page-layout';
 
 import { getAvailableNodeTypes } from '../services/node-type-service';
 

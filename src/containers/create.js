@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 
 import { browserHistory } from 'react-router';
-import PageLayout from './PageLayout'
+import PageLayout from './page-layout'
 
 import VersionsSelect from '../components/VersionsSelect';
 import Download from '../components/Download';

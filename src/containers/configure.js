@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import PageLayout from './PageLayout';
+import PageLayout from './page-layout';
 import _ from 'lodash';
 
 import {
@@ -18,6 +18,7 @@ import {
   getDevice,
   getStatusDevice,
   updateDevice,
+  updateStatusDevice,
   sendPing,
 } from '../services/device-service';
 
@@ -51,6 +52,7 @@ export default class Configure extends Component {
     this.changeVersion = this.changeVersion.bind(this);
     this.versionSelect  = this.versionSelect.bind(this);
     this.showErrors = this.showErrors.bind(this);
+    this.clearErrors = this.clearErrors.bind(this);
   }
 
   componentDidMount() {
@@ -143,6 +145,15 @@ export default class Configure extends Component {
     this.setState({ showErrors: true })
   }
 
+  clearErrors() {
+    const { device, statusDevice } = this.state
+    statusDevice.errors = []
+    this.setState({ showErrors: false, statusDevice: statusDevice })
+    updateStatusDevice({ device, properties: { errors: [], updateErrorsAt: null } }, (error) => {
+      if(error) return console.error(error);
+    })
+  }
+
   setCurrentVersion() {
     const { details, device } = this.state;
     if(device.connectorMetadata == null) return
@@ -218,9 +229,9 @@ export default class Configure extends Component {
 
     if(!_.isEmpty(statusDevice.errors)){
       if(showErrors) {
-        return this.renderContent(<StatusDeviceErrors statusDevice={statusDevice} />)
+        return this.renderContent(<StatusDeviceErrors statusDevice={statusDevice} clearErrors={this.clearErrors} />)
       }
-      return this.renderContent(<EmptyState action={this.showErrors} cta="Show Errors" title="Device Errored"/>)
+      return this.renderContent(<EmptyState action={this.showErrors} cta="Show Errors" title="Device Errored" />)
     }
 
     return this.renderContent(

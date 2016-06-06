@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 
-import PageLayout from './PageLayout'
+import PageLayout from './page-layout'
 
 import '../styles/Home.css';
 

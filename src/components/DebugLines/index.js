@@ -4,7 +4,8 @@ import _ from 'lodash';
 import './index.css';
 
 const propTypes = {
-  lines: PropTypes.array.isRequired
+  lines: PropTypes.array.isRequired,
+  title: PropTypes.string.isRequired,
 }
 
 class DebugLines extends Component {
@@ -19,7 +20,7 @@ class DebugLines extends Component {
   }
 
   render() {
-    const { lines } = this.props;
+    const { lines, title } = this.props;
     const theLines = _.map(lines, (line, key) => {
       return <li key={key}>{line}</li>;
     });
@@ -30,7 +31,7 @@ class DebugLines extends Component {
 
     return (
       <div className="DebugLines">
-        <h3>Console:</h3>
+        <h2>{title}</h2>
         <div ref="thing" className="DebugLines--console">
           <ul>
             {theLines}

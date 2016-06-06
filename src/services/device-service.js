@@ -64,6 +64,13 @@ export function updateDevice({ uuid, properties }, callback) {
   meshblu.update(uuid, properties, callback);
 }
 
+export function updateStatusDevice({ device, properties }, callback) {
+  if(device == null) return
+  if(device.statusDevice == null) return
+  const meshblu = new MeshbluHttp(getMeshbluConfig());
+  meshblu.update(device.statusDevice, properties, callback);
+}
+
 export function sendMessage(message, callback) {
   const meshblu = new MeshbluHttp(getMeshbluConfig());
   meshblu.message(message, callback);

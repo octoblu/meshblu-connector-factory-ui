@@ -1,6 +1,6 @@
 {
   "name": "meshblu-connector-factory",
-  "version": "2.10.0",
+  "version": "2.10.1",
   "description": "meshblu-connector-factory",
   "main": "index.js",
   "scripts": {
@@ -39,6 +39,7 @@
     "jquery": "^2.2.4",
     "less": "^2.7.1",
     "lodash": "^4.13.1",
+    "moment": "^2.13.0",
     "react": "^15.1.0",
     "react-cookie": "^0.4.6",
     "react-dom": "^15.1.0",

@@ -7,6 +7,7 @@ import {
 import {
   fetchOctobluUser,
   getAuthenticationUri,
+  removeCookie,
 } from '../helpers/authentication';
 
 export default class OctobluOauth extends Component {
@@ -21,8 +22,9 @@ export default class OctobluOauth extends Component {
   componentDidMount() {
     fetchOctobluUser((error, octobluUser) => {
       this.setState({ error, octobluUser });
-      if (error) return;
+      if (error) return removeCookie();
       if (!octobluUser) {
+        removeCookie()
         this.redirectToLogin();
         return;
       }

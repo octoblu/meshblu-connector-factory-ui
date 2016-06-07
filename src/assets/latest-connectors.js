@@ -1,4 +1,4 @@
-export const newConnectors = [
+ const Connectors = [
   {
     _id: '9811c66d-2211-472a-9be0-e79cc397ce21',
     name: 'Lightblue Bean',
@@ -66,3 +66,5 @@ export const newConnectors = [
     connector: 'meshblu-connector-initial-state'
   },
 ]
+
+export default Connectors

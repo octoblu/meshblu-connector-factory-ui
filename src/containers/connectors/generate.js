@@ -1,17 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import _ from 'lodash';
+import PageLayout from '../page-layout';
+
 import { browserHistory } from 'react-router';
 
-import VersionsSelect from '../components/VersionsSelect';
-import Download from '../components/Download';
-import ConfigureCard from '../components/ConfigureCard';
+import VersionsSelect from '../../components/VersionsSelect';
+import Download from '../../components/Download';
+import ConfigureCard from '../../components/ConfigureCard';
 
-import { connectorDetails } from '../services/connector-detail-service';
-import { updateAndGenerateKey } from '../helpers/connector-creator';
-import { getNodeType } from '../services/node-type-service';
-import { getDevice } from '../services/device-service';
+import { connectorDetails } from '../../services/connector-detail-service';
+import { updateAndGenerateKey } from '../../helpers/connector-creator';
+import { fetchAvailableNodes } from '../../actions/things/available-actions';
+import { getDevice } from '../../services/device-service';
 
-export default class Create extends Component {
+class Generate extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,6 +39,7 @@ export default class Create extends Component {
       }
       this.setState({ device });
       const { connector } = device;
+      this.props.dispatch(fetchAvailableNodes())
       connectorDetails({ connector }, (error, details) => {
         this.setState({ error, details });
         getNodeType({ connector }, (error, nodeType) => {
@@ -94,3 +98,14 @@ export default class Create extends Component {
       versions={details.versions} />);
   }
 }
+
+Generate.propTypes = {
+  dispatch: PropTypes.func.isRequired
+}
+
+function mapStateToProps({ available }) {
+  const { fetching, error, latest, legacy } = available
+  return { fetching, error, latest, legacy  }
+}
+
+export default connect(mapStateToProps)(Generate)

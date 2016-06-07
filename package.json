@@ -44,10 +44,17 @@
     "react-cookie": "^0.4.6",
     "react-dom": "^15.1.0",
     "react-icons": "^2.1.0",
+    "react-redux": "^4.4.5",
     "react-router": "^2.4.1",
+    "react-router-redux": "^4.0.5",
+    "redux": "^3.5.2",
+    "redux-actions": "^0.9.1",
+    "redux-logger": "^2.6.1",
+    "redux-thunk": "^2.1.0",
     "superagent": "^1.8.3",
     "zooid-meshblu-device-editor": "^8.1.0",
-    "zooid-ui": "^5.2.0"
+    "zooid-ui": "^5.2.0",
+    "zooid-ui-toast": "^1.1.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",

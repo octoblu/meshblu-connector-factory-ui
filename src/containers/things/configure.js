@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import PageLayout from './page-layout';
+import PageLayout from '../page-layout';
 import _ from 'lodash';
 
 import {
   EmptyState
 } from 'zooid-ui'
 
-import DeviceSchema from '../components/DeviceSchema';
-import VersionsSelect from '../components/VersionsSelect';
-import StopStartButton from '../components/StopStartButton';
-import ConnectorStatus from '../components/ConnectorStatus';
-import VersionStatus from '../components/VersionStatus';
-import StatusDeviceErrors from '../components/StatusDeviceErrors';
+import DeviceSchema from '../../components/DeviceSchema';
+import VersionsSelect from '../../components/VersionsSelect';
+import StopStartButton from '../../components/StopStartButton';
+import ConnectorStatus from '../../components/ConnectorStatus';
+import VersionStatus from '../../components/VersionStatus';
+import StatusDeviceErrors from '../../components/StatusDeviceErrors';
 
 import {
   getDevice,
@@ -20,10 +20,10 @@ import {
   updateDevice,
   updateStatusDevice,
   sendPing,
-} from '../services/device-service';
+} from '../../services/device-service';
 
-import { getSchema } from '../services/schema-service';
-import { connectorDetails } from '../services/connector-detail-service';
+import { getSchema } from '../../services/schema-service';
+import { connectorDetails } from '../../services/connector-detail-service';
 
 export default class Configure extends Component {
   constructor(props) {

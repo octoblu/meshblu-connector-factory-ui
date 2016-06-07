@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import PageLayout from './page-layout';
+import PageLayout from '../page-layout';
 
 import {
   Button,
 } from 'zooid-ui';
 
-import '../styles/generated.css';
+import '../../styles/generated.css';
 
-import Download from '../components/Download';
-import ConfigureCard from '../components/ConfigureCard';
-import OrLine from '../components/OrLine';
+import Download from '../../components/Download';
+import ConfigureCard from '../../components/ConfigureCard';
+import OrLine from '../../components/OrLine';
 
 export default class Create extends Component {
   constructor(props) {

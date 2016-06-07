@@ -41,6 +41,19 @@ export function storeAuthentication(nextState, replace) {
   replace(redirect_uri);
 }
 
+export function hasAuth() {
+  return !!getBearerToken()
+}
+
+export function removeCookie() {
+  cookie.remove('meshbluBearerToken', { path: '/' });
+}
+
+export function logout(nextState, replace) {
+  removeCookie()
+  replace('/');
+}
+
 export function buildRedirectUri() {
   const { pathname, query } = url.parse(window.location.href);
   return url.format({ pathname, query });

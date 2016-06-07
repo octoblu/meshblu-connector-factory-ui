@@ -6,7 +6,7 @@ const initialState = {
   selectedVersion: {
     latest: false,
     version: null,
-    info: {}
+    pkg: {}
   },
   info: {
     versions: {}
@@ -33,7 +33,7 @@ export default function types(state=initialState, action) {
 
     case actionTypes.SELECT_VERSION:
       return { ...state, selectedVersion: action.selectedVersion }
-      
+
     default:
       return state
   }

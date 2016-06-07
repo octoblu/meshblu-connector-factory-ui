@@ -1,9 +1,8 @@
+import _ from 'lodash';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux'
-import _ from 'lodash';
 
-import { browserHistory } from 'react-router';
 import PageLayout from '../page-layout'
 
 import VersionsSelect from '../../components/VersionsSelect';
@@ -58,15 +57,6 @@ class Create extends Component {
     return ""
   }
 
-  getStateBasics() {
-    const { available, details } = this.props
-    if(available.error) return { error: available.error }
-    if(details.error) return { error: details.error }
-    if(available.fetching) return { fetching: true }
-    if(details.fetching) return { fetching: true }
-    return { fetching: false, error: null }
-  }
-
   renderContent(content) {
     const { error, fetching } = this.getStateBasics()
     const { connector } = this.props.params
@@ -95,7 +85,15 @@ Create.propTypes = {
 }
 
 function mapStateToProps({ available, details, connector }) {
-  return { available, details, connector }
+  const state = { available, details, connector }
+  const error = available.error || details.error || connector.error
+  if(error) {
+    return { ...state, error, fetching: false }
+  }
+  if(available.fetching || details.fetching || connector.generating) {
+    return { ...state, fetching: true, error: null }
+  }
+  return { ...state, fetching: false, error: null }
 }
 
 export default connect(mapStateToProps)(Create)

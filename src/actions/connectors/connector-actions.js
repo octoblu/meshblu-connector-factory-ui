@@ -2,31 +2,44 @@ import request from 'superagent';
 import * as actionTypes from '../../constants/action-types';
 import { createConnector } from '../../helpers/connector-creator';
 
-function createConnectorRequest() {
+function connectorGeneratedRequest() {
   return {
-    type: actionTypes.CREATE_CONNECTOR_REQUEST
+    type: actionTypes.CONNECTOR_GENERATED_REQUEST
   }
 }
 
-function createConnectorSuccess({ key, uuid }) {
+function connectorGeneratedSuccess({ key, uuid }) {
   return {
-    type: actionTypes.CREATE_CONNECTOR_SUCCESS,
+    type: actionTypes.CONNECTOR_GENERATED_SUCCESS,
     key,
     uuid
   }
 }
 
-function createConnectorFailure(error) {
+function connectorGeneratedFailure(error) {
   return {
-    type: actionTypes.CREATE_CONNECTOR_FAILURE,
+    type: actionTypes.CONNECTOR_GENERATED_FAILURE,
     error
   }
 }
 
 export function createConnectorAction({ connector, pkg }) {
   return (dispatch) => {
-    dispatch(createConnectorRequest())
+    dispatch(connectorGeneratedRequest())
     createConnector({ connector, pkg }, (error, response) => {
+      if(error) {
+        dispatch(connectorGeneratedFailure(error))
+        return
+      }
+      dispatch(connectorGeneratedSuccess(response))
+    })
+  }
+}
+
+export function generateConnectorAction({ uuid, connector, pkg }) {
+  return (dispatch) => {
+    dispatch(connectorGeneratedRequest())
+    updateAndGenerateKey({ uuid, connector, pkg }, (error, response) => {
       if(error) {
         dispatch(createConnectorFailure(error))
         return

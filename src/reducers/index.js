@@ -4,6 +4,7 @@ import details from './connectors/detail-reducer';
 import connector from './connectors/connector-reducer';
 import available from './things/available-reducer';
 import devices from './things/devices-reducer';
+import device from './things/device-reducer';
 import toast from './toast';
 
 const rootReducer = combineReducers({
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   connector,
   available,
   devices,
+  device,
   toast,
   routing: routerReducer,
 })

@@ -1,6 +1,7 @@
 import request from 'superagent';
 import * as actionTypes from '../../constants/action-types';
 import { getDevices } from '../../services/device-service';
+import { fetchConnectorDetails } from '../connectors/detail-actions'
 
 function fetchMyDevicesRequest() {
   return {
@@ -31,6 +32,40 @@ export function fetchMyDevices() {
         return
       }
       dispatch(fetchMyDevicesSuccess(devices))
+    })
+  }
+}
+
+function fetchDeviceRequest() {
+  return {
+    type: actionTypes.FETCH_DEVICE_REQUEST
+  }
+}
+
+function fetchDeviceSuccess(device) {
+  return {
+    type: actionTypes.FETCH_DEVICE_SUCCESS,
+    device
+  }
+}
+
+function fetchDeviceFailure(error) {
+  return {
+    type: actionTypes.FETCH_DEVICE_FAILURE,
+    error
+  }
+}
+
+export function fetchDevice({ uuid }) {
+  return (dispatch) => {
+    dispatch(fetchDeviceRequest())
+    getDevice({ uuid }, (error, device) => {
+      if(error) {
+        dispatch(fetchDeviceFailure(error))
+        return
+      }
+      dispatch(fetchConnectorDetails({ connector: device.connector }))
+      dispatch(fetchDeviceSuccess(device))
     })
   }
 }

@@ -1,4 +1,3 @@
-import { connectorDetails } from '../services/connector-detail-service';
 const INSTALLER_BASE_URI = 'https://github.com/octoblu/electron-meshblu-connector-installer';
 
 export function getInstallerUri({ platform }, callback) {

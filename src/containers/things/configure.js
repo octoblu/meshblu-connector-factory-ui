@@ -23,7 +23,6 @@ import {
 } from '../../services/device-service';
 
 import { getSchema } from '../../services/schema-service';
-import { connectorDetails } from '../../services/connector-detail-service';
 
 export default class Configure extends Component {
   constructor(props) {

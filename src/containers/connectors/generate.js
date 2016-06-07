@@ -9,7 +9,6 @@ import VersionsSelect from '../../components/VersionsSelect';
 import Download from '../../components/Download';
 import ConfigureCard from '../../components/ConfigureCard';
 
-import { connectorDetails } from '../../services/connector-detail-service';
 import { updateAndGenerateKey } from '../../helpers/connector-creator';
 import { fetchAvailableNodes } from '../../actions/things/available-actions';
 import { getDevice } from '../../services/device-service';

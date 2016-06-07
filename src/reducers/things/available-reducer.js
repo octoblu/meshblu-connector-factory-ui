@@ -23,7 +23,7 @@ export default function types(state=initialState, action) {
         if(connector.category != 'device') return false
         return true
       })
-      return { ...state, legacy: connectors, latest: latestConnectors, fetching: false }
+      return { ...state, legacy: connectors, latest: latestConnectors, fetching: false, error: null }
 
     default:
       return state

@@ -1,5 +1,4 @@
 import * as actionTypes from '../../constants/action-types'
-import _ from 'lodash'
 
 const initialState = {
   error: null,

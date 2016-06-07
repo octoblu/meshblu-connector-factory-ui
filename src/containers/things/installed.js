@@ -1,35 +1,38 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
-import { getDevices } from '../../services/device-service';
+import { fetchMyDevices } from '../../actions/things/devices-actions'
 import PageLayout from '../page-layout';
 
 import InstalledDevices from '../../components/InstalledDevices';
 
-export default class Installed extends Component {
+ class Installed extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      loading: true,
-      devices: [],
-      error: null,
-    }
   }
 
   componentDidMount() {
-    this.setState({ loading: true });
-
-    getDevices((error, devices)=>{
-      this.setState({ error, devices, loading: false });
-    });
+    this.props.dispatch(fetchMyDevices())
   }
 
   render() {
-    const { loading, error, devices } = this.state;
+    const { fetching, error, devices } = this.props;
     return (
-      <PageLayout title="Installed Things" loading={loading} error={error} >
+      <PageLayout title="Installed Things" loading={fetching} error={error} >
         <InstalledDevices devices={devices} />
       </PageLayout>
     );
   }
 }
+
+Installed.propTypes = {
+  dispatch: PropTypes.func.isRequired
+}
+
+function mapStateToProps({ devices }) {
+  const { fetching, items, error } = devices
+  return { fetching, devices: items, error }
+}
+
+export default connect(mapStateToProps)(Installed)

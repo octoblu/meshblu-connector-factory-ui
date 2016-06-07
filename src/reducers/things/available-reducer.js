@@ -12,10 +12,10 @@ const initialState = {
 export default function types(state=initialState, action) {
   switch (action.type) {
     case actionTypes.FETCH_AVAILABLE_NODES_REQUEST:
-      return _.assign({}, state, { fetching: true })
+      return { ...state, fetching: true }
 
     case actionTypes.FETCH_AVAILABLE_NODES_FAILURE:
-      return _.assign({}, state, { error: action.error, items: [], fetching: false })
+      return { ...state, error: action.error, fetching: false, legacy: [], latest: [] }
 
     case actionTypes.FETCH_AVAILABLE_NODES_SUCCESS:
       const connectors = _.filter(action.connectors, (connector={}) => {
@@ -23,7 +23,7 @@ export default function types(state=initialState, action) {
         if(connector.category != 'device') return false
         return true
       })
-      return _.assign({}, state, { legacy: connectors, latest: latestConnectors, fetching: false })
+      return { ...state, legacy: connectors, latest: latestConnectors, fetching: false }
 
     default:
       return state

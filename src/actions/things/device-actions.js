@@ -5,25 +5,26 @@ import { fetchConnectorDetails } from '../connectors/detail-actions'
 
 function fetchMyDevicesRequest() {
   return {
-    type: actionTypes.FETCH_MY_DEVICES_REQUEST
+    type: actionTypes.FETCH_MY_DEVICES_REQUEST,
   }
 }
 
-function fetchMyDevicesSuccess(devices) {
+function fetchMyDevicesSuccess({ devices, useBaseProps }) {
   return {
     type: actionTypes.FETCH_MY_DEVICES_SUCCESS,
-    devices
+    devices,
+    useBaseProps,
   }
 }
 
 function fetchMyDevicesFailure(error) {
   return {
     type: actionTypes.FETCH_MY_DEVICES_FAILURE,
-    error
+    error,
   }
 }
 
-export function fetchMyDevices() {
+export function fetchMyDevices({ useBaseProps }) {
   return (dispatch) => {
     dispatch(fetchMyDevicesRequest())
     getDevices((error, devices) => {
@@ -31,32 +32,33 @@ export function fetchMyDevices() {
         dispatch(fetchMyDevicesFailure(error))
         return
       }
-      dispatch(fetchMyDevicesSuccess(devices))
+      dispatch(fetchMyDevicesSuccess({ devices, useBaseProps }))
     })
   }
 }
 
 function fetchDeviceRequest() {
   return {
-    type: actionTypes.FETCH_DEVICE_REQUEST
+    type: actionTypes.FETCH_DEVICE_REQUEST,
   }
 }
 
-function fetchDeviceSuccess(device) {
+function fetchDeviceSuccess({ device, useBaseProps }) {
   return {
     type: actionTypes.FETCH_DEVICE_SUCCESS,
-    device
+    device,
+    useBaseProps,
   }
 }
 
 function fetchDeviceFailure(error) {
   return {
     type: actionTypes.FETCH_DEVICE_FAILURE,
-    error
+    error,
   }
 }
 
-export function fetchDevice({ uuid }) {
+export function fetchDevice({ uuid, useBaseProps }) {
   return (dispatch) => {
     dispatch(fetchDeviceRequest())
     getDevice({ uuid }, (error, device) => {
@@ -65,7 +67,7 @@ export function fetchDevice({ uuid }) {
         return
       }
       dispatch(fetchConnectorDetails({ connector: device.connector }))
-      dispatch(fetchDeviceSuccess(device))
+      dispatch(fetchDeviceSuccess({ device, useBaseProps }))
     })
   }
 }

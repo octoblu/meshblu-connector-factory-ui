@@ -43,7 +43,7 @@ class Create extends Component {
     this.props.dispatch(createConnectorAction({ connector, pkg }))
   }
 
-  versionSelect(versionInfo) {
+  versionSelect(selectedVersion) {
     this.props.dispatch(selectVersion(selectedVersion))
   }
 

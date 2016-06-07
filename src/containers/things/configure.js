@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import _ from 'lodash';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import PageLayout from '../page-layout';
-import _ from 'lodash';
 
 import {
   EmptyState
@@ -14,8 +14,10 @@ import ConnectorStatus from '../../components/ConnectorStatus';
 import VersionStatus from '../../components/VersionStatus';
 import StatusDeviceErrors from '../../components/StatusDeviceErrors';
 
+import { fetchConnectorDetails, selectVersion } from '../../actions/connectors/detail-actions';
+import { getDevice } from '../../actions/things/device-actions';
+
 import {
-  getDevice,
   getStatusDevice,
   updateDevice,
   updateStatusDevice,
@@ -28,25 +30,14 @@ export default class Configure extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: null,
-      device: null,
-      details: null,
-      loading: true,
-      configureSchema: null,
       changeVersion: false,
-      selectedVersion: null,
-      statusDevice: {},
       showErrors: false,
-      model: null,
-      message: null
     };
-    this.checkForUpdates = true;
     this.getButtons  = this.getButtons.bind(this);
     this.handleConfig  = this.handleConfig.bind(this);
     this.changeConnectorState  = this.changeConnectorState.bind(this);
     this.sendPingAndUpdate  = this.sendPingAndUpdate.bind(this);
     this.loadDevice  = this.loadDevice.bind(this);
-    this.setCurrentVersion  = this.setCurrentVersion.bind(this);
     this.updateVersion = this.updateVersion.bind(this);
     this.changeVersion = this.changeVersion.bind(this);
     this.versionSelect  = this.versionSelect.bind(this);
@@ -56,46 +47,21 @@ export default class Configure extends Component {
 
   componentDidMount() {
     const { uuid } = this.props.params;
+    this.props.dispatch(getDevice({ uuid, useBaseProps: true }))
     this.checkForUpdates = true
-    getDevice({ uuid }, (error, device) => {
-      if(error) return this.setState({ error })
-      this.setState({ model: _.cloneDeep(device) })
-      this.setDevice(device)
-      const { connector } = device;
-      connectorDetails({ connector }, (error, details) => {
-        this.setState({ details, loading: false })
-        this.setCurrentVersion()
-      })
-      this.sendPingAndUpdate()
-    })
+    this.sendPingAndUpdate()
   }
 
   componentWillUnmount() {
     this.checkForUpdates = false
   }
 
-  loadDevice(callback) {
-    if(!callback) callback = _.noop;
-    const { uuid } = this.props.params;
-    getDevice({ uuid }, (error, device) => {
-      if(error) return this.setState({ error })
-      this.setDevice(device)
-      callback()
-    })
-  }
-
-  setDevice(device) {
-    const picked = _.pick(device, ['uuid', 'name', 'type', 'online', 'lastPong', 'connectorMetadata', 'statusDevice'])
-    this.setState({ device: picked })
-  }
-
   sendPingAndUpdate() {
     if(!this.checkForUpdates) return
     sendPing(this.state.device, (error, statusDevice) => {
       if (error) return console.error(error);
-      this.setState({ statusDevice })
       _.delay(this.sendPingAndUpdate, 5000);
-      this.loadDevice()
+      this.props.dispatch(getDevice({ uuid, useBaseProps: true }))
     });
   }
 
@@ -153,16 +119,8 @@ export default class Configure extends Component {
     })
   }
 
-  setCurrentVersion() {
-    const { details, device } = this.state;
-    if(device.connectorMetadata == null) return
-    const { version } = device.connectorMetadata;
-    const isLatest = details['dist-tags'].latest == version;
-    this.versionSelect({ version, latest: isLatest, pkg: details.versions[version] })
-  }
-
-  versionSelect(versionInfo) {
-    this.setState({ selectedVersion: versionInfo });
+  versionSelect(selectedVersion) {
+    this.props.dispatch(selectVersion(selectedVersion))
   }
 
   getButtons() {

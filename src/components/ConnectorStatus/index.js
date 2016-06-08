@@ -14,7 +14,7 @@ const propTypes = {
 const getStatusInfo = ({ device, connectorMetadata }) => {
   const { lastPong } = device;
   let stopped = false;
-  if(connectorMetadata != null) {
+  if (connectorMetadata != null) {
     stopped = connectorMetadata.stopped;
   }
 
@@ -22,9 +22,12 @@ const getStatusInfo = ({ device, connectorMetadata }) => {
     const { date, response, error } = lastPong;
     const { running } = response;
     const oneMinAgo = Date.now() - (1000 * 60);
-    if(date > oneMinAgo) {
-      if(error != null) {
+    if (date > oneMinAgo) {
+      if (error != null) {
         return { statusText: 'connector error', online: true }
+      }
+      if (running) {
+        return { statusText: 'connector is running', online: true }
       }
       return { statusText: 'connector is responding to pings', online: true }
     }
@@ -37,7 +40,7 @@ const getStatusInfo = ({ device, connectorMetadata }) => {
 }
 
 const ConnectorStatus = ({ device, connectorMetadata }) => {
-  if(device == null) {
+  if (device == null) {
     return null
   }
   const { statusText, online } = getStatusInfo({ device, connectorMetadata })

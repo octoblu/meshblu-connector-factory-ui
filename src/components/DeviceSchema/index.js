@@ -13,14 +13,13 @@ const defaultProps = {}
 
 import {
   Button,
-  Form,
   FormActions,
   FormField,
   FormInput,
 } from 'zooid-ui';
 
 import {
-  DeviceConfigureSchemaContainer
+  DeviceConfigureSchemaContainer,
 } from 'zooid-meshblu-device-editor';
 
 class DeviceSchema extends Component {
@@ -42,9 +41,9 @@ class DeviceSchema extends Component {
 
   render() {
     const { device, onSubmit } = this.props;
-    if(device == null) return null
-    if(device.name == null) {
-      onSubmit({ properties: { name: _.startCase(device.connector) }})
+    if (device == null) return null
+    if (device.name == null) {
+      onSubmit({ properties: { name: _.startCase(device.connector) } })
     }
     return (
       <div className="DeviceSchema">
@@ -54,7 +53,7 @@ class DeviceSchema extends Component {
         <FormActions className="DeviceSchema--actions">
           <Button onClick={this.handleNameChange} kind="no-style">Change Name</Button>
         </FormActions>
-        <DeviceConfigureSchemaContainer device={device} onSubmit={onSubmit}/>
+        <DeviceConfigureSchemaContainer device={device} onSubmit={onSubmit} />
       </div>
     )
   }

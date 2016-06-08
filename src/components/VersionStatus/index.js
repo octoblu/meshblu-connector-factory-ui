@@ -12,7 +12,7 @@ const propTypes = {
 };
 
 const VersionStatus = ({ onSelect, version }) => {
-  if(version == null) {
+  if (version == null) {
     return null
   }
   return <Button kind="hollow-neutral" onClick={onSelect}>v{version}</Button>;

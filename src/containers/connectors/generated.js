@@ -15,7 +15,7 @@ export default class Create extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      downloaded: false
+      downloaded: false,
     }
     this.onDownload = this.onDownload.bind(this);
   }
@@ -37,7 +37,7 @@ export default class Create extends Component {
     const { downloaded } = this.state;
 
     let nextStep = null
-    if(downloaded) {
+    if (downloaded) {
       nextStep = (
         <div className="Generated--col">
           <ConfigureCard uuid={uuid} />
@@ -48,7 +48,7 @@ export default class Create extends Component {
       <div className="Generated">
         <div className="Generated--col">
           <h2>Download The Installer</h2>
-          <Download otp={key} onDownload={this.onDownload}/>
+          <Download otp={key} onDownload={this.onDownload} />
           <div className="Generated--key-section">
             <OrLine />
             <div className="Generated--key-content">

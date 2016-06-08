@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   Spinner,
   ErrorState,
@@ -10,7 +10,7 @@ import {
   removeCookie,
 } from '../helpers/authentication';
 
-export default class OctobluOauth extends Component {
+class OctobluOauth extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -46,3 +46,9 @@ export default class OctobluOauth extends Component {
     );
   }
 }
+
+OctobluOauth.propTypes = {
+  children: PropTypes.element.isRequired,
+}
+
+export default OctobluOauth

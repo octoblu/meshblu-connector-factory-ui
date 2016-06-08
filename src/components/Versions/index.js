@@ -17,7 +17,7 @@ const propTypes = {
 };
 
 function majorAndMinorList(versions) {
-  let majorMinors = {};
+  const majorMinors = {};
   _.each(versions, (version) => {
     const [major, minor] = version.split('.');
     majorMinors[`${major}.${minor}`] = false;
@@ -27,10 +27,10 @@ function majorAndMinorList(versions) {
 
 function filterAndSortVersions(_versions) {
   const sortedAndReversed = _.reverse(_.keys(_versions));
-  let majorMinors = majorAndMinorList(sortedAndReversed);
+  const majorMinors = majorAndMinorList(sortedAndReversed);
   _.each(sortedAndReversed, (version) => {
     const [major, minor] = version.split('.');
-    if(majorMinors[`${major}.${minor}`]) return;
+    if (majorMinors[`${major}.${minor}`]) return;
     majorMinors[`${major}.${minor}`] = version;
   });
   return _.values(majorMinors);
@@ -50,7 +50,7 @@ const Versions = ({ versions, onSelect }) => {
       <ListItem key={version}>
         <div onClick={onSelectEvent}>
           <VersionInfo info={versionInfo} />
-          <i className="Versions--icon" role="icon"><MdNavigateNext /></i>
+          <i className="Versions--icon"><MdNavigateNext /></i>
         </div>
       </ListItem>
     );

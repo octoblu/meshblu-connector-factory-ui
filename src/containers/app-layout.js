@@ -20,7 +20,7 @@ const propTypes = {
 
 class AppLayout extends Component {
   getLogout() {
-    if(!hasAuth()) {
+    if (!hasAuth()) {
       return null
     }
     return <Link to="/logout" className="OctobluAppBar-link">Sign out</Link>
@@ -33,7 +33,7 @@ class AppLayout extends Component {
         <AppBar>
           <AppBarPrimary>
             <a className="OctobluAppBar-link OctobluAppBar-link--logo" href="https://app.octoblu.com">
-              <img className="OctobluAppBar-logo" src="//d2zw6j512x6z0x.cloudfront.net/master/d48dc0bf063ecc1477d1163831ee8ff17efbbfae/assets/images/octoblu_logo.png"/>
+              <img alt="Octoblu Logo" className="OctobluAppBar-logo" src="//d2zw6j512x6z0x.cloudfront.net/master/d48dc0bf063ecc1477d1163831ee8ff17efbbfae/assets/images/octoblu_logo.png" />
             </a>
 
             <nav className="OctobluAppBar-nav OctobluAppBar-nav--primary" role="navigation">

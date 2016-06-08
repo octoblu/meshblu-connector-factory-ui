@@ -9,7 +9,15 @@ const initialState = {
   latest: [],
 }
 
-export default function types(state=initialState, action) {
+function getConnectors({ connectors }) {
+  return _.filter(connectors, (connector = {}) => {
+    if (!connector.connector) return false
+    if (connector.category !== 'device') return false
+    return true
+  })
+}
+
+export default function types(state = initialState, action) {
   switch (action.type) {
     case actionTypes.FETCH_AVAILABLE_NODES_REQUEST:
       return { ...state, fetching: true }
@@ -18,12 +26,7 @@ export default function types(state=initialState, action) {
       return { ...state, error: action.error, fetching: false, legacy: [], latest: [] }
 
     case actionTypes.FETCH_AVAILABLE_NODES_SUCCESS:
-      const connectors = _.filter(action.connectors, (connector={}) => {
-        if(!connector.connector) return false
-        if(connector.category != 'device') return false
-        return true
-      })
-      return { ...state, legacy: connectors, latest: latestConnectors, fetching: false, error: null }
+      return { ...state, legacy: getConnectors(action), latest: latestConnectors, fetching: false, error: null }
 
     default:
       return state

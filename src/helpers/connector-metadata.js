@@ -1,6 +1,20 @@
 import _ from 'lodash';
 import { getAllLatestVersions } from '../services/go-version-service';
 
+export function getConnectorName(connector) {
+  return connector.replace(/^meshblu\-(connector\-)/, '');
+}
+
+function getLegacyMetadata({ pkg }) {
+  return {
+    githubSlug: `octoblu/${pkg.name}`,
+  };
+}
+
+function getNewMetadata({ pkg }) {
+  return pkg.meshbluConnector;
+}
+
 export function getConnectorMetadata({ pkg }, callback) {
   const { version, name } = pkg;
   const connector = getConnectorName(name);
@@ -11,8 +25,8 @@ export function getConnectorMetadata({ pkg }, callback) {
     metadata = getNewMetadata({ pkg });
   }
 
+  const { githubSlug } = metadata;
   let {
-    githubSlug,
     connectorAssemblerVersion,
     dependencyManagerVersion,
     ignitionVersion,
@@ -21,14 +35,14 @@ export function getConnectorMetadata({ pkg }, callback) {
   const tag = `v${version}`;
 
   getAllLatestVersions((error, versions) => {
-    if(error != null) return callback(error)
-    if(!ignitionVersion) {
+    if (error != null) return callback(error)
+    if (!ignitionVersion) {
       ignitionVersion = versions.ignitionVersion;
     }
-    if(!dependencyManagerVersion) {
+    if (!dependencyManagerVersion) {
       dependencyManagerVersion = versions.dependencyManagerVersion;
     }
-    if(!connectorAssemblerVersion) {
+    if (!connectorAssemblerVersion) {
       connectorAssemblerVersion = versions.connectorAssemblerVersion;
     }
     callback(null, {
@@ -41,19 +55,4 @@ export function getConnectorMetadata({ pkg }, callback) {
       ignitionVersion,
     })
   })
-}
-
-function getLegacyMetadata({ pkg }) {
-  return {
-    githubSlug: `octoblu/${pkg.name}`
-  };
-}
-
-function getNewMetadata({ pkg }) {
-  return pkg.meshbluConnector;
-}
-
-
-export function getConnectorName(connector) {
-  return connector.replace(/^meshblu\-(connector\-)/, '');
 }

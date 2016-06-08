@@ -3,7 +3,6 @@ import _ from 'lodash';
 
 export function getSchema({ pkg }, callback) {
   if (!_.get(pkg, 'meshbluConnector.schemasUrl')) {
-    console.error('No schema url', pkg.meshbluConnector)
     callback(null, {});
     return
   }
@@ -21,11 +20,10 @@ export function getSchema({ pkg }, callback) {
       }
       const { body, text } = response;
       let jsonResponse = body;
-      if(!body && text) {
+      if (!body && text) {
         try {
           jsonResponse = JSON.parse(text);
-        } catch(error) {
-          console.error(error);
+        } catch (error) {
           callback(new Error('Unable to Parse Schema'));
           return;
         }

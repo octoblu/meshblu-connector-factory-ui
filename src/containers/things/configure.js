@@ -1,10 +1,11 @@
 import _ from 'lodash';
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import PageLayout from '../page-layout';
 
 import {
-  EmptyState
+  EmptyState,
 } from 'zooid-ui'
 
 import DeviceSchema from '../../components/DeviceSchema';
@@ -26,7 +27,7 @@ import {
 
 import { getSchema } from '../../services/schema-service';
 
-export default class Configure extends Component {
+class Configure extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -57,7 +58,8 @@ export default class Configure extends Component {
   }
 
   sendPingAndUpdate() {
-    if(!this.checkForUpdates) return
+    if (!this.checkForUpdates) return
+    const { uuid } = this.props.params
     sendPing(this.state.device, (error, statusDevice) => {
       if (error) return console.error(error);
       _.delay(this.sendPingAndUpdate, 5000);
@@ -65,7 +67,7 @@ export default class Configure extends Component {
     });
   }
 
-  handleConfig({ properties, selected }) {
+  handleConfig({ properties }) {
     const { uuid } = this.props.params;
     clearTimeout(this.messageTimeout);
     updateDevice({ uuid, properties }, (error) => {
@@ -82,19 +84,19 @@ export default class Configure extends Component {
   }
 
   changeConnectorState({ stopped }) {
-    let { connectorMetadata } = this.state.device;
+    const { connectorMetadata } = this.state.device;
     connectorMetadata.stopped = stopped;
     this.handleConfig({ properties: { connectorMetadata } })
   }
 
   updateVersion({ version, pkg }) {
-    let { connectorMetadata } = this.state.device;
+    const { connectorMetadata } = this.state.device;
     connectorMetadata.version = version;
-    getSchema({ pkg }, (error, schema={}) => {
-      if(error) return this.setState({ error })
+    getSchema({ pkg }, (error, schema = {}) => {
+      if (error) return this.setState({ error })
       const { schemas } = schema
-      const properties = {connectorMetadata}
-      if(schemas){
+      const properties = { connectorMetadata }
+      if (schemas) {
         properties.schemas = schemas
       }
       this.handleConfig({ properties })
@@ -113,9 +115,9 @@ export default class Configure extends Component {
   clearErrors() {
     const { device, statusDevice } = this.state
     statusDevice.errors = []
-    this.setState({ showErrors: false, statusDevice: statusDevice })
+    this.setState({ showErrors: false, statusDevice })
     updateStatusDevice({ device, properties: { errors: [], updateErrorsAt: null } }, (error) => {
-      if(error) return console.error(error);
+      if (error) return console.error(error);
     })
   }
 
@@ -125,33 +127,36 @@ export default class Configure extends Component {
 
   getButtons() {
     const { device, statusDevice, details } = this.state;
-    if(device == null) {
+    if (device == null) {
       return null
     }
     const { connectorMetadata } = device;
-    let buttons = [];
-    if(statusDevice != null) {
-      buttons.push(<ConnectorStatus device={statusDevice} connectorMetadata={device.connectorMetadata}/>)
+    const buttons = [];
+    if (statusDevice != null) {
+      buttons.push(<ConnectorStatus device={statusDevice} connectorMetadata={device.connectorMetadata} />)
     } else {
       buttons.push(<ConnectorStatus device={device} connectorMetadata={device.connectorMetadata} />)
     }
 
-    if(connectorMetadata != null) {
+    if (connectorMetadata != null) {
       const { stopped, version } = connectorMetadata;
       buttons.push(<StopStartButton
         changeState={this.changeConnectorState}
         stopped={stopped}
       />)
-      if(details != null) {
+      if (details != null) {
         buttons.push(<VersionStatus version={version} onSelect={this.changeVersion} />)
       }
     }
 
-    buttons.push(<Link
-      to={`/connectors/generate/${device.uuid}`}
-      className="Button Button--hollow-primary">
+    buttons.push(
+      <Link
+        to={`/connectors/generate/${device.uuid}`}
+        className="Button Button--hollow-primary"
+      >
         Generate Update Installer
-      </Link>);
+      </Link>
+    );
 
     return _.map(buttons, (button, index) => {
       return <li key={index}>{button}</li>
@@ -165,7 +170,8 @@ export default class Configure extends Component {
         title="Configure Thing"
         loading={loading}
         error={error}
-        actions={this.getButtons()}>
+        actions={this.getButtons()}
+      >
         {content}
       </PageLayout>
     );
@@ -174,18 +180,19 @@ export default class Configure extends Component {
   render() {
     const { device, model, message, changeVersion, showErrors, statusDevice } = this.state;
 
-    if(changeVersion) {
+    if (changeVersion) {
       const { details, selectedVersion } = this.state;
       const { type } = device;
       return this.renderContent(<VersionsSelect
         onSelect={this.updateVersion}
         selected={selectedVersion}
         type={type}
-        versions={details.versions} />);
+        versions={details.versions}
+      />);
     }
 
-    if(!_.isEmpty(statusDevice.errors)){
-      if(showErrors) {
+    if (!_.isEmpty(statusDevice.errors)) {
+      if (showErrors) {
         return this.renderContent(<StatusDeviceErrors statusDevice={statusDevice} clearErrors={this.clearErrors} />)
       }
       return this.renderContent(<EmptyState action={this.showErrors} cta="Show Errors" title="Device Errored" />)
@@ -199,3 +206,9 @@ export default class Configure extends Component {
     );
   }
 }
+
+Configure.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+}
+
+export default connect()(Configure)

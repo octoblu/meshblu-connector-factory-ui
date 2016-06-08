@@ -1,6 +1,5 @@
-import request from 'superagent';
 import * as actionTypes from '../../constants/action-types';
-import { getDevices } from '../../services/device-service';
+import { getDevices, getDevice } from '../../services/device-service';
 import { fetchConnectorDetails } from '../connectors/detail-actions'
 
 function fetchMyDevicesRequest() {
@@ -28,7 +27,7 @@ export function fetchMyDevices({ useBaseProps }) {
   return (dispatch) => {
     dispatch(fetchMyDevicesRequest())
     getDevices((error, devices) => {
-      if(error) {
+      if (error) {
         dispatch(fetchMyDevicesFailure(error))
         return
       }
@@ -62,7 +61,7 @@ export function fetchDevice({ uuid, useBaseProps }) {
   return (dispatch) => {
     dispatch(fetchDeviceRequest())
     getDevice({ uuid }, (error, device) => {
-      if(error) {
+      if (error) {
         dispatch(fetchDeviceFailure(error))
         return
       }

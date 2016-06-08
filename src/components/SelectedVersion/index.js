@@ -1,10 +1,8 @@
 import React, { PropTypes } from 'react';
-import _  from 'lodash';
 
 import {
   Button,
   Card,
-  DeviceIcon,
 } from 'zooid-ui';
 
 import VersionInfo from '../VersionInfo';
@@ -13,14 +11,13 @@ import './index.css';
 
 const propTypes = {
   info: PropTypes.object.isRequired,
-  type: PropTypes.string,
   onSelect: PropTypes.func.isRequired,
 };
 
-const SelectedVersion = ({ info, type, onSelect }) => {
-  let title = "Selected"
+const SelectedVersion = ({ info, onSelect }) => {
+  let title = 'Selected'
   if (info.latest) {
-    title = "Latest Version"
+    title = 'Latest Version'
   }
   const onSelectEvent = () => {
     onSelect(info)

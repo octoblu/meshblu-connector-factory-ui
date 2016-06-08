@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import _  from 'lodash';
 import SelectedVersion from '../SelectedVersion';
 import Versions from '../Versions';
 import OrLine from '../OrLine';
@@ -8,17 +7,16 @@ import './index.css';
 
 const propTypes = {
   onSelect: PropTypes.func.isRequired,
-  type: PropTypes.string,
   selected: PropTypes.object,
   versions: PropTypes.object,
 };
 
-const VersionsSelect = ({ type="", selected, onSelect, versions }) => {
+const VersionsSelect = ({ selected, onSelect, versions }) => {
   let selectedVersion = null;
-  if(selected) {
+  if (selected) {
     selectedVersion = (
       <span>
-        <SelectedVersion info={selected} onSelect={onSelect} type={type} />
+        <SelectedVersion info={selected} onSelect={onSelect} />
         <OrLine />
       </span>
     )

@@ -4,10 +4,10 @@ const initialState = {
   error: null,
   generating: false,
   key: null,
-  uuid: null
+  uuid: null,
 }
 
-export default function types(state=initialState, action) {
+export default function types(state = initialState, action) {
   switch (action.type) {
     case actionTypes.CONNECTOR_GENERATED_REQUEST:
       return { ...state, generating: true }

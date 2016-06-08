@@ -1,10 +1,8 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-import _  from 'lodash';
 
 import {
   Card,
-  DeviceIcon,
 } from 'zooid-ui';
 
 import './index.css';

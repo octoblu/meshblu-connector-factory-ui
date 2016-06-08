@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
@@ -6,8 +5,6 @@ import { push } from 'react-router-redux';
 import PageLayout from '../page-layout';
 
 import VersionsSelect from '../../components/VersionsSelect';
-import Download from '../../components/Download';
-import ConfigureCard from '../../components/ConfigureCard';
 
 import { generateConnectorAction } from '../../actions/connectors/connector-actions';
 import { selectVersion } from '../../actions/connectors/detail-actions';
@@ -27,7 +24,7 @@ class Generate extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { key, uuid } = nextProps.connector;
-    if(key && uuid) {
+    if (key && uuid) {
       this.props.dispatch(push(`/connectors/generated/${uuid}/${key}`))
     }
   }
@@ -47,28 +44,28 @@ class Generate extends Component {
     const { device, error, fetching } = this.props
     const { info, selectedVersion } = this.props.details
     return (
-      <PageLayout type={device.type} title="Generate Installer" loading={loading} error={error}>
+      <PageLayout type={device.type} title="Generate Installer" loading={fetching} error={error}>
         <VersionsSelect
           onSelect={this.updateAndGenerate}
           selected={selectedVersion}
-          type={type}
-          versions={info.versions} />
+          versions={info.versions}
+        />
       </PageLayout>
     )
   }
 }
 
 Generate.propTypes = {
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
 }
 
 function mapStateToProps({ device, details, connector }) {
   const state = { device: device.item, details, connector }
   const error = device.error || details.error || connector.error
-  if(error) {
+  if (error) {
     return { ...state, error, fetching: false }
   }
-  if(device.fetching || details.fetching || connector.generating) {
+  if (device.fetching || details.fetching || connector.generating) {
     return { ...state, fetching: true, error: null }
   }
   return { ...state, fetching: false, error: null }

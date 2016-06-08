@@ -23,18 +23,18 @@ class StatusDeviceErrors extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      showErrors: false
+      showErrors: false,
     }
   }
 
-  render(){
+  render() {
     const { statusDevice, clearErrors } = this.props
-    if(_.isEmpty(statusDevice.errors)) {
+    if (_.isEmpty(statusDevice.errors)) {
       return null
     }
 
     let title = 'Errors'
-    if(statusDevice.updateErrorsAt) {
+    if (statusDevice.updateErrorsAt) {
       const date = moment(statusDevice.updateErrorsAt).fromNow()
       title = `Errors from ${date}`
     }
@@ -44,12 +44,13 @@ class StatusDeviceErrors extends Component {
         <div className="CenterIt">
           <Button kind="primary" onClick={clearErrors}>Clear Errors</Button>
         </div>
-        <DebugLines lines={statusDevice.errors} title={title}></DebugLines>
+        <DebugLines lines={statusDevice.errors} title={title} />
       </div>
     )
   }
-};
+}
 
 StatusDeviceErrors.propTypes = propTypes;
+StatusDeviceErrors.defaultProps = defaultProps;
 
 export default StatusDeviceErrors;

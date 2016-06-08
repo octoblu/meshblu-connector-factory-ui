@@ -3,7 +3,7 @@ import { getSchema } from '../services/schema-service';
 import {
   updateDevice,
   registerConnector,
-  generateAndStoreToken
+  generateAndStoreToken,
 } from '../services/device-service';
 
 import { generateOtp } from '../services/otp-service';
@@ -15,7 +15,7 @@ export function createConnector({ pkg, connector }, callback) {
     const connectorOptions = {
       connector,
       version: pkg.version,
-      customProps: _.assign({ name: _.startCase(connector) }, schema)
+      customProps: _.assign({ name: _.startCase(connector) }, schema),
     }
     registerConnector(connectorOptions, (error, device) => {
       if (error) return callback(error);
@@ -36,11 +36,11 @@ export function updateAndGenerateKey({ pkg, connector, uuid }, callback) {
   getSchema({ pkg }, (error, schema) => {
     if (error) return callback(error);
     const properties = _.assign({
-      connector: connector,
+      connector,
       connectorMetadata: {
         stopped: false,
         version: pkg.version,
-      }
+      },
     }, schema);
     updateDevice({ uuid, properties }, (error) => {
       if (error != null) return callback(error);

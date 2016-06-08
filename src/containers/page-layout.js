@@ -18,18 +18,18 @@ const propTypes = {
   actions: PropTypes.array,
   loading: PropTypes.bool,
   type: PropTypes.string,
-  error: PropTypes.string
+  error: PropTypes.string,
 };
 
 const defaultProps = {
   loading: false,
-  actions: []
+  actions: [],
 }
 
 export default class PageLayout extends Component {
   getActions() {
     const { actions } = this.props
-    if(_.isEmpty(actions)) {
+    if (_.isEmpty(actions)) {
       return null
     }
     return (
@@ -41,7 +41,7 @@ export default class PageLayout extends Component {
 
   getIcon() {
     const { type } = this.props
-    if(!type) return null
+    if (!type) return null
     return <DeviceIcon className="ConnectorIcon" type={type} />
   }
 
@@ -63,7 +63,7 @@ export default class PageLayout extends Component {
     const { children, loading, error } = this.props
 
     if (loading) {
-      return this.renderPage(<Spinner size="large"/>)
+      return this.renderPage(<Spinner size="large" />)
     }
 
     if (error) {

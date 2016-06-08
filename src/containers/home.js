@@ -36,9 +36,9 @@ export default class Home extends Component {
             Here is the basics. Each connector is a simple node library that handles a variety of events from Meshblu.
             Those connectors, are pre-compiled and deployed to github releases.
             When you create a device here,
-              it create the device in Meshblu,
-              generate a One Time Password (OTP),
-              and create / download a pre-configured installer.
+            it create the device in Meshblu,
+            generate a One Time Password (OTP),
+            and create / download a pre-configured installer.
           </p>
           <p>
             Once downloaded, you'll need to open the the DMG on Mac OS.
@@ -47,8 +47,8 @@ export default class Home extends Component {
           </p>
           <p>
             During the installation process,
-              the installer will download the <a href="https://github.com/octoblu/go-meshblu-connector-assembler">assembler</a>,
-              and the <a href="https://github.com/octoblu/go-meshblu-connector-dependency-manager">dependency manager</a>.
+            the installer will download the <a href="https://github.com/octoblu/go-meshblu-connector-assembler">assembler</a>,
+            and the <a href="https://github.com/octoblu/go-meshblu-connector-dependency-manager">dependency manager</a>.
             The dependency manager will download and install thing like node and npm.
             The assembler handles downloading, extracting, configuring and setting up the service files for the connector.
             Both are cross-platform go libaries.
@@ -60,6 +60,5 @@ export default class Home extends Component {
         </div>
       </PageLayout>
     );
-
   }
 }

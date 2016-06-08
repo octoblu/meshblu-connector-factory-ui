@@ -10,7 +10,7 @@ import {
 
 import classNames from 'classnames';
 
-const InstalledDevices = ({ devices, children, className }) => {
+const InstalledDevices = ({ devices, className }) => {
   const componentClass = classNames(
     'InstalledDevices',
     className
@@ -20,9 +20,9 @@ const InstalledDevices = ({ devices, children, className }) => {
     const { name, uuid } = device;
     let type = device.type || 'device:other';
 
-    const nameStr = name ? name : type;
+    const nameStr = name || type;
 
-    return <Card key={device.uuid} className="InstalledDevice">
+    return (<Card key={device.uuid} className="InstalledDevice">
       <aside><DeviceIcon type={type} className="InstalledDevice-icon" /></aside>
       <main className="InstalledDevice-main">
         <div className="InstalledDevice-body">
@@ -32,17 +32,17 @@ const InstalledDevices = ({ devices, children, className }) => {
           <Link to={`/things/configure/${uuid}`} className="InstalledDevice-button">Configure Thing</Link>
         </footer>
       </main>
-    </Card>
+    </Card>)
   })
 
-  return <div className={componentClass}>
+  return (<div className={componentClass}>
     {items}
-  </div>
+  </div>)
 };
 
 InstalledDevices.propTypes = {
   className: PropTypes.string,
-  devices: PropTypes.array.isRequired
+  devices: PropTypes.array.isRequired,
 }
 
 export default InstalledDevices

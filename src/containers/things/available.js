@@ -7,10 +7,6 @@ import { fetchAvailableNodes } from '../../actions/things/available-actions'
 import NodeTypes from '../../components/NodeTypes';
 
 class Available extends Component {
-  constructor(props) {
-    super(props)
-  }
-
   componentDidMount() {
     this.props.dispatch(fetchAvailableNodes());
   }
@@ -18,19 +14,19 @@ class Available extends Component {
   render() {
     const { fetching, latest, legacy, error } = this.props;
 
-    return <PageLayout title="Available Things" loading={fetching} error={error}>
+    return (<PageLayout title="Available Things" loading={fetching} error={error}>
       <div>
         <h3>Compatible with the new Connector Installer</h3>
         <NodeTypes nodeTypes={latest} />
         <h3>Backwards compatible with Connector Installer</h3>
         <NodeTypes nodeTypes={legacy} />
       </div>
-    </PageLayout>
+    </PageLayout>)
   }
 }
 
 Available.propTypes = {
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
 }
 
 function mapStateToProps({ available }) {

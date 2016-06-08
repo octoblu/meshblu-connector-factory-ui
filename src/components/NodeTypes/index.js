@@ -1,17 +1,16 @@
 import _ from 'lodash'
 import React, { PropTypes } from 'react';
-import {Link} from 'react-router'
+import { Link } from 'react-router'
 
 import './index.css';
 import {
-  Button,
   Card,
-  DeviceIcon
+  DeviceIcon,
 } from 'zooid-ui';
 
 import classNames from 'classnames';
 
-const NodeTypes = ({ nodeTypes, children, className }) => {
+const NodeTypes = ({ nodeTypes, className }) => {
   const componentClass = classNames(
     'NodeTypes',
     className
@@ -20,7 +19,7 @@ const NodeTypes = ({ nodeTypes, children, className }) => {
   let items = _.map(nodeTypes, (_nodeType) => {
     const { name, _id, type, connector } = _nodeType;
 
-    return <Card key={_id} className="NodeType">
+    return (<Card key={_id} className="NodeType">
       <aside><DeviceIcon type={type} className="NodeType-icon" /></aside>
       <main className="NodeType-main">
         <div className="NodeType-body">
@@ -30,17 +29,17 @@ const NodeTypes = ({ nodeTypes, children, className }) => {
           <Link to={`/connectors/create/${connector}`} className="NodeType-button">Create</Link>
         </footer>
       </main>
-    </Card>
+    </Card>)
   })
 
-  return <div className={componentClass}>
+  return (<div className={componentClass}>
     {items}
-  </div>
+  </div>)
 };
 
 NodeTypes.propTypes = {
   className: PropTypes.string,
-  nodeTypes: PropTypes.array.isRequired
+  nodeTypes: PropTypes.array.isRequired,
 }
 
 export default NodeTypes

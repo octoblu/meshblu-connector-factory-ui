@@ -1,8 +1,7 @@
+import _ from 'lodash';
 import React, { Component, PropTypes } from 'react';
 
 import {
-  Page,
-  PageHeader,
   Spinner,
   ErrorState,
   Button,
@@ -25,53 +24,12 @@ export default class Download extends Component {
     super(props);
     this.state = {
       error: null,
-      downloading: true,
+      downloading: false,
       downloadURI: null,
     };
     this.download = this.download.bind(this);
     this.getButtonRow = this.getButtonRow.bind(this);
     this.getButton = this.getButton.bind(this);
-  }
-
-  componentDidMount() {
-    const { otp } = this.props;
-    if(!otp) {
-      this.setState({ error: new Error('Invalid Key') })
-    }
-    this.setState({ downloading: false });
-  }
-
-  download(platform) {
-    const { otp } = this.props;
-    return () => {
-      this.setState({ downloading: true });
-      getInstallerUri({ platform }, (error, uri) => {
-        if(error) {
-          return this.setState({ error });
-        }
-        const fileName = getFileName({ otp, platform });
-        const link = document.createElement('a');
-        if (!_.isUndefined(link.download)) {
-          link.download = fileName;
-        }
-        const downloadURI = getDownloadUri({ uri, fileName });
-        _.delay(() => {
-          this.props.onDownload()
-          this.setState({ downloadURI , downloading: false });
-        }, 10000)
-        link.href = downloadURI;
-        link.click();
-      });
-    }
-  }
-
-  renderContent(content) {
-    const { connector } = this.props;
-    return (
-      <div>
-        {content}
-      </div>
-    );
   }
 
   getButtonRow(os, platforms) {
@@ -106,8 +64,41 @@ export default class Download extends Component {
         key={platform}
         kind="hollow-primary"
         onClick={this.download(platform)}
-        ><i className="Download--icon">{Icon}</i> {arch} Download
+      >
+        <i className="Download--icon">{Icon}</i> {arch} Download
       </Button>
+    );
+  }
+
+  download(platform) {
+    const { otp } = this.props;
+    return () => {
+      this.setState({ downloading: true });
+      getInstallerUri({ platform }, (error, uri) => {
+        if (error) {
+          return this.setState({ error });
+        }
+        const fileName = getFileName({ otp, platform });
+        const link = document.createElement('a');
+        if (!_.isUndefined(link.download)) {
+          link.download = fileName;
+        }
+        const downloadURI = getDownloadUri({ uri, fileName });
+        _.delay(() => {
+          this.props.onDownload()
+          this.setState({ downloadURI, downloading: false });
+        }, 10000)
+        link.href = downloadURI;
+        link.click();
+      });
+    }
+  }
+
+  renderContent(content) {
+    return (
+      <div>
+        {content}
+      </div>
     );
   }
 

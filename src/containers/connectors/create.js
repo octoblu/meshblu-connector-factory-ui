@@ -6,8 +6,6 @@ import { push } from 'react-router-redux'
 import PageLayout from '../page-layout'
 
 import VersionsSelect from '../../components/VersionsSelect';
-import Download from '../../components/Download';
-import ConfigureCard from '../../components/ConfigureCard';
 
 import { fetchConnectorDetails, selectVersion } from '../../actions/connectors/detail-actions';
 import { createConnectorAction } from '../../actions/connectors/connector-actions';
@@ -17,7 +15,7 @@ class Create extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedVersion: null
+      selectedVersion: null,
     }
     this.versionSelect = this.versionSelect.bind(this);
     this.createDevice = this.createDevice.bind(this);
@@ -32,9 +30,19 @@ class Create extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { key, uuid } = nextProps.connector;
-    if(key && uuid) {
+    if (key && uuid) {
       this.props.dispatch(push(`/connectors/generated/${uuid}/${key}`))
     }
+  }
+
+  getConnectorType() {
+    const { legacy, latest } = this.props.available
+    const { connector } = this.props.params
+    const foundLatest = _.find(latest, { connector })
+    if (foundLatest) return foundLatest.type
+    const foundLegacy = _.find(legacy, { connector })
+    if (foundLegacy) return foundLegacy.type
+    return ''
   }
 
   createDevice() {
@@ -45,16 +53,6 @@ class Create extends Component {
 
   versionSelect(selectedVersion) {
     this.props.dispatch(selectVersion(selectedVersion))
-  }
-
-  getConnectorType() {
-    const { legacy, latest } = this.props.available
-    const { connector } = this.props.params
-    const foundLatest = _.find(latest, { connector })
-    if(foundLatest) return foundLatest.type
-    const foundLegacy = _.find(legacy, { connector })
-    if(foundLegacy) return foundLegacy.type
-    return ""
   }
 
   renderContent(content) {
@@ -76,21 +74,22 @@ class Create extends Component {
       onSelect={this.createDevice}
       selected={selectedVersion}
       type={type}
-      versions={info.versions} />);
+      versions={info.versions}
+    />);
   }
 }
 
 Create.propTypes = {
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
 }
 
 function mapStateToProps({ available, details, connector }) {
   const state = { available, details, connector }
   const error = available.error || details.error || connector.error
-  if(error) {
+  if (error) {
     return { ...state, error, fetching: false }
   }
-  if(available.fetching || details.fetching || connector.generating) {
+  if (available.fetching || details.fetching || connector.generating) {
     return { ...state, fetching: true, error: null }
   }
   return { ...state, fetching: false, error: null }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PageLayout from '../page-layout';
 import { setBreadcrumbs } from '../../actions/page-actions'
 
@@ -12,7 +13,7 @@ import Download from '../../components/Download';
 import ConfigureCard from '../../components/ConfigureCard';
 import OrLine from '../../components/OrLine';
 
-export default class Create extends Component {
+class Create extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -81,3 +82,9 @@ export default class Create extends Component {
     );
   }
 }
+
+function mapStateToProps() {
+  return {}
+}
+
+export default connect(mapStateToProps)(Create)

@@ -39,11 +39,9 @@ function fetchDeviceSuccess({ device, useBaseProps }) {
   }
 }
 
-export function fetchDevice({ uuid, useBaseProps, isAfterUpdate }) {
+export function fetchDevice({ uuid, useBaseProps, fetching = true }) {
   return (dispatch) => {
-    if (!isAfterUpdate) {
-      dispatch(setFetching(true))
-    }
+    dispatch(setFetching(fetching))
     getDevice({ uuid }, (error, device) => {
       dispatch(setFetching(false))
       if (error) {
@@ -52,7 +50,7 @@ export function fetchDevice({ uuid, useBaseProps, isAfterUpdate }) {
       }
       const { connector, connectorMetadata } = device
       const { version } = connectorMetadata
-      dispatch(fetchConnectorDetails({ connector, version }))
+      dispatch(fetchConnectorDetails({ connector, version, fetching }))
       dispatch(fetchDeviceSuccess({ device, useBaseProps }))
     })
   }
@@ -74,7 +72,7 @@ export function updateDeviceAction({ uuid, properties }) {
         return
       }
       dispatch(updateDeviceSuccess())
-      dispatch(fetchDevice({ uuid, isAfterUpdate: true }))
+      dispatch(fetchDevice({ uuid, fetching: false }))
     });
   }
 }

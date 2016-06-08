@@ -36,16 +36,14 @@ function updateStatusDeviceSuccess() {
   }
 }
 
-export function fetchStatusDevice({ device, useBaseProps, isPingResult }) {
+export function fetchStatusDevice({ device, useBaseProps, fetching = true, isPingResult = false }) {
   return (dispatch) => {
-    if (!isPingResult) {
-      dispatch(setFetching(true))
-    }
     const statusDeviceUUID = getStatusDeviceUUID(device)
-    if (statusDeviceUUID == null) {
+    if (!statusDeviceUUID) {
       dispatch(noStatusDevice())
       return
     }
+    dispatch(setFetching(fetching))
     getDevice({ uuid: statusDeviceUUID }, (error, device) => {
       if (error) {
         dispatch(setError(error))
@@ -77,7 +75,7 @@ export function pingStatusDevice({ device, useBaseProps }) {
         return
       }
       _.delay(() => {
-        dispatch(fetchStatusDevice({ device, useBaseProps, isPingResult: true }))
+        dispatch(fetchStatusDevice({ device, useBaseProps, fetching: false, isPingResult: true }))
       }, 2000)
     });
   }

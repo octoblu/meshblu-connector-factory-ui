@@ -4,6 +4,7 @@ import { BASE_DEVICE_PROPS } from '../../constants/devices'
 
 const initialState = {
   item: {},
+  updatedAt: null,
 }
 
 function getDevice({ device, useBaseProps }) {
@@ -14,7 +15,7 @@ function getDevice({ device, useBaseProps }) {
 export default function types(state = initialState, action) {
   switch (action.type) {
     case actionTypes.FETCH_DEVICE_SUCCESS:
-      return { ...state, item: getDevice(action) }
+      return { ...state, item: getDevice(action), updatedAt: Date.now() }
 
     default:
       return state

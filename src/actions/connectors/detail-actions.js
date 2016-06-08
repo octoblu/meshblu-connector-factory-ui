@@ -14,9 +14,9 @@ function getVersion({ details, version }) {
   return version
 }
 
-export function fetchConnectorDetails({ connector, version }) {
+export function fetchConnectorDetails({ connector, version, fetching = true }) {
   return (dispatch) => {
-    dispatch(setFetching(true))
+    dispatch(setFetching(fetching))
     connectorDetails({ connector }, (error, details) => {
       dispatch(setFetching(false))
       if (error) {

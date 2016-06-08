@@ -8,9 +8,6 @@ const initialState = {
 
 export default function types(state = initialState, action) {
   switch (action.type) {
-    case actionTypes.NO_STATUS_DEVICE:
-      return initialState
-
     case actionTypes.PAGE_LAYOUT_FETCHING:
       return { ...state, fetching: action.fetching }
 

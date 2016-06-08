@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import moment from 'moment';
 import PageLayout from '../page-layout';
 import { setBreadcrumbs } from '../../actions/page-actions'
 
@@ -18,12 +19,15 @@ import StatusDeviceErrors from '../../components/StatusDeviceErrors';
 
 import { selectVersion } from '../../actions/connectors/detail-actions';
 import { fetchDevice, updateDeviceAction } from '../../actions/things/device-actions';
-import {
-  updateStatusDevice,
-  pingStatusDevice,
-} from '../../actions/things/status-device-actions';
+import { updateStatusDevice, pingStatusDevice } from '../../actions/things/status-device-actions';
 
 import { getSchema } from '../../services/schema-service';
+
+function needsUpdate({ updatedAt }) {
+  if (!updatedAt) return true
+  const tenSecondsAgo = moment().subtract(10, 'seconds')
+  return moment(updatedAt).isBefore(tenSecondsAgo)
+}
 
 class Configure extends Component {
   constructor(props) {
@@ -35,16 +39,15 @@ class Configure extends Component {
     this.getButtons  = this.getButtons.bind(this);
     this.handleConfig  = this.handleConfig.bind(this);
     this.changeConnectorState  = this.changeConnectorState.bind(this);
-    this.sendPingAndUpdate  = this.sendPingAndUpdate.bind(this);
     this.updateVersion = this.updateVersion.bind(this);
     this.changeVersion = this.changeVersion.bind(this);
     this.versionSelect  = this.versionSelect.bind(this);
     this.showErrors = this.showErrors.bind(this);
     this.clearErrors = this.clearErrors.bind(this);
+    this.shouldUpdateDevices = this.shouldUpdateDevices.bind(this);
   }
 
   componentDidMount() {
-    const { uuid } = this.props.params;
     this.props.dispatch(setBreadcrumbs([
       {
         label: 'Home',
@@ -58,48 +61,38 @@ class Configure extends Component {
         label: 'Configure',
       },
     ]))
-    this.props.dispatch(fetchDevice({ uuid, useBaseProps: true }))
-    this.checkForUpdates = true
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { device } = nextProps;
-    if (device.uuid != null) {
-      this.sendPingAndUpdate()
-    }
+    const { uuid } = this.props.params
+    this.props.dispatch(fetchDevice({ uuid }))
+    this.updateInterval = setInterval(this.shouldUpdateDevices, 1000)
   }
 
   componentWillUnmount() {
-    this.checkForUpdates = false
+    clearInterval(this.updateInterval)
   }
 
   getButtons() {
     const { device, statusDevice, details } = this.props;
-    if (device == null) {
+    if (!device.item) {
       return null
     }
-    const { connectorMetadata } = device;
+    const { connectorMetadata } = device.item;
     const buttons = [];
-    if (statusDevice != null) {
-      buttons.push(<ConnectorStatus device={statusDevice} connectorMetadata={device.connectorMetadata} />)
-    } else {
-      buttons.push(<ConnectorStatus device={device} connectorMetadata={device.connectorMetadata} />)
-    }
+    buttons.push(<ConnectorStatus device={statusDevice.item} connectorMetadata={device.item.connectorMetadata} />)
 
-    if (connectorMetadata != null) {
+    if (connectorMetadata) {
       const { stopped, version } = connectorMetadata;
       buttons.push(<StopStartButton
         changeState={this.changeConnectorState}
         stopped={stopped}
       />)
-      if (details != null) {
+      if (details) {
         buttons.push(<VersionStatus version={version} onSelect={this.changeVersion} />)
       }
     }
 
     buttons.push(
       <Link
-        to={`/connectors/generate/${device.uuid}`}
+        to={`/connectors/generate/${device.item.uuid}`}
         className="Button Button--hollow-primary"
       >
         Generate Update Installer
@@ -109,6 +102,19 @@ class Configure extends Component {
     return _.map(buttons, (button, index) => {
       return <li key={index}>{button}</li>
     })
+  }
+
+  shouldUpdateDevices() {
+    const { device, statusDevice } = this.props;
+    if (!device.item) return
+
+    if (needsUpdate(statusDevice)) {
+      this.props.dispatch(pingStatusDevice({ device: device.item }))
+    }
+
+    if (needsUpdate(device)) {
+      this.props.dispatch(fetchDevice({ uuid: device.item.uuid, fetching: false }))
+    }
   }
 
   changeVersion() {
@@ -122,7 +128,7 @@ class Configure extends Component {
   clearErrors() {
     const { device } = this.props
     const properties = { errors: [], updateErrorsAt: null }
-    this.props.dispatch(updateStatusDevice({ device, properties }))
+    this.props.dispatch(updateStatusDevice({ device: device.item, properties }))
   }
 
   versionSelect(selectedVersion) {
@@ -130,7 +136,7 @@ class Configure extends Component {
   }
 
   updateVersion({ version, pkg }) {
-    const { connectorMetadata } = this.props.device;
+    const { connectorMetadata } = this.props.device.item;
     connectorMetadata.version = version;
     getSchema({ pkg }, (error, schema = {}) => {
       if (error) return this.setState({ error })
@@ -145,7 +151,7 @@ class Configure extends Component {
   }
 
   changeConnectorState({ stopped }) {
-    const { connectorMetadata } = this.props.device;
+    const { connectorMetadata } = this.props.device.item;
     connectorMetadata.stopped = stopped;
     this.handleConfig({ properties: { connectorMetadata } })
   }
@@ -155,24 +161,17 @@ class Configure extends Component {
     this.props.dispatch(updateDeviceAction({ uuid, properties }))
   }
 
-  sendPingAndUpdate() {
-    if (!this.checkForUpdates) return
-    const { device } = this.props
-    this.props.dispatch(pingStatusDevice({ device, useBaseProps: true }))
-  }
-
   renderContent(content) {
     const { device } = this.props;
-    const { type, uuid } = device
-    let title = 'Configure'
-    if (uuid && type) {
-      title = `${type} ${uuid}`
-    }
+    const { type, uuid, name } = device.item
+    const title = name || ''
     return (
       <PageLayout
         title={title}
+        type={type}
         actions={this.getButtons()}
       >
+        <h3>UUID: {uuid}</h3>
         {content}
       </PageLayout>
     );
@@ -191,11 +190,11 @@ class Configure extends Component {
       />);
     }
 
-    if (!_.isEmpty(statusDevice.errors)) {
+    if (!_.isEmpty(statusDevice.item.errors)) {
       if (showErrors) {
         return this.renderContent(
           <StatusDeviceErrors
-            statusDevice={statusDevice}
+            statusDevice={statusDevice.item}
             clearErrors={this.clearErrors}
           />
         )
@@ -212,7 +211,7 @@ class Configure extends Component {
 
     return this.renderContent(
       <div>
-        <DeviceSchema device={device} onSubmit={this.handleConfig} />
+        <DeviceSchema device={device.item} onSubmit={this.handleConfig} />
       </div>
     );
   }
@@ -223,11 +222,7 @@ Configure.propTypes = {
 }
 
 function mapStateToProps({ statusDevice, details, device }) {
-  return {
-    statusDevice: statusDevice.item,
-    details,
-    device: device.item,
-  }
+  return { statusDevice, details, device }
 }
 
 export default connect(mapStateToProps)(Configure)

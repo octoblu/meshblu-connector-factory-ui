@@ -3,6 +3,11 @@ import { getMeshbluConfig } from '../helpers/authentication';
 import { getConnectorName } from '../helpers/connector-metadata';
 import _ from 'lodash';
 
+export function updateDevice({ uuid, properties }, callback) {
+  const meshblu = new MeshbluHttp(getMeshbluConfig());
+  meshblu.update(uuid, properties, callback);
+}
+
 export function registerStatusDevice({ owner, uuid }, callback) {
   const meshbluConfig = getMeshbluConfig()
   const meshblu = new MeshbluHttp(meshbluConfig)
@@ -13,7 +18,15 @@ export function registerStatusDevice({ owner, uuid }, callback) {
     configureWhitelist: [uuid, owner],
     sendWhitelist: [uuid, owner],
     receiveWhitelist: [uuid, owner],
-  }, callback)
+  }, (error, device) => {
+    if (error) return callback(error)
+    const properties = {
+      statusDevice: device.uuid,
+    }
+    updateDevice({ uuid, properties }, (error) => {
+      callback(error)
+    })
+  })
 }
 
 export function registerConnector({ connector, version, customProps }, callback) {
@@ -47,11 +60,6 @@ export function registerConnector({ connector, version, customProps }, callback)
 export function getDevice({ uuid }, callback) {
   const meshblu = new MeshbluHttp(getMeshbluConfig());
   meshblu.device(uuid, callback);
-}
-
-export function updateDevice({ uuid, properties }, callback) {
-  const meshblu = new MeshbluHttp(getMeshbluConfig());
-  meshblu.update(uuid, properties, callback);
 }
 
 export function sendMessage(message, callback) {

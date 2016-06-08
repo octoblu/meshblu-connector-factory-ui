@@ -9,7 +9,7 @@ import VersionsSelect from '../../components/VersionsSelect';
 
 import { generateConnectorAction } from '../../actions/connectors/connector-actions';
 import { selectVersion } from '../../actions/connectors/detail-actions';
-import { getDevice } from '../../actions/things/device-actions';
+import { fetchDevice } from '../../actions/things/device-actions';
 
 class Generate extends Component {
   constructor(props) {
@@ -37,7 +37,7 @@ class Generate extends Component {
         label: 'Generate',
       },
     ]))
-    this.props.dispatch(getDevice({ uuid }))
+    this.props.dispatch(fetchDevice({ uuid }))
   }
 
   componentWillReceiveProps(nextProps) {
@@ -49,7 +49,7 @@ class Generate extends Component {
 
   updateAndGenerate() {
     const { uuid } = this.props.params;
-    const { pkg } = this.props.details.selectVersion;
+    const { pkg } = this.props.details.selectedVersion;
     const { connector } = this.props.device;
     this.props.dispatch(generateConnectorAction({ uuid, pkg, connector }))
   }

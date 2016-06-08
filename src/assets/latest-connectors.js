@@ -65,6 +65,72 @@
      type: 'device:initial-state',
      connector: 'meshblu-connector-initial-state',
    },
+   {
+     _id: '62daa7ed-630c-4042-b9fe-8f30be2074ca',
+     name: 'Phillips Hue Single Light',
+     type: 'device:hue-light',
+     connector: 'meshblu-connector-hue-light',
+   },
+   {
+     _id: '41af9401-e876-4a22-a2d0-5cbf25e237ea',
+     name: 'Lifx',
+     type: 'device:lifx',
+     connector: 'meshblu-connector-lifx',
+   },
+   {
+     _id: '60b46347-c4c0-4bcb-be77-aaf161403c43',
+     name: 'Lifx Single Light',
+     type: 'device:lifx-light',
+     connector: 'meshblu-connector-lifx-light',
+   },
+   {
+     _id: '67b475723403-8446-497d-abb4-8781825d',
+     name: 'Twitter Streaming',
+     type: 'device:twitter-stream',
+     connector: 'meshblu-connector-twitter-stream',
+   },
+   {
+     _id: '8781825d-5adf-4921-9d12-5993f8d1619b',
+     name: 'HTTP Connector',
+     type: 'device:http-connector',
+     connector: 'meshblu-connector-http',
+   },
+   {
+     _id: '8781825d-8446-497d-abb4-67b475723403',
+     name: 'Myo',
+     type: 'device:myo',
+     connector: 'meshblu-connector-myo',
+   },
+   {
+     _id: '36651820-8446-497d-abb4-67b475723403',
+     name: 'Neurosky Mindwave',
+     type: 'device:mindwave',
+     connector: 'meshblu-connector-mindwave',
+   },
+   {
+     _id: '36651820-8446-497d-abb4-0b37d8086da0',
+     name: 'Sonos',
+     type: 'device:sonos',
+     connector: 'meshblu-connector-sonos',
+   },
+   {
+     _id: '625ec53a-39f9-427c-9411-67b475723403',
+     name: 'Citrix Receiver',
+     type: 'device:citrix-receiver',
+     connector: 'meshblu-connector-citrix-receiver',
+   },
+   {
+     _id: '8781825d-4ebb-4d99-b03e-de82a01fd925',
+     name: 'Powershell',
+     type: 'device:powershell',
+     connector: 'meshblu-connector-powershell',
+   },
+   {
+     _id: 'e3a8e849-5fdf-4921-9d12-5993f8d1619b',
+     name: 'OSC',
+     type: 'device:osc',
+     connector: 'meshblu-connector-osc',
+   }
  ]
 
  export default Connectors

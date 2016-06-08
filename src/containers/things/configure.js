@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import moment from 'moment';
 import PageLayout from '../page-layout';
 import { setBreadcrumbs } from '../../actions/page-actions'
@@ -10,11 +9,9 @@ import {
   EmptyState,
 } from 'zooid-ui'
 
+import DeviceActions from '../../components/DeviceActions';
 import DeviceSchema from '../../components/DeviceSchema';
 import VersionsSelect from '../../components/VersionsSelect';
-import StopStartButton from '../../components/StopStartButton';
-import ConnectorStatus from '../../components/ConnectorStatus';
-import VersionStatus from '../../components/VersionStatus';
 import StatusDeviceErrors from '../../components/StatusDeviceErrors';
 
 import { selectVersion } from '../../actions/connectors/detail-actions';
@@ -36,9 +33,8 @@ class Configure extends Component {
       changeVersion: false,
       showErrors: false,
     };
-    this.getButtons  = this.getButtons.bind(this);
     this.handleConfig  = this.handleConfig.bind(this);
-    this.changeConnectorState  = this.changeConnectorState.bind(this);
+    this.changeState  = this.changeState.bind(this);
     this.updateVersion = this.updateVersion.bind(this);
     this.changeVersion = this.changeVersion.bind(this);
     this.versionSelect  = this.versionSelect.bind(this);
@@ -68,40 +64,6 @@ class Configure extends Component {
 
   componentWillUnmount() {
     clearInterval(this.updateInterval)
-  }
-
-  getButtons() {
-    const { device, statusDevice, details } = this.props;
-    if (!device.item) {
-      return null
-    }
-    const { connectorMetadata } = device.item;
-    const buttons = [];
-    buttons.push(<ConnectorStatus device={statusDevice.item} connectorMetadata={device.item.connectorMetadata} />)
-
-    if (connectorMetadata) {
-      const { stopped, version } = connectorMetadata;
-      buttons.push(<StopStartButton
-        changeState={this.changeConnectorState}
-        stopped={stopped}
-      />)
-      if (details) {
-        buttons.push(<VersionStatus version={version} onSelect={this.changeVersion} />)
-      }
-    }
-
-    buttons.push(
-      <Link
-        to={`/connectors/generate/${device.item.uuid}`}
-        className="Button Button--hollow-primary"
-      >
-        Generate Update Installer
-      </Link>
-    );
-
-    return _.map(buttons, (button, index) => {
-      return <li key={index}>{button}</li>
-    })
   }
 
   shouldUpdateDevices() {
@@ -150,7 +112,7 @@ class Configure extends Component {
     });
   }
 
-  changeConnectorState({ stopped }) {
+  changeState({ stopped }) {
     const { connectorMetadata } = this.props.device.item;
     connectorMetadata.stopped = stopped;
     this.handleConfig({ properties: { connectorMetadata } })
@@ -162,14 +124,22 @@ class Configure extends Component {
   }
 
   renderContent(content) {
-    const { device } = this.props;
+    const { device, statusDevice } = this.props;
     const { type, uuid, name } = device.item
     const title = name || ''
+    const actions = (
+      <DeviceActions
+        device={device.item}
+        statusDevice={statusDevice.item}
+        changeState={this.changeState}
+        changeVersion={this.changeVersion}
+      />
+    )
     return (
       <PageLayout
         title={title}
         type={type}
-        actions={this.getButtons()}
+        actions={actions}
       >
         <h3>UUID: {uuid}</h3>
         {content}

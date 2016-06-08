@@ -1,49 +1,49 @@
-import './index.css';
+import _ from 'lodash';
 import React, { PropTypes } from 'react';
-import { Button } from 'zooid-ui'
+import { Link } from 'react-router';
 
-import MdStop from 'react-icons/lib/md/stop';
-import MdPlayArrow from 'react-icons/lib/md/play-arrow';
-import MdDelete from 'react-icons/lib/md/delete';
+import StopStartButton from '../StopStartButton';
+import ConnectorStatus from '../ConnectorStatus';
+import VersionStatus from '../VersionStatus';
 
-import classNames from 'classnames';
+import './index.css';
 
-const renderButtons = (buttons) => {
-  if (buttons) return buttons
-  return null
-}
+const DeviceActions = ({ device, changeState, changeVersion, statusDevice }) => {
+  if (!device) return null
+  const { connectorMetadata } = device;
+  const buttons = [];
 
-const DeviceActions = ({ buttons, device, onStart, onStop, onDelete, className }) => {
-  const componentClass = classNames(
-    'DeviceActions',
-    className
-  );
+  buttons.push(<ConnectorStatus device={statusDevice} connectorMetadata={device.connectorMetadata} />)
 
-  let playButtonType = 'hollow-approve'
-  let stopButtonType = 'hollow-neutral'
-  if (device.gateblu) {
-    if (device.gateblu.running) {
-      playButtonType = 'approve'
-    } else {
-      stopButtonType = 'neutral'
-    }
+  if (connectorMetadata) {
+    const { stopped, version } = connectorMetadata;
+    buttons.push(<StopStartButton
+      changeState={changeState}
+      stopped={stopped}
+    />)
+    buttons.push(<VersionStatus version={version} onSelect={changeVersion} />)
   }
 
-  return (<div className={componentClass}>
-    <Button className="DeviceActions--action" kind={stopButtonType} onClick={onStop}><MdStop /></Button>
-    <Button className="DeviceActions--action" kind={playButtonType} onClick={onStart}><MdPlayArrow /></Button>
-    <Button className="DeviceActions--action" kind="hollow-danger" onClick={onDelete}><MdDelete /></Button>
-    {renderButtons(buttons)}
-  </div>)
+  buttons.push(
+    <Link
+      to={`/connectors/generate/${device.uuid}`}
+      className="Button Button--hollow-primary"
+    >
+      Generate Update Installer
+    </Link>
+  );
+
+  const buttonElements = _.map(buttons, (button, index) => {
+    return <li key={index}>{button}</li>
+  })
+  return <ul>{buttonElements}</ul>
 };
 
 DeviceActions.propTypes = {
-  buttons: PropTypes.node,
-  className: PropTypes.string,
-  device: PropTypes.object.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  onStart: PropTypes.func.isRequired,
-  onStop: PropTypes.func.isRequired,
+  device: PropTypes.object,
+  statusDevice: PropTypes.object,
+  changeState: PropTypes.func.isRequired,
+  changeVersion: PropTypes.func.isRequired,
 }
 
 export default DeviceActions

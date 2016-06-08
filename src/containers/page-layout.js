@@ -19,7 +19,7 @@ import '../styles/page-layout.css';
 const propTypes = {
   children: PropTypes.element.isRequired,
   title: PropTypes.string,
-  actions: PropTypes.array,
+  actions: PropTypes.element,
   type: PropTypes.string,
 };
 
@@ -34,8 +34,8 @@ class PageLayout extends Component {
       return null
     }
     return (
-      <PageActions>
-        <ul className="PageLayout--Actions">{actions}</ul>
+      <PageActions className="PageLayout--Actions">
+        {actions}
       </PageActions>
     )
   }

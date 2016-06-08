@@ -1,8 +1,6 @@
 import * as actionTypes from '../../constants/action-types'
 
 const initialState = {
-  error: null,
-  fetching: false,
   selectedVersion: {
     latest: false,
     version: null,
@@ -13,25 +11,18 @@ const initialState = {
   },
 }
 
-function getCurrentVersion({ info }) {
-  const latestVersion = info['dist-tags'].latest;
+function getCurrentVersion({ details, version }) {
   return {
-    version: latestVersion,
-    latest: true,
-    pkg: info.versions[latestVersion],
+    version,
+    latest: details['dist-tags'].latest === version,
+    pkg: details.versions[version],
   }
 }
 
 export default function types(state = initialState, action) {
   switch (action.type) {
-    case actionTypes.FETCH_CONNECTOR_DETAILS_REQUEST:
-      return { ...initialState, fetching: true }
-
-    case actionTypes.FETCH_CONNECTOR_DETAILS_FAILURE:
-      return { ...initialState, error: action.error }
-
     case actionTypes.FETCH_CONNECTOR_DETAILS_SUCCESS:
-      return { ...state, info: action.info, selectedVersion: getCurrentVersion(action), fetching: false, error: null }
+      return { ...state, info: action.details, selectedVersion: getCurrentVersion(action) }
 
     case actionTypes.SELECT_VERSION:
       return { ...state, selectedVersion: action.selectedVersion }

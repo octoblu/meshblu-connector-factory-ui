@@ -1,35 +1,29 @@
 import * as actionTypes from '../../constants/action-types';
+import { setFetching, setError } from '../page-actions'
 import { connectorDetails } from '../../services/detail-service';
 
-function fetchConnectorDetailsRequest() {
-  return {
-    type: actionTypes.FETCH_CONNECTOR_DETAILS_REQUEST,
-  }
-}
-
-function fetchConnectorDetailsSuccess(info) {
+function fetchConnectorDetailsSuccess({ details, version }) {
   return {
     type: actionTypes.FETCH_CONNECTOR_DETAILS_SUCCESS,
-    info,
+    details,
+    version,
   }
 }
-
-function fetchConnectorDetailsFailure(error) {
-  return {
-    type: actionTypes.FETCH_CONNECTOR_DETAILS_FAILURE,
-    error,
-  }
+function getVersion({ details, version }) {
+  if (!version) return details['dist-tags'].latest
+  return version
 }
 
-export function fetchConnectorDetails({ connector }) {
+export function fetchConnectorDetails({ connector, version }) {
   return (dispatch) => {
-    dispatch(fetchConnectorDetailsRequest())
+    dispatch(setFetching(true))
     connectorDetails({ connector }, (error, details) => {
+      dispatch(setFetching(false))
       if (error) {
-        dispatch(fetchConnectorDetailsFailure(error))
+        dispatch(setError(error))
         return
       }
-      dispatch(fetchConnectorDetailsSuccess(details));
+      dispatch(fetchConnectorDetailsSuccess({ details, version: getVersion({ details, version }) }));
     })
   }
 }

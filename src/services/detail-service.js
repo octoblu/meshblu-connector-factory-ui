@@ -12,6 +12,6 @@ export function connectorDetails({ connector }, callback) {
         callback(new Error('Unable to get Connector Details'))
         return
       }
-      callback()
+      callback(null, response.body)
     });
 }

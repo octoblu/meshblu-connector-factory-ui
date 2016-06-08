@@ -49,26 +49,9 @@ export function getDevice({ uuid }, callback) {
   meshblu.device(uuid, callback);
 }
 
-export function getStatusDevice(device, callback) {
-  if (device == null) return
-  if (device.statusDevice == null) return
-  const meshblu = new MeshbluHttp(getMeshbluConfig());
-  meshblu.device(device.statusDevice, (error, statusDevice) => {
-    if (error) return callback(error)
-    callback(null, _.pick(statusDevice, ['lastPong', 'online', 'errors']))
-  });
-}
-
 export function updateDevice({ uuid, properties }, callback) {
   const meshblu = new MeshbluHttp(getMeshbluConfig());
   meshblu.update(uuid, properties, callback);
-}
-
-export function updateStatusDevice({ device, properties }, callback) {
-  if (device == null) return
-  if (device.statusDevice == null) return
-  const meshblu = new MeshbluHttp(getMeshbluConfig());
-  meshblu.update(device.statusDevice, properties, callback);
 }
 
 export function sendMessage(message, callback) {
@@ -79,20 +62,6 @@ export function sendMessage(message, callback) {
 export function generateAndStoreToken({ uuid }, callback) {
   const meshblu = new MeshbluHttp(getMeshbluConfig());
   meshblu.generateAndStoreToken(uuid, {}, callback);
-}
-
-export function sendPing(device, callback) {
-  if (device == null) return
-  if (device.statusDevice == null) return
-  sendMessage({
-    devices: [device.statusDevice],
-    topic: 'ping',
-  }, (error) => {
-    if (error) return callback(error)
-    _.delay(() => {
-      getStatusDevice(device, callback)
-    }, 2000)
-  });
 }
 
 export function getDevices(callback) {

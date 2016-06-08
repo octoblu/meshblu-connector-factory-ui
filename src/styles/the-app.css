@@ -14,12 +14,6 @@
   max-width: none;
 }
 
-.Container {
-  padding: 1rem 10%;
-  max-width: 1800px;
-  margin: auto;
-}
-
 .CenterIt {
   margin: auto;
   width: 350px;

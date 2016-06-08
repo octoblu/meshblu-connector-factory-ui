@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import PageLayout from '../page-layout';
+import { setBreadcrumbs } from '../../actions/page-actions'
 
 import {
   EmptyState,
@@ -15,15 +16,12 @@ import ConnectorStatus from '../../components/ConnectorStatus';
 import VersionStatus from '../../components/VersionStatus';
 import StatusDeviceErrors from '../../components/StatusDeviceErrors';
 
-import { fetchConnectorDetails, selectVersion } from '../../actions/connectors/detail-actions';
-import { getDevice } from '../../actions/things/device-actions';
-
+import { selectVersion } from '../../actions/connectors/detail-actions';
+import { fetchDevice, updateDeviceAction } from '../../actions/things/device-actions';
 import {
-  getStatusDevice,
-  updateDevice,
   updateStatusDevice,
-  sendPing,
-} from '../../services/device-service';
+  pingStatusDevice,
+} from '../../actions/things/status-device-actions';
 
 import { getSchema } from '../../services/schema-service';
 
@@ -38,7 +36,6 @@ class Configure extends Component {
     this.handleConfig  = this.handleConfig.bind(this);
     this.changeConnectorState  = this.changeConnectorState.bind(this);
     this.sendPingAndUpdate  = this.sendPingAndUpdate.bind(this);
-    this.loadDevice  = this.loadDevice.bind(this);
     this.updateVersion = this.updateVersion.bind(this);
     this.changeVersion = this.changeVersion.bind(this);
     this.versionSelect  = this.versionSelect.bind(this);
@@ -48,85 +45,36 @@ class Configure extends Component {
 
   componentDidMount() {
     const { uuid } = this.props.params;
-    this.props.dispatch(getDevice({ uuid, useBaseProps: true }))
+    this.props.dispatch(setBreadcrumbs([
+      {
+        label: 'Home',
+        link: '/',
+      },
+      {
+        label: 'My Things',
+        link: '/things/my',
+      },
+      {
+        label: 'Configure',
+      },
+    ]))
+    this.props.dispatch(fetchDevice({ uuid, useBaseProps: true }))
     this.checkForUpdates = true
-    this.sendPingAndUpdate()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { device } = nextProps;
+    if (device.uuid != null) {
+      this.sendPingAndUpdate()
+    }
   }
 
   componentWillUnmount() {
     this.checkForUpdates = false
   }
 
-  sendPingAndUpdate() {
-    if (!this.checkForUpdates) return
-    const { uuid } = this.props.params
-    sendPing(this.state.device, (error, statusDevice) => {
-      if (error) return console.error(error);
-      _.delay(this.sendPingAndUpdate, 5000);
-      this.props.dispatch(getDevice({ uuid, useBaseProps: true }))
-    });
-  }
-
-  handleConfig({ properties }) {
-    const { uuid } = this.props.params;
-    clearTimeout(this.messageTimeout);
-    updateDevice({ uuid, properties }, (error) => {
-      if (error) {
-        this.setState({ error });
-        return;
-      }
-      const { model } = this.state;
-      this.setState({ message: 'Device Updated', model: _.assign({}, model, properties) });
-      this.messageTimeout = setTimeout(() => {
-        this.setState({ message: null });
-      }, 5000)
-    })
-  }
-
-  changeConnectorState({ stopped }) {
-    const { connectorMetadata } = this.state.device;
-    connectorMetadata.stopped = stopped;
-    this.handleConfig({ properties: { connectorMetadata } })
-  }
-
-  updateVersion({ version, pkg }) {
-    const { connectorMetadata } = this.state.device;
-    connectorMetadata.version = version;
-    getSchema({ pkg }, (error, schema = {}) => {
-      if (error) return this.setState({ error })
-      const { schemas } = schema
-      const properties = { connectorMetadata }
-      if (schemas) {
-        properties.schemas = schemas
-      }
-      this.handleConfig({ properties })
-      this.setState({ changeVersion: false })
-    });
-  }
-
-  changeVersion() {
-    this.setState({ changeVersion: true, selectedVersion: null })
-  }
-
-  showErrors() {
-    this.setState({ showErrors: true })
-  }
-
-  clearErrors() {
-    const { device, statusDevice } = this.state
-    statusDevice.errors = []
-    this.setState({ showErrors: false, statusDevice })
-    updateStatusDevice({ device, properties: { errors: [], updateErrorsAt: null } }, (error) => {
-      if (error) return console.error(error);
-    })
-  }
-
-  versionSelect(selectedVersion) {
-    this.props.dispatch(selectVersion(selectedVersion))
-  }
-
   getButtons() {
-    const { device, statusDevice, details } = this.state;
+    const { device, statusDevice, details } = this.props;
     if (device == null) {
       return null
     }
@@ -163,13 +111,66 @@ class Configure extends Component {
     })
   }
 
+  changeVersion() {
+    this.setState({ changeVersion: true, selectedVersion: null })
+  }
+
+  showErrors() {
+    this.setState({ showErrors: true })
+  }
+
+  clearErrors() {
+    const { device } = this.props
+    const properties = { errors: [], updateErrorsAt: null }
+    this.props.dispatch(updateStatusDevice({ device, properties }))
+  }
+
+  versionSelect(selectedVersion) {
+    this.props.dispatch(selectVersion(selectedVersion))
+  }
+
+  updateVersion({ version, pkg }) {
+    const { connectorMetadata } = this.props.device;
+    connectorMetadata.version = version;
+    getSchema({ pkg }, (error, schema = {}) => {
+      if (error) return this.setState({ error })
+      const { schemas } = schema
+      const properties = { connectorMetadata }
+      if (schemas) {
+        properties.schemas = schemas
+      }
+      this.handleConfig({ properties })
+      this.setState({ changeVersion: false })
+    });
+  }
+
+  changeConnectorState({ stopped }) {
+    const { connectorMetadata } = this.props.device;
+    connectorMetadata.stopped = stopped;
+    this.handleConfig({ properties: { connectorMetadata } })
+  }
+
+  handleConfig({ properties }) {
+    const { uuid } = this.props.params;
+    this.props.dispatch(updateDeviceAction({ uuid, properties }))
+  }
+
+  sendPingAndUpdate() {
+    if (!this.checkForUpdates) return
+    const { device } = this.props
+    this.props.dispatch(pingStatusDevice({ device, useBaseProps: true }))
+  }
+
   renderContent(content) {
-    const { loading, error } = this.state;
+    const { device } = this.props;
+    const { type, uuid } = device
+    let title = 'Configure'
+    if (uuid && type) {
+      title = `${type} ${uuid}`
+    }
     return (
       <PageLayout
-        title="Configure Thing"
-        loading={loading}
-        error={error}
+        title={title}
         actions={this.getButtons()}
       >
         {content}
@@ -178,30 +179,40 @@ class Configure extends Component {
   }
 
   render() {
-    const { device, model, message, changeVersion, showErrors, statusDevice } = this.state;
+    const { device, statusDevice } = this.props
+    const { changeVersion, showErrors } = this.state
 
     if (changeVersion) {
-      const { details, selectedVersion } = this.state;
-      const { type } = device;
+      const { info, selectedVersion } = this.props.details
       return this.renderContent(<VersionsSelect
         onSelect={this.updateVersion}
         selected={selectedVersion}
-        type={type}
-        versions={details.versions}
+        versions={info.versions}
       />);
     }
 
     if (!_.isEmpty(statusDevice.errors)) {
       if (showErrors) {
-        return this.renderContent(<StatusDeviceErrors statusDevice={statusDevice} clearErrors={this.clearErrors} />)
+        return this.renderContent(
+          <StatusDeviceErrors
+            statusDevice={statusDevice}
+            clearErrors={this.clearErrors}
+          />
+        )
       }
-      return this.renderContent(<EmptyState action={this.showErrors} cta="Show Errors" title="Device Errored" />)
+      return this.renderContent(
+        <EmptyState
+          action={this.showErrors}
+          cta="Show Errors"
+          title="Connector Errored"
+          description="The connector failed and exited, logs are available"
+        />
+      )
     }
 
     return this.renderContent(
       <div>
-        <DeviceSchema device={model} onSubmit={this.handleConfig} />
-        <h4>{message}</h4>
+        <DeviceSchema device={device} onSubmit={this.handleConfig} />
       </div>
     );
   }
@@ -211,4 +222,12 @@ Configure.propTypes = {
   dispatch: PropTypes.func.isRequired,
 }
 
-export default connect()(Configure)
+function mapStateToProps({ statusDevice, details, device }) {
+  return {
+    statusDevice: statusDevice.item,
+    details,
+    device: device.item,
+  }
+}
+
+export default connect(mapStateToProps)(Configure)

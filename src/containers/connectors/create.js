@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux'
 
 import PageLayout from '../page-layout'
+import { setBreadcrumbs } from '../../actions/page-actions'
 
 import VersionsSelect from '../../components/VersionsSelect';
 
@@ -23,10 +24,22 @@ class Create extends Component {
 
   componentDidMount() {
     const { connector } = this.props.params;
+    this.props.dispatch(setBreadcrumbs([
+      {
+        label: 'Home',
+        link: '/',
+      },
+      {
+        label: 'All Things',
+        link: '/things/all',
+      },
+      {
+        label: 'Create',
+      },
+    ]))
     this.props.dispatch(fetchAvailableNodes())
     this.props.dispatch(fetchConnectorDetails({ connector }))
   }
-
 
   componentWillReceiveProps(nextProps) {
     const { key, uuid } = nextProps.connector;
@@ -56,11 +69,10 @@ class Create extends Component {
   }
 
   renderContent(content) {
-    const { error, fetching } = this.getStateBasics()
     const { connector } = this.props.params
     const type = this.getConnectorType()
     return (
-      <PageLayout type={type} title={`Create ${connector}`} loading={fetching} error={error}>
+      <PageLayout type={type} title={`Create ${connector}`}>
         {content}
       </PageLayout>
     );
@@ -68,12 +80,10 @@ class Create extends Component {
 
   render() {
     const { info, selectedVersion } = this.props.details
-    const type = this.getConnectorType()
 
     return this.renderContent(<VersionsSelect
       onSelect={this.createDevice}
       selected={selectedVersion}
-      type={type}
       versions={info.versions}
     />);
   }
@@ -84,15 +94,7 @@ Create.propTypes = {
 }
 
 function mapStateToProps({ available, details, connector }) {
-  const state = { available, details, connector }
-  const error = available.error || details.error || connector.error
-  if (error) {
-    return { ...state, error, fetching: false }
-  }
-  if (available.fetching || details.fetching || connector.generating) {
-    return { ...state, fetching: true, error: null }
-  }
-  return { ...state, fetching: false, error: null }
+  return { available, details, connector }
 }
 
 export default connect(mapStateToProps)(Create)

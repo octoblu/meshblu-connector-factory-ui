@@ -29,7 +29,12 @@ class DeviceSchema extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return !_.isEqual(this.props.device, nextProps.device)
+    const schemasMatch = _.isEqual(_.get(this.props.device, 'schemas'), _.get(nextProps.device, 'schemas'))
+    const nameMatch = _.isEqual(_.get(this.props.device, 'name'), _.get(nextProps.device, 'name'))
+    if (schemasMatch && nameMatch) {
+      return false
+    }
+    return true
   }
 
   handleNameChange() {
@@ -42,9 +47,6 @@ class DeviceSchema extends Component {
   render() {
     const { device, onSubmit } = this.props;
     if (device == null) return null
-    if (device.name == null) {
-      onSubmit({ properties: { name: _.startCase(device.connector) } })
-    }
     return (
       <div className="DeviceSchema">
         <FormField label="Device Name" name="deviceName">

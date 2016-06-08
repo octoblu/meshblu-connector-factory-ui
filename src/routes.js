@@ -27,8 +27,8 @@ export default ({ history }) => {
         </Route>
         <Route path="/things" component={Authenticated}>
           <IndexRoute component={Installed} />
-          <Route path="/things/available" component={Available} />
-          <Route path="/things/installed" component={Installed} />
+          <Route path="/things/all" component={Available} />
+          <Route path="/things/my" component={Installed} />
           <Route path="/things/configure/:uuid" component={Configure} />
         </Route>
       </Route>

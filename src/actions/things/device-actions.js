@@ -1,12 +1,13 @@
 import * as actionTypes from '../../constants/action-types';
-import { getDevices, getDevice } from '../../services/device-service';
-import { fetchConnectorDetails } from '../connectors/detail-actions'
+import { setFetching, setError } from '../page-actions'
 
-function fetchMyDevicesRequest() {
-  return {
-    type: actionTypes.FETCH_MY_DEVICES_REQUEST,
-  }
-}
+import {
+  getDevices,
+  getDevice,
+  updateDevice,
+} from '../../services/device-service';
+
+import { fetchConnectorDetails } from '../connectors/detail-actions'
 
 function fetchMyDevicesSuccess({ devices, useBaseProps }) {
   return {
@@ -16,29 +17,17 @@ function fetchMyDevicesSuccess({ devices, useBaseProps }) {
   }
 }
 
-function fetchMyDevicesFailure(error) {
-  return {
-    type: actionTypes.FETCH_MY_DEVICES_FAILURE,
-    error,
-  }
-}
-
 export function fetchMyDevices({ useBaseProps }) {
   return (dispatch) => {
-    dispatch(fetchMyDevicesRequest())
+    dispatch(setFetching(true))
     getDevices((error, devices) => {
+      dispatch(setFetching(false))
       if (error) {
-        dispatch(fetchMyDevicesFailure(error))
+        dispatch(setError(error))
         return
       }
       dispatch(fetchMyDevicesSuccess({ devices, useBaseProps }))
     })
-  }
-}
-
-function fetchDeviceRequest() {
-  return {
-    type: actionTypes.FETCH_DEVICE_REQUEST,
   }
 }
 
@@ -50,23 +39,42 @@ function fetchDeviceSuccess({ device, useBaseProps }) {
   }
 }
 
-function fetchDeviceFailure(error) {
-  return {
-    type: actionTypes.FETCH_DEVICE_FAILURE,
-    error,
+export function fetchDevice({ uuid, useBaseProps, isAfterUpdate }) {
+  return (dispatch) => {
+    if (!isAfterUpdate) {
+      dispatch(setFetching(true))
+    }
+    getDevice({ uuid }, (error, device) => {
+      dispatch(setFetching(false))
+      if (error) {
+        dispatch(setError(error))
+        return
+      }
+      const { connector, connectorMetadata } = device
+      const { version } = connectorMetadata
+      dispatch(fetchConnectorDetails({ connector, version }))
+      dispatch(fetchDeviceSuccess({ device, useBaseProps }))
+    })
   }
 }
 
-export function fetchDevice({ uuid, useBaseProps }) {
+function updateDeviceSuccess() {
+  return {
+    type: actionTypes.UPDATE_DEVICE_SUCCESS,
+  }
+}
+
+export function updateDeviceAction({ uuid, properties }) {
   return (dispatch) => {
-    dispatch(fetchDeviceRequest())
-    getDevice({ uuid }, (error, device) => {
+    dispatch(setFetching(true))
+    updateDevice({ uuid, properties }, (error) => {
+      dispatch(setFetching(false))
       if (error) {
-        dispatch(fetchDeviceFailure(error))
+        dispatch(setError(error))
         return
       }
-      dispatch(fetchConnectorDetails({ connector: device.connector }))
-      dispatch(fetchDeviceSuccess({ device, useBaseProps }))
-    })
+      dispatch(updateDeviceSuccess())
+      dispatch(fetchDevice({ uuid, isAfterUpdate: true }))
+    });
   }
 }

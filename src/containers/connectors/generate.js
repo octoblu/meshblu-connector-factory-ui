@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
+import { setBreadcrumbs } from '../../actions/page-actions'
 import PageLayout from '../page-layout';
 
 import VersionsSelect from '../../components/VersionsSelect';
@@ -19,6 +20,23 @@ class Generate extends Component {
 
   componentDidMount() {
     const { uuid } = this.props.params;
+    this.props.dispatch(setBreadcrumbs([
+      {
+        label: 'Home',
+        link: '/',
+      },
+      {
+        label: 'My Things',
+        link: '/things/my',
+      },
+      {
+        label: 'Configure',
+        link: `/things/configure/${uuid}`,
+      },
+      {
+        label: 'Generate',
+      },
+    ]))
     this.props.dispatch(getDevice({ uuid }))
   }
 
@@ -41,10 +59,10 @@ class Generate extends Component {
   }
 
   render() {
-    const { device, error, fetching } = this.props
+    const { device } = this.props
     const { info, selectedVersion } = this.props.details
     return (
-      <PageLayout type={device.type} title="Generate Installer" loading={fetching} error={error}>
+      <PageLayout type={device.type} title="Generate Installer">
         <VersionsSelect
           onSelect={this.updateAndGenerate}
           selected={selectedVersion}
@@ -60,15 +78,7 @@ Generate.propTypes = {
 }
 
 function mapStateToProps({ device, details, connector }) {
-  const state = { device: device.item, details, connector }
-  const error = device.error || details.error || connector.error
-  if (error) {
-    return { ...state, error, fetching: false }
-  }
-  if (device.fetching || details.fetching || connector.generating) {
-    return { ...state, fetching: true, error: null }
-  }
-  return { ...state, fetching: false, error: null }
+  return { device: device.item, details, connector }
 }
 
 export default connect(mapStateToProps)(Generate)

@@ -5,7 +5,9 @@ import connector from './connectors/connector-reducer';
 import available from './things/available-reducer';
 import devices from './things/devices-reducer';
 import device from './things/device-reducer';
-import toast from './toast';
+import statusDevice from './things/status-device-reducer';
+import page from './page-reducer';
+import toast from './toast-reducer';
 
 const rootReducer = combineReducers({
   details,
@@ -13,6 +15,8 @@ const rootReducer = combineReducers({
   available,
   devices,
   device,
+  statusDevice,
+  page,
   toast,
   routing: routerReducer,
 })

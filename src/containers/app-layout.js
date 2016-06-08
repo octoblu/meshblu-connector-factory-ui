@@ -23,11 +23,15 @@ class AppLayout extends Component {
     if (!hasAuth()) {
       return null
     }
-    return <Link to="/logout" className="OctobluAppBar-link">Sign out</Link>
+    return (
+      <AppBarSecondary>
+        <Link to="/logout" className="OctobluAppBar-link">Sign out</Link>
+      </AppBarSecondary>
+    )
   }
 
   render() {
-    const toast = null
+    const { toast } = this.props
     return (
       <div>
         <AppBar>
@@ -41,10 +45,7 @@ class AppLayout extends Component {
             </nav>
 
           </AppBarPrimary>
-
-          <AppBarSecondary>
-            {this.getLogout()}
-          </AppBarSecondary>
+          {this.getLogout()}
         </AppBar>
         <div className="Container">
           {this.props.children}

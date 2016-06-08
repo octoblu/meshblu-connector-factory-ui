@@ -1,14 +1,9 @@
 import * as actionTypes from '../../constants/action-types';
+import { setFetching, setError } from '../page-actions'
 import {
   createConnector,
   updateAndGenerateKey,
 } from '../../helpers/connector-creator';
-
-function connectorGeneratedRequest() {
-  return {
-    type: actionTypes.CONNECTOR_GENERATED_REQUEST,
-  }
-}
 
 function connectorGeneratedSuccess({ key, uuid }) {
   return {
@@ -18,19 +13,13 @@ function connectorGeneratedSuccess({ key, uuid }) {
   }
 }
 
-function connectorGeneratedFailure(error) {
-  return {
-    type: actionTypes.CONNECTOR_GENERATED_FAILURE,
-    error,
-  }
-}
-
 export function createConnectorAction({ connector, pkg }) {
   return (dispatch) => {
-    dispatch(connectorGeneratedRequest())
+    dispatch(setFetching(true))
     createConnector({ connector, pkg }, (error, response) => {
+      dispatch(setFetching(false))
       if (error) {
-        dispatch(connectorGeneratedFailure(error))
+        dispatch(setError(error))
         return
       }
       dispatch(connectorGeneratedSuccess(response))
@@ -40,10 +29,11 @@ export function createConnectorAction({ connector, pkg }) {
 
 export function generateConnectorAction({ uuid, connector, pkg }) {
   return (dispatch) => {
-    dispatch(connectorGeneratedRequest())
+    dispatch(setFetching(true))
     updateAndGenerateKey({ uuid, connector, pkg }, (error, response) => {
+      dispatch(setFetching(false))
       if (error) {
-        dispatch(connectorGeneratedFailure(error))
+        dispatch(setError(error))
         return
       }
       dispatch(connectorGeneratedSuccess(response))

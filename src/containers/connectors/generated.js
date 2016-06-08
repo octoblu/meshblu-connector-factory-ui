@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PageLayout from '../page-layout';
+import { setBreadcrumbs } from '../../actions/page-actions'
 
 import {
   Button,
@@ -18,6 +19,22 @@ export default class Create extends Component {
       downloaded: false,
     }
     this.onDownload = this.onDownload.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.dispatch(setBreadcrumbs([
+      {
+        label: 'Home',
+        link: '/',
+      },
+      {
+        label: 'My Things',
+        link: '/things/my',
+      },
+      {
+        label: 'Generated',
+      },
+    ]))
   }
 
   onDownload() {

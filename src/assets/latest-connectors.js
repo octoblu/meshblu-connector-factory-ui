@@ -130,7 +130,7 @@
      name: 'OSC',
      type: 'device:osc',
      connector: 'meshblu-connector-osc',
-   }
+   },
  ]
 
  export default Connectors

@@ -1,44 +1,20 @@
 import React, { Component, PropTypes } from 'react';
-import {
-  Spinner,
-  ErrorState,
-} from 'zooid-ui';
+import { connect } from 'react-redux'
 
-import {
-  fetchOctobluUser,
-  getAuthenticationUri,
-  removeCookie,
-} from '../helpers/authentication';
+import { fetchOctobluUserAction } from '../actions/octoblu/user-actions'
+import { needsUpdate } from '../helpers/actions'
 
 class OctobluOauth extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      octobluUser: null,
-      error: null,
-    };
-  }
-
   componentDidMount() {
-    fetchOctobluUser((error, octobluUser) => {
-      this.setState({ error, octobluUser });
-      if (error) return removeCookie();
-      if (!octobluUser) {
-        removeCookie()
-        this.redirectToLogin();
-        return;
-      }
-    });
-  }
-
-  redirectToLogin() {
-    window.location = getAuthenticationUri();
+    if (needsUpdate(this.props.octoblu)) {
+      this.props.dispatch(fetchOctobluUserAction())
+    }
   }
 
   render() {
-    const { octobluUser, error } = this.state;
-    if (error) return <ErrorState description={error.message} />;
-    if (!octobluUser) return <Spinner size="large" />;
+    if (!this.props.octoblu.user) {
+      return null
+    }
     return (
       <div>
         {this.props.children}
@@ -48,7 +24,11 @@ class OctobluOauth extends Component {
 }
 
 OctobluOauth.propTypes = {
-  children: PropTypes.element.isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
-export default OctobluOauth
+function mapStateToProps({ octoblu }) {
+  return { octoblu }
+}
+
+export default connect(mapStateToProps)(OctobluOauth)

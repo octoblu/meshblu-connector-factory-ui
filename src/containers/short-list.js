@@ -21,7 +21,6 @@ class ShortList extends Component {
 
 ShortList.propTypes = {
   title: PropTypes.string.isRequired,
-  children: PropTypes.element.isRequired,
   linkTo: PropTypes.string.isRequired,
   emptyState: PropTypes.element,
   showEmptyState: PropTypes.bool,

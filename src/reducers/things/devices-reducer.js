@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 const initialState = {
   items: [],
+  updatedAt: null,
 }
 
 function getDevices({ devices, useBaseProps }) {
@@ -16,7 +17,7 @@ function getDevices({ devices, useBaseProps }) {
 export default function types(state = initialState, action) {
   switch (action.type) {
     case actionTypes.FETCH_MY_DEVICES_SUCCESS:
-      return { ...state, items: getDevices(action) }
+      return { ...state, updatedAt: Date.now(), items: getDevices(action) }
 
     default:
       return state

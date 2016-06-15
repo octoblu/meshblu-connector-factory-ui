@@ -1,4 +1,4 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Toast from 'zooid-ui-toast';
@@ -13,10 +13,6 @@ import 'zooid-ui/dist/style.css';
 import '../styles/the-app.css';
 
 import { hasAuth } from '../helpers/authentication';
-
-const propTypes = {
-  children: PropTypes.element.isRequired,
-};
 
 class AppLayout extends Component {
   getLogout() {
@@ -55,8 +51,6 @@ class AppLayout extends Component {
     );
   }
 }
-
-AppLayout.propTypes = propTypes;
 
 function mapStateToProps({ toast }) {
   return { toast }

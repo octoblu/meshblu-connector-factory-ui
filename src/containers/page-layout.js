@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React, { PropTypes, Component } from 'react';
+import OctobluOauth from './octoblu-oauth';
 import { Link } from 'react-router'
 import { connect } from 'react-redux';
 import {
@@ -17,14 +18,13 @@ import {
 import '../styles/page-layout.css';
 
 const propTypes = {
-  children: PropTypes.element.isRequired,
   title: PropTypes.string,
   actions: PropTypes.element,
   type: PropTypes.string,
 };
 
 const defaultProps = {
-  actions: [],
+  actions: null,
 }
 
 class PageLayout extends Component {
@@ -79,7 +79,9 @@ class PageLayout extends Component {
             {this.getTitle()}
             {this.getActions()}
           </PageHeader>
-          {content}
+          <OctobluOauth>
+            {content}
+          </OctobluOauth>
         </Page>
       </div>
     );
@@ -95,6 +97,10 @@ class PageLayout extends Component {
     if (error) {
       const message = _.isString(error) ? error : error.message;
       return this.renderPage(<ErrorState title={message} />)
+    }
+
+    if (!children) {
+      return this.renderPage(<div></div>)
     }
 
     return this.renderPage(children)

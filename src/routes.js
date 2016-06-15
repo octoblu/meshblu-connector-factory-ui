@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Router, IndexRoute } from 'react-router';
 import AppLayout from './containers/app-layout';
-import Authenticated from './containers/authenticated';
 import Home from './containers/home';
 import GettingStarted from './containers/getting-started';
 import Create from './containers/connectors/create';
@@ -21,13 +20,13 @@ export default ({ history }) => {
         <Route path="/logout" onEnter={logout} />
         <Route path="/getting-started" component={GettingStarted} />
         <IndexRoute component={Home} />
-        <Route path="/connectors" component={Authenticated}>
+        <Route path="/connectors">
           <IndexRoute component={Installed} />
           <Route path="/connectors/create/:connector" component={Create} />
           <Route path="/connectors/generate/:uuid" component={Generate} />
           <Route path="/connectors/generated/:uuid/:key" component={Generated} />
         </Route>
-        <Route path="/things" component={Authenticated}>
+        <Route path="/things">
           <IndexRoute component={Installed} />
           <Route path="/things/all" component={Available} />
           <Route path="/things/my" component={Installed} />

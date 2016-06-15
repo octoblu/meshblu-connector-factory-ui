@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import PageLayout from '../page-layout';
 import { setBreadcrumbs } from '../../actions/page-actions'
 
@@ -19,12 +18,7 @@ import { fetchDevice, updateDeviceAction } from '../../actions/things/device-act
 import { updateStatusDevice, pingStatusDevice } from '../../actions/things/status-device-actions';
 
 import { getSchema } from '../../services/schema-service';
-
-function needsUpdate({ updatedAt }) {
-  if (!updatedAt) return true
-  const tenSecondsAgo = moment().subtract(10, 'seconds')
-  return moment(updatedAt).isBefore(tenSecondsAgo)
-}
+import { needsUpdate } from '../../helpers/actions'
 
 class Configure extends Component {
   constructor(props) {
@@ -70,11 +64,11 @@ class Configure extends Component {
     const { device, statusDevice } = this.props;
     if (!device.item) return
 
-    if (needsUpdate(statusDevice)) {
+    if (needsUpdate(statusDevice, 10)) {
       this.props.dispatch(pingStatusDevice({ device: device.item }))
     }
 
-    if (needsUpdate(device)) {
+    if (needsUpdate(device, 10)) {
       this.props.dispatch(fetchDevice({ uuid: device.item.uuid, fetching: false }))
     }
   }
@@ -126,7 +120,7 @@ class Configure extends Component {
   renderContent(content) {
     const { device, statusDevice } = this.props;
     const { type, uuid, name } = device.item
-    const title = name || ''
+    const title = name || 'Unknown Name'
     const actions = (
       <DeviceActions
         device={device.item}

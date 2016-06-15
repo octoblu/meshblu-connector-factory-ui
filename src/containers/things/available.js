@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from 'react';
+import AppActions from '../../components/AppActions';
 import { connect } from 'react-redux';
 import PageLayout from '../page-layout';
 import { setBreadcrumbs } from '../../actions/page-actions'
 
 import { fetchAvailableNodes } from '../../actions/things/available-actions'
+import { needsUpdate } from '../../helpers/actions'
 
 import NodeTypes from '../../components/NodeTypes';
 
@@ -18,13 +20,15 @@ class Available extends Component {
         label: 'All Things',
       },
     ]))
-    this.props.dispatch(fetchAvailableNodes());
+    if (needsUpdate(this.props.available)) {
+      this.props.dispatch(fetchAvailableNodes());
+    }
   }
 
   render() {
-    const { latest, legacy } = this.props;
+    const { latest, legacy } = this.props.available;
 
-    return (<PageLayout title="Available Things">
+    return (<PageLayout title="All Things" actions={<AppActions />}>
       <div>
         <h3>Compatible with the new Connector Installer</h3>
         <NodeTypes nodeTypes={latest} />
@@ -40,8 +44,7 @@ Available.propTypes = {
 }
 
 function mapStateToProps({ available }) {
-  const { latest, legacy } = available
-  return { latest, legacy }
+  return { available }
 }
 
 export default connect(mapStateToProps)(Available)

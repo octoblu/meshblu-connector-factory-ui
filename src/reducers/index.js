@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
+import octoblu from './octoblu/user-reducer';
 import details from './connectors/detail-reducer';
 import connector from './connectors/connector-reducer';
 import available from './things/available-reducer';
@@ -10,6 +11,7 @@ import page from './page-reducer';
 import toast from './toast-reducer';
 
 const rootReducer = combineReducers({
+  octoblu,
   details,
   connector,
   available,

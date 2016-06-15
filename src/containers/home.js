@@ -1,11 +1,13 @@
 import React, { Component, PropTypes } from 'react';
-import { Link, browserHistory } from 'react-router'
+import { browserHistory } from 'react-router'
 import _ from 'lodash';
 import NodeTypes from '../components/NodeTypes';
+import AppActions from '../components/AppActions';
 import { EmptyState } from 'zooid-ui';
 import ShortList from './short-list'
 import InstalledDevices from '../components/InstalledDevices';
 import { connect } from 'react-redux';
+import { needsUpdate } from '../helpers/actions'
 import { fetchAvailableNodes } from '../actions/things/available-actions'
 import { fetchMyDevices } from '../actions/things/device-actions'
 import { setBreadcrumbs } from '../actions/page-actions'
@@ -19,24 +21,16 @@ class Home extends Component {
         link: '/',
       },
     ]))
-    this.props.dispatch(fetchAvailableNodes());
-    this.props.dispatch(fetchMyDevices({ useBaseProps: true }))
-  }
-
-  getActions() {
-    return (
-      <ul>
-        <li><Link to="/things/my" className="Button Button--no-style">My Things</Link></li>
-        <li>|</li>
-        <li><Link to="/things/all" className="Button Button--no-style">All Things</Link></li>
-        <li>|</li>
-        <li><Link to="/getting-started" className="Button Button--no-style">Getting Started</Link></li>
-      </ul>
-    )
+    if (needsUpdate(this.props.devices)) {
+      this.props.dispatch(fetchMyDevices({ useBaseProps: true }))
+    }
+    if (needsUpdate(this.props.devices)) {
+      this.props.dispatch(fetchAvailableNodes())
+    }
   }
 
   render() {
-    const { latest, devices } = this.props;
+    const { available, devices } = this.props;
     const devicesEmptyState = (
       <EmptyState
         className="Pretty--EmptyState"
@@ -46,23 +40,21 @@ class Home extends Component {
       />
     )
     return (
-      <PageLayout title="Dashboard" actions={this.getActions()}>
-        <div>
-          <ShortList
-            title="Recently Installed Connectors"
-            linkTo="/things/all"
-            showEmptyState={_.isEmpty(devices)}
-            emptyState={devicesEmptyState}
-          >
-            <InstalledDevices devices={_.slice(devices, 0, 6)} />
-          </ShortList>
-          <ShortList
-            title="Top Connectors"
-            linkTo="/things/all"
-          >
-            <NodeTypes nodeTypes={_.slice(latest, 0, 6)} />
-          </ShortList>
-        </div>
+      <PageLayout title="Dashboard" actions={<AppActions />}>
+        <ShortList
+          title="Recently Installed Connectors"
+          linkTo="/things/all"
+          showEmptyState={_.isEmpty(devices.items)}
+          emptyState={devicesEmptyState}
+        >
+          <InstalledDevices devices={_.slice(devices.items, 0, 6)} />
+        </ShortList>
+        <ShortList
+          title="Top Connectors"
+          linkTo="/things/all"
+        >
+          <NodeTypes nodeTypes={_.slice(available.latest, 0, 6)} />
+        </ShortList>
       </PageLayout>
     );
   }
@@ -73,8 +65,7 @@ Home.propTypes = {
 }
 
 function mapStateToProps({ available, devices }) {
-  const { latest } = available
-  return { latest, devices: devices.items }
+  return { available, devices }
 }
 
 export default connect(mapStateToProps)(Home)

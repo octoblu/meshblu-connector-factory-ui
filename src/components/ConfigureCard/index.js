@@ -1,11 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
-
-import {
-  Card,
-} from 'zooid-ui';
-
-import './index.css';
+import CardItem from '../CardItem';
 
 const propTypes = {
   uuid: PropTypes.string.isRequired,
@@ -13,20 +7,11 @@ const propTypes = {
 
 const ConfigureCard = ({ uuid }) => {
   return (
-    <div className="ConfigureCard--container">
-      <Card className="ConfigureCard">
-        <main className="ConfigureCard-main">
-          <div className="ConfigureCard-body">
-            <div className="ConfigureCard-name">
-              <h3>Next Step</h3>
-            </div>
-          </div>
-          <footer className="ConfigureCard-footer">
-            <Link className="ConfigureCard-button Button Button--hollow-approve" to={`/things/configure/${uuid}`}>Configure Thing</Link>
-          </footer>
-        </main>
-      </Card>
-    </div>
+    <CardItem
+      title="Next Step"
+      linkTo={`/things/configure/${uuid}`}
+      linkTitle="Configure Thing"
+    />
   );
 };
 

@@ -19,3 +19,33 @@
   width: 350px;
   text-align: center;
 }
+
+.ActionFooter {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-right: 1rem;
+
+  font-size: 15px;
+}
+
+.ActionButton {
+  margin-left: auto;
+  min-height: 42px;
+}
+
+.Pretty--EmptyState {
+  width: 800px;
+  background: #fff;
+  margin: 50px auto;
+  padding: 50px;
+}
+
+.CardItemList {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  margin: 24px auto;
+}

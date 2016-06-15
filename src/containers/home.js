@@ -1,64 +1,78 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router';
-
+import React, { Component, PropTypes } from 'react';
+import { Link, browserHistory } from 'react-router'
+import _ from 'lodash';
+import NodeTypes from '../components/NodeTypes';
+import { EmptyState } from 'zooid-ui';
+import ShortList from './short-list'
+import InstalledDevices from '../components/InstalledDevices';
+import { connect } from 'react-redux';
+import { fetchAvailableNodes } from '../actions/things/available-actions'
+import { fetchMyDevices } from '../actions/things/device-actions'
+import { setBreadcrumbs } from '../actions/page-actions'
 import PageLayout from './page-layout'
 
-import '../styles/home.css';
+class Home extends Component {
+  componentDidMount() {
+    this.props.dispatch(setBreadcrumbs([
+      {
+        label: 'Home',
+        link: '/',
+      },
+    ]))
+    this.props.dispatch(fetchAvailableNodes());
+    this.props.dispatch(fetchMyDevices({ useBaseProps: true }))
+  }
 
-export default class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+  getActions() {
+    return (
+      <ul>
+        <li><Link to="/things/my" className="Button Button--hollow-primary">My Things</Link></li>
+        <li><Link to="/things/all" className="Button Button--hollow-primary">All Things</Link></li>
+        <li><Link to="/getting-started" className="Button Button--hollow-primary">Getting Started</Link></li>
+      </ul>
+    )
   }
 
   render() {
+    const { latest, devices } = this.props;
+    const devicesEmptyState = (
+      <EmptyState
+        className="Pretty--EmptyState"
+        title="No connectors installed yet"
+        cta="Create One"
+        action={() => browserHistory.push('/things/all')}
+      />
+    )
     return (
-      <PageLayout title="Meshblu Connector Factory">
-        <div className="Home">
-          <h2>Getting Started</h2>
-          <p>Welcome to the Meshblu Connector Factory. Here you will find a new way of creating, installing and managing Things.</p>
-          <p>
-            Running Meshblu Connectors independently allows us to simplify the installation and management process.
-          </p>
-          <div className="ButtonActions">
-            <Link to="/things/all" className="Button Button--hollow-primary">See All Things</Link>
-            <Link to="/things/my" className="Button Button--hollow-primary">See My Things</Link>
-          </div>
-          <h2>Why?</h2>
-          <p>
-            These Meshblu Connectors will replace the need for running a Gateblu.
-            However there are few things Gateblu provides that cannot be done with the connectors.
-            Like, managing a devices set in a headless enviroment.
-            In that case, we will replace Gateblu with a simple utility that uses the core components from the Connector Installer.
-          </p>
-          <h2>How?</h2>
-          <p>
-            Here is the basics. Each connector is a simple node library that handles a variety of events from Meshblu.
-            Those connectors, are pre-compiled and deployed to github releases.
-            When you create a device here,
-            it create the device in Meshblu,
-            generate a One Time Password (OTP),
-            and create / download a pre-configured installer.
-          </p>
-          <p>
-            Once downloaded, you'll need to open the the DMG on Mac OS.
-            On Windows and Linux, you'll need to unzip the installer whilst <u><strong>preserving the filename</strong></u>.
-            That can be done by right clicking on the zip and selecting the extract here or extract all option.
-          </p>
-          <p>
-            During the installation process,
-            the installer will download the <a href="https://github.com/octoblu/go-meshblu-connector-assembler">assembler</a>,
-            and the <a href="https://github.com/octoblu/go-meshblu-connector-dependency-manager">dependency manager</a>.
-            The dependency manager will download and install thing like node and npm.
-            The assembler handles downloading, extracting, configuring and setting up the service files for the connector.
-            Both are cross-platform go libaries.
-            The assembler, also downloads the <a href="https://github.com/octoblu/go-meshblu-connector-ignition">ignition script</a>.
-            The ignition script handles the service interface for the different platforms and it spawns of the node processes.
-          </p>
-          <h2>Backwards Compatibility</h2>
-          <p>This new way should be backwards compatible with the old way of running connectors.</p>
+      <PageLayout title="Dashboard" actions={this.getActions()}>
+        <div>
+          <ShortList
+            title="Recently Installed Connectors"
+            linkTo="/things/all"
+            showEmptyState={_.isEmpty(devices)}
+            emptyState={devicesEmptyState}
+          >
+            <InstalledDevices devices={_.slice(devices, 0, 6)} />
+          </ShortList>
+          <ShortList
+            title="Top Connectors"
+            linkTo="/things/all"
+          >
+            <NodeTypes nodeTypes={_.slice(latest, 0, 6)} />
+          </ShortList>
         </div>
       </PageLayout>
     );
   }
 }
+
+Home.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+}
+
+function mapStateToProps({ available, devices }) {
+  const { latest } = available
+  return { latest, devices: devices.items }
+}
+
+export default connect(mapStateToProps)(Home)

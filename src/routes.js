@@ -3,6 +3,7 @@ import { Route, Router, IndexRoute } from 'react-router';
 import AppLayout from './containers/app-layout';
 import Authenticated from './containers/authenticated';
 import Home from './containers/home';
+import GettingStarted from './containers/getting-started';
 import Create from './containers/connectors/create';
 import Generate from './containers/connectors/generate';
 import Generated from './containers/connectors/generated';
@@ -18,6 +19,7 @@ export default ({ history }) => {
       <Route path="/" component={AppLayout}>
         <Route path="/authenticated" onEnter={storeAuthentication} />
         <Route path="/logout" onEnter={logout} />
+        <Route path="/getting-started" component={GettingStarted} />
         <IndexRoute component={Home} />
         <Route path="/connectors" component={Authenticated}>
           <IndexRoute component={Installed} />

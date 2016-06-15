@@ -1,18 +1,14 @@
 import _ from 'lodash'
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
 
 import './index.css';
-import {
-  Card,
-  DeviceIcon,
-} from 'zooid-ui';
-
+import CardItem from '../CardItem';
 import classNames from 'classnames';
 
 const InstalledDevices = ({ devices, className }) => {
   const componentClass = classNames(
     'InstalledDevices',
+    'CardItemList',
     className
   );
 
@@ -20,19 +16,16 @@ const InstalledDevices = ({ devices, className }) => {
     const { name, uuid } = device;
     let type = device.type || 'device:other';
 
-    const nameStr = name || type;
-
-    return (<Card key={device.uuid} className="InstalledDevice">
-      <aside><DeviceIcon type={type} className="InstalledDevice-icon" /></aside>
-      <main className="InstalledDevice-main">
-        <div className="InstalledDevice-body">
-          <h3 className="InstalledDevice-name">{nameStr} <small className="InstalledDevice-status">{device.online ? 'online' : 'offline'}</small></h3>
-        </div>
-        <footer className="InstalledDevice-footer">
-          <Link to={`/things/configure/${uuid}`} className="InstalledDevice-button">Configure Thing</Link>
-        </footer>
-      </main>
-    </Card>)
+    const nameStr = name || 'Unknown Name';
+    return (
+      <CardItem
+        key={uuid}
+        title={nameStr}
+        iconType={type}
+        linkTo={`/things/configure/${uuid}`}
+        linkTitle="Configure"
+      />
+    )
   })
 
   return (<div className={componentClass}>

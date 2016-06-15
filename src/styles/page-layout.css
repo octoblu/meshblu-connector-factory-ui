@@ -4,6 +4,12 @@
   margin: auto;
 }
 
+@media (max-width: 1280px) {
+  .PageLayout {
+    padding: 1rem 3%;
+  }
+}
+
 .PageLayout--Actions {
   list-style-type: none;
   margin: 0;

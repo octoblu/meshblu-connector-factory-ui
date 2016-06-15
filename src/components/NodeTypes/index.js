@@ -1,35 +1,28 @@
 import _ from 'lodash'
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router'
 
+import CardItem from '../CardItem'
 import './index.css';
-import {
-  Card,
-  DeviceIcon,
-} from 'zooid-ui';
-
 import classNames from 'classnames';
 
 const NodeTypes = ({ nodeTypes, className }) => {
   const componentClass = classNames(
     'NodeTypes',
+    'CardItemList',
     className
   );
 
   let items = _.map(nodeTypes, (_nodeType) => {
     const { name, _id, type, connector } = _nodeType;
-
-    return (<Card key={_id} className="NodeType">
-      <aside><DeviceIcon type={type} className="NodeType-icon" /></aside>
-      <main className="NodeType-main">
-        <div className="NodeType-body">
-          <h3 className="NodeType-name">{name}</h3>
-        </div>
-        <footer className="NodeType-footer">
-          <Link to={`/connectors/create/${connector}`} className="NodeType-button">Create</Link>
-        </footer>
-      </main>
-    </Card>)
+    return (
+      <CardItem
+        key={_id}
+        title={name}
+        iconType={type}
+        linkTo={`/connectors/create/${connector}`}
+        linkTitle="Create"
+      />
+    )
   })
 
   return (<div className={componentClass}>

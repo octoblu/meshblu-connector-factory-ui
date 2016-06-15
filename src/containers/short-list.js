@@ -12,7 +12,7 @@ class ShortList extends Component {
         <h3>{title}</h3>
         {children}
         <footer className="ActionFooter">
-          <Link className="ActionButton Button Button--hollow-neutral" to={linkTo}>See More</Link>
+          <Link className="ActionButton Button Button--no-style" to={linkTo}>See More</Link>
         </footer>
       </div>
     );

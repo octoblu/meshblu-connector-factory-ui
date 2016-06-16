@@ -13,7 +13,7 @@ class Available extends Component {
   componentDidMount() {
     this.props.dispatch(setBreadcrumbs([
       {
-        label: 'Home',
+        label: 'Dashboard',
         link: '/',
       },
       {

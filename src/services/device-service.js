@@ -42,6 +42,14 @@ export function registerConnector({ connector, version, customProps }, callback)
     configureWhitelist: [owner],
     sendWhitelist: [owner],
     receiveWhitelist: [owner],
+    octoblu: {
+      links: [
+        {
+          url: 'https://connector-factory.octoblu.com',
+          title: 'View in Connector Factory',
+        },
+      ],
+    },
     connectorMetadata: {
       stopped: false,
       version,

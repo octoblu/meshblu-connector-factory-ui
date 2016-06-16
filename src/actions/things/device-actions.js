@@ -74,7 +74,7 @@ export function updateDeviceAction({ uuid, properties }) {
         return
       }
       dispatch(updateDeviceSuccess())
-      dispatch(fetchDevice({ uuid, fetching: false }))
+      dispatch(fetchDevice({ uuid }))
     });
   }
 }

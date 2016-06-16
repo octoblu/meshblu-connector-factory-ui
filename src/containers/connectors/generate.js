@@ -22,7 +22,7 @@ class Generate extends Component {
     const { uuid } = this.props.params;
     this.props.dispatch(setBreadcrumbs([
       {
-        label: 'Home',
+        label: 'Dashboard',
         link: '/',
       },
       {

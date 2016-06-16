@@ -1,18 +1,28 @@
-.CardItem {
+.CardItemList {
   display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 1rem auto;
+}
+
+.CardItem--container {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 33%;
+  min-width: 33%;
+  padding: 1rem;
+  height: 15rem;
+}
+
+.CardItem {
+  flex: 1;
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
-
-  width: 100%;
-  min-width: 360px;
-  max-width: 360px;
-  height: 150px;
-  margin: 12px;
-  padding: 2rem;
-
   text-align: left;
   text-decoration: none;
+  padding: 0;
 
   background: #FFF;
 
@@ -21,46 +31,62 @@
   box-shadow: none;
 }
 
-.CardItem-name {
-  margin: 0 0 12px;
-  padding: 0;
-  font-size: 2rem;
-}
-
-.CardItem .CardItem-icon {
-  max-width: 100px;
+.CardItem-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem;
+  min-width: 12rem;
+  max-height: 100%;
+  overflow: hidden;
+  border-right: 1px solid #EEF1F2;
+  background: #fafafa;
 }
 
 .CardItem-main {
+  flex: 3;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+.CardItem-body, .CardItem-footer {
+  flex: 1;
+  display: flex;
   justify-content: space-between;
-  width: 100%;
+  flex-direction: column;
 }
 
 .CardItem-body {
-  padding: 16px;
-  height: 32rem;
+  padding: 2rem;
+}
+
+.CardItem-title {
+  width: 100%;
+  text-align: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .CardItem-footer {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 16px;
-  width: 100%;
+  margin-top: auto;
+  max-height: 4rem;
+  padding-right: 1rem;
 
-  font-size: 15px;
+  font-size: 1.5rem;
   border-top: 1px solid #EEF1F2;
 }
 
-.CardItem-footer .CardItem-button {
+.CardItem-action {
+  margin-top: auto;
+  margin-bottom: auto;
   margin-left: auto;
+  max-height: 2rem;
 }
 
 .CardItem-status {
   margin-right: 4px;
-}
-
-.CardItem-button {
-  min-height: 42px;
 }

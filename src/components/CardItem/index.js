@@ -18,8 +18,8 @@ const propTypes = {
 const getDeviceIcon = ({ iconType }) => {
   if (!iconType) return null
   return (
-    <aside>
-      <DeviceIcon type={iconType} className="CardItem-icon" />
+    <aside className="CardItem-side">
+      <DeviceIcon type={iconType} />
     </aside>
   )
 }
@@ -31,12 +31,12 @@ const CardItem = ({ title, linkTo, linkTitle, iconType }) => {
         {getDeviceIcon({ iconType })}
         <main className="CardItem-main">
           <div className="CardItem-body">
-            <div className="CardItem-name">
+            <div className="CardItem-title">
               {title}
             </div>
           </div>
           <footer className="CardItem-footer">
-            <Link className="CardItem-button" to={linkTo}>{linkTitle}</Link>
+            <Link className="CardItem-action" to={linkTo}>{linkTitle}</Link>
           </footer>
         </main>
       </Card>

@@ -26,7 +26,7 @@ class Create extends Component {
     const { connector } = this.props.params;
     this.props.dispatch(setBreadcrumbs([
       {
-        label: 'Home',
+        label: 'Dashboard',
         link: '/',
       },
       {

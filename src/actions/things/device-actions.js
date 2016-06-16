@@ -39,7 +39,7 @@ function fetchDeviceSuccess({ device, useBaseProps }) {
   }
 }
 
-export function fetchDevice({ uuid, useBaseProps, fetching = true }) {
+export function fetchDevice({ uuid, useBaseProps, updateDetails = true, fetching = true }) {
   return (dispatch) => {
     dispatch(setFetching(fetching))
     getDevice({ uuid }, (error, device) => {
@@ -48,9 +48,11 @@ export function fetchDevice({ uuid, useBaseProps, fetching = true }) {
         dispatch(setError(error))
         return
       }
-      const { connector, connectorMetadata } = device
-      const { version } = connectorMetadata
-      dispatch(fetchConnectorDetails({ connector, version, fetching }))
+      if (updateDetails) {
+        const { connector, connectorMetadata } = device
+        const { version } = connectorMetadata
+        dispatch(fetchConnectorDetails({ connector, version, fetching }))
+      }
       dispatch(fetchDeviceSuccess({ device, useBaseProps }))
     })
   }

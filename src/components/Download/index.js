@@ -87,7 +87,7 @@ export default class Download extends Component {
         _.delay(() => {
           this.props.onDownload()
           this.setState({ downloadURI, downloading: false });
-        }, 10000)
+        }, 20 * 1000)
         link.href = downloadURI;
         link.click();
       });
@@ -114,7 +114,7 @@ export default class Download extends Component {
     }
     if (downloading) {
       return this.renderContent(
-        <div>
+        <div className="Download--Box">
           <Spinner size="large" />
           <h1 className="Download--action-title">Downloading...</h1>
         </div>
@@ -123,8 +123,8 @@ export default class Download extends Component {
 
     if (downloadURI) {
       return this.renderContent(
-        <div>
-          <h2>If download hasn't started, use link below.</h2>
+        <div className="Download--Box">
+          <h3>If download hasn't started, use link below.</h3>
           <a href={downloadURI}>manual download link</a>
         </div>
       );
@@ -132,7 +132,7 @@ export default class Download extends Component {
 
     return this.renderContent(
       <div className="Download--actions">
-        {this.getButtonRow('Mac OS', ['darwin-amd64'])}
+        {this.getButtonRow('macOS', ['darwin-amd64'])}
         {this.getButtonRow('Windows', ['windows-amd64', 'windows-386'])}
         {this.getButtonRow('Linux', ['linux-amd64', 'linux-386'])}
       </div>

@@ -12,8 +12,6 @@
   flex: 1;
   flex-direction: row;
   justify-content: space-between;
-  border-radius: 2px;
-  border: 1px solid #E0E0E0;
   width: 100%;
   min-width: 360px;
   max-width: 360px;
@@ -23,50 +21,32 @@
   text-align: left;
   text-decoration: none;
 
-  background: #FFF;
-
-  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
-}
-
-.SelectedVersion-name {
-  margin: 0;
-  font-size: 1.3rem;
-  text-align: center;
-}
-
-.SelectedVersion-name .VersionInfo {
-  font-size: 1rem;
-}
-
-.SelectedVersion .SelectedVersion-icon {
-  max-width: 100px;
+  border-radius: 2px;
+  border: 1px solid #E0E0E0;
+  box-shadow: none;
 }
 
 .SelectedVersion-main {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.SelectedVersion-body {
+  margin: auto;
+  text-align: center;
+}
+
+.SelectedVersion-body .VersionInfo {
+  font-size: 3rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
 }
 
-.SelectedVersion-body {
-  padding: 16px;
-}
-
-.SelectedVersion-footer {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 16px;
-  width: 100%;
-
-  font-size: 15px;
-  border-top: 1px solid #EEF1F2;
-}
-
-.SelectedVersion-footer .SelectedVersion-button {
-  margin-left: auto;
-}
-
 .SelectedVersion-button {
+  margin: 1rem auto;
   min-height: 42px;
 }

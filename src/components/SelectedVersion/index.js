@@ -15,10 +15,6 @@ const propTypes = {
 };
 
 const SelectedVersion = ({ info, onSelect }) => {
-  let title = 'Selected'
-  if (info.latest) {
-    title = 'Latest Version'
-  }
   const onSelectEvent = () => {
     onSelect(info)
   }
@@ -27,14 +23,9 @@ const SelectedVersion = ({ info, onSelect }) => {
       <Card className="SelectedVersion">
         <main className="SelectedVersion-main">
           <div className="SelectedVersion-body">
-            <div className="SelectedVersion-name">
-              <h3>{title}</h3>
-              <VersionInfo info={info} />
-            </div>
+            <VersionInfo info={info} />
+            <Button className="SelectedVersion-button" onClick={onSelectEvent} kind="hollow-primary">Use this Version</Button>
           </div>
-          <footer className="SelectedVersion-footer">
-            <Button onClick={onSelectEvent} className="SelectedVersion-button">Select Version</Button>
-          </footer>
         </main>
       </Card>
     </div>

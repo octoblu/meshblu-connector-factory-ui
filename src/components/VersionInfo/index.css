@@ -1,2 +1,5 @@
-.root {
+.VersionInfo--latest {
+  color: #676767;
+  padding: 0 0.5rem;
+  font-size: 1.5rem;
 }

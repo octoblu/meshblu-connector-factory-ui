@@ -1,28 +1,24 @@
 import React, { PropTypes } from 'react';
-
-import {
-  Button,
-} from 'zooid-ui';
-
+import { needsUpdate } from '../../helpers/actions';
 import './index.css';
 
 const propTypes = {
   device: PropTypes.object.isRequired,
-  connectorMetadata: PropTypes.object,
+  statusDevice: PropTypes.object.isRequired,
 };
 
-const getStatusInfo = ({ device, connectorMetadata }) => {
-  const { lastPong } = device;
+const getStatusInfo = ({ statusDevice, device }) => {
+  const { lastPong } = statusDevice || {}
   let stopped = false;
+  const { connectorMetadata, online } = device || {}
   if (connectorMetadata != null) {
     stopped = connectorMetadata.stopped;
   }
-
+  console.log(statusDevice, stopped)
   if (lastPong && !stopped) {
     const { date, response, error } = lastPong;
     const { running } = response;
-    const oneMinAgo = Date.now() - (1000 * 60);
-    if (date > oneMinAgo) {
+    if (!needsUpdate({ updatedAt: date }, 60)) {
       if (error != null) {
         return { statusText: 'connector error', online: true }
       }
@@ -32,22 +28,22 @@ const getStatusInfo = ({ device, connectorMetadata }) => {
       return { statusText: 'connector is responding to pings', online: true }
     }
   }
-  const { online } = device;
   if (online) {
     return { statusText: 'thing is online', online: true }
   }
   return { statusText: 'thing is offline', online: false }
 }
 
-const ConnectorStatus = ({ device, connectorMetadata }) => {
-  if (device == null) {
-    return null
-  }
-  const { statusText, online } = getStatusInfo({ device, connectorMetadata })
+const renderContent = (content) => {
+  return <span className="ConnectorStatus">{content}</span>
+}
+
+const ConnectorStatus = ({ statusDevice, device }) => {
+  const { statusText, online } = getStatusInfo({ device, statusDevice })
   if (online) {
-    return <Button kind="hollow-primary">{statusText}</Button>;
+    return renderContent(<span className="ConnectorStatus--Online">{statusText}</span>);
   }
-  return <Button kind="hollow-danger">{statusText}</Button>;
+  return renderContent(<span className="ConnectorStatus--Offline">{statusText}</span>);
 };
 
 

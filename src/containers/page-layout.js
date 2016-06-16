@@ -43,7 +43,7 @@ class PageLayout extends Component {
   getIcon() {
     const { type } = this.props
     if (!type) return null
-    return <DeviceIcon className="ConnectorIcon" type={type} />
+    return <DeviceIcon className="ConnectorIcon PageLayout--Icon" type={type} />
   }
 
   getBreadcrumbs() {

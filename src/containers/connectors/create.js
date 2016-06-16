@@ -48,14 +48,14 @@ class Create extends Component {
     }
   }
 
-  getConnectorType() {
+  getNodeType() {
     const { legacy, latest } = this.props.available
     const { connector } = this.props.params
     const foundLatest = _.find(latest, { connector })
-    if (foundLatest) return foundLatest.type
+    if (foundLatest) return foundLatest
     const foundLegacy = _.find(legacy, { connector })
-    if (foundLegacy) return foundLegacy.type
-    return ''
+    if (foundLegacy) return foundLegacy
+    return {}
   }
 
   createDevice() {
@@ -69,10 +69,9 @@ class Create extends Component {
   }
 
   renderContent(content) {
-    const { connector } = this.props.params
-    const type = this.getConnectorType()
+    const { type, name } = this.getNodeType()
     return (
-      <PageLayout type={type} title={`Create ${connector}`}>
+      <PageLayout type={type} title={`Create ${name}`}>
         {content}
       </PageLayout>
     );

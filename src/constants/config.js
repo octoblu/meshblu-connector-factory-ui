@@ -9,4 +9,5 @@ export const PROVIDER_URI     = 'https://oauth.octoblu.com';
 export const MESHBLU_HOSTNAME = 'meshblu.octoblu.com';
 export const MESHBLU_PORT     = 443;
 export const OCTOBLU_API_URL  = 'https://api.octoblu.com';
+export const OCTOBLU_APP_URL  = 'https://app.octoblu.com';
 export const CONNECTOR_SERVICE_URI = 'https://connector.octoblu.com'

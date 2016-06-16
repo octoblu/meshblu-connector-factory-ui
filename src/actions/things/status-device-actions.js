@@ -1,6 +1,5 @@
 import * as actionTypes from '../../constants/action-types';
 import { setFetching, setError } from '../page-actions'
-import _ from 'lodash';
 import {
   getDevice,
   sendMessage,
@@ -36,7 +35,7 @@ function updateStatusDeviceSuccess() {
   }
 }
 
-export function fetchStatusDevice({ device, useBaseProps, fetching = true, isPingResult = false }) {
+export function fetchStatusDevice({ device, useBaseProps, fetching = true }) {
   return (dispatch) => {
     const statusDeviceUUID = getStatusDeviceUUID(device)
     if (!statusDeviceUUID) {
@@ -49,17 +48,12 @@ export function fetchStatusDevice({ device, useBaseProps, fetching = true, isPin
         dispatch(setError(error))
         return
       }
-      if (isPingResult) {
-        _.delay(() => {
-          dispatch(pingStatusDeviceSuccess({ device, useBaseProps }))
-        }, 2000)
-      }
       dispatch(fetchStatusDeviceSuccess({ device, useBaseProps }))
     })
   }
 }
 
-export function pingStatusDevice({ device, useBaseProps }) {
+export function pingStatusDevice({ device }) {
   return (dispatch) => {
     const statusDeviceUUID = getStatusDeviceUUID(device)
     if (statusDeviceUUID == null) {
@@ -74,9 +68,7 @@ export function pingStatusDevice({ device, useBaseProps }) {
         dispatch(setError(error))
         return
       }
-      _.delay(() => {
-        dispatch(fetchStatusDevice({ device, useBaseProps, fetching: false, isPingResult: true }))
-      }, 2000)
+      dispatch(pingStatusDeviceSuccess())
     });
   }
 }
@@ -96,6 +88,7 @@ export function updateStatusDevice({ device, properties }) {
         return
       }
       dispatch(updateStatusDeviceSuccess())
+      dispatch(fetchStatusDevice({ device }))
     });
   }
 }

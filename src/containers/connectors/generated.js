@@ -33,7 +33,7 @@ class Create extends Component {
         link: '/things/my',
       },
       {
-        label: 'Generated',
+        label: 'Download',
       },
     ]))
   }
@@ -44,7 +44,8 @@ class Create extends Component {
 
   renderContent(content) {
     return (
-      <PageLayout>
+      <PageLayout title="">
+        <h1 className="CenterTitle">Download Installer</h1>
         {content}
       </PageLayout>
     );
@@ -65,11 +66,12 @@ class Create extends Component {
     return this.renderContent(
       <div className="Generated">
         <div className="Generated--col">
-          <h2>Download The Installer</h2>
           <Download otp={key} onDownload={this.onDownload} />
           <div className="Generated--key-section">
             <OrLine />
             <div className="Generated--key-content">
+              <h2>Already have an Installer?</h2>
+              <br />
               <h3>Use the One Time Password</h3>
               <h3><code>{key}</code></h3>
               <p>* Paste key into an existing installer *</p>

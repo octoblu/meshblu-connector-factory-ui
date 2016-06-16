@@ -1,0 +1,11 @@
+.ConnectorStatus {
+  padding: 0 1rem;
+}
+
+.ConnectorStatus--Online {
+  color: #017401;
+}
+
+.ConnectorStatus--Offline {
+  color: #CA2329;
+}

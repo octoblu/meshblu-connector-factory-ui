@@ -49,3 +49,8 @@
 
   margin: 24px auto;
 }
+
+.Button {
+  padding: 1rem 1.5rem;
+  border-width: 0.2rem;
+}

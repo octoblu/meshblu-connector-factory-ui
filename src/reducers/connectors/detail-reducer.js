@@ -9,6 +9,12 @@ const initialState = {
   info: {
     versions: {},
   },
+  latestVersion: {
+    latest: true,
+    version: null,
+    pkg: {},
+  },
+  updatedAt: null,
 }
 
 function getCurrentVersion({ details, version }) {
@@ -19,10 +25,27 @@ function getCurrentVersion({ details, version }) {
   }
 }
 
+function getLastestVersion({ details }) {
+  const version = details['dist-tags'].latest
+  return {
+    version,
+    latest: true,
+    pkg: details.versions[version],
+  }
+}
+
+function getVersionsState(action) {
+  return {
+    info: action.details,
+    latestVersion: getLastestVersion(action),
+    selectedVersion: getCurrentVersion(action),
+  }
+}
+
 export default function types(state = initialState, action) {
   switch (action.type) {
     case actionTypes.FETCH_CONNECTOR_DETAILS_SUCCESS:
-      return { ...state, info: action.details, selectedVersion: getCurrentVersion(action) }
+      return { ...state, ...getVersionsState(action), updatedAt: Date.now() }
 
     case actionTypes.SELECT_VERSION:
       return { ...state, selectedVersion: action.selectedVersion }

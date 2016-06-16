@@ -1,6 +1,7 @@
 .Download--actions {
   margin: 10px;
   padding: 10px;
+  text-align: center;
 }
 
 .Download--row {
@@ -13,9 +14,19 @@
 }
 
 .Download--icon {
-  font-size: 1.3rem;
+  font-size: 2rem;
 }
 
 .Download--action-title {
-  margin-top: 2.5rem;
+  margin-top: 5rem;
+}
+
+.Download--Box {
+  background: #fff;
+  margin: 1rem auto;
+  padding: 5rem;
+  text-align: center;
+  border-radius: 2px;
+  border: 1px solid #E0E0E0;
+  box-shadow: none;
 }

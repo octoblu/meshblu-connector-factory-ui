@@ -12,10 +12,15 @@ import DeviceActions from '../../components/DeviceActions';
 import DeviceSchema from '../../components/DeviceSchema';
 import VersionsSelect from '../../components/VersionsSelect';
 import StatusDeviceErrors from '../../components/StatusDeviceErrors';
+import DeviceInfoBar from '../../components/DeviceInfoBar';
 
 import { selectVersion } from '../../actions/connectors/detail-actions';
 import { fetchDevice, updateDeviceAction } from '../../actions/things/device-actions';
-import { updateStatusDevice, pingStatusDevice } from '../../actions/things/status-device-actions';
+import {
+  updateStatusDevice,
+  pingStatusDevice,
+  fetchStatusDevice,
+} from '../../actions/things/status-device-actions';
 
 import { getSchema } from '../../services/schema-service';
 import { needsUpdate } from '../../helpers/actions'
@@ -61,20 +66,26 @@ class Configure extends Component {
   }
 
   shouldUpdateDevices() {
-    const { device, statusDevice } = this.props;
+    const { device, statusDevice, details } = this.props;
     if (!device.item) return
 
     if (needsUpdate(statusDevice, 10)) {
+      this.props.dispatch(fetchStatusDevice({ device: device.item, fetching: false }))
+    }
+
+    if (needsUpdate({ updatedAt: statusDevice.pingSentAt }, 10)) {
       this.props.dispatch(pingStatusDevice({ device: device.item }))
     }
 
     if (needsUpdate(device, 10)) {
-      this.props.dispatch(fetchDevice({ uuid: device.item.uuid, fetching: false }))
+      const updateDetails = needsUpdate(details, 60)
+      this.props.dispatch(fetchDevice({ uuid: device.item.uuid, updateDetails, fetching: false }))
     }
   }
 
   changeVersion() {
-    this.setState({ changeVersion: true, selectedVersion: null })
+    this.setState({ changeVersion: true })
+    this.props.dispatch(selectVersion(this.props.details.latestVersion))
   }
 
   showErrors() {
@@ -118,15 +129,15 @@ class Configure extends Component {
   }
 
   renderContent(content) {
-    const { device, statusDevice } = this.props;
-    const { type, uuid, name } = device.item
+    const { device, statusDevice, details } = this.props;
+    const { type, name } = device.item
     const title = name || 'Unknown Name'
     const actions = (
       <DeviceActions
         device={device.item}
-        statusDevice={statusDevice.item}
         changeState={this.changeState}
         changeVersion={this.changeVersion}
+        selectedVersion={details.selectedVersion}
       />
     )
     return (
@@ -135,7 +146,7 @@ class Configure extends Component {
         type={type}
         actions={actions}
       >
-        <h3>UUID: {uuid}</h3>
+        <DeviceInfoBar statusDevice={statusDevice.item} device={device.item} />
         {content}
       </PageLayout>
     );

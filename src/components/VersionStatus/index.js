@@ -8,14 +8,15 @@ import './index.css';
 
 const propTypes = {
   onSelect: PropTypes.func.isRequired,
-  version: PropTypes.string.isRequired,
+  selectedVersion: PropTypes.object.isRequired,
 };
 
-const VersionStatus = ({ onSelect, version }) => {
-  if (version == null) {
+const VersionStatus = ({ onSelect, selectedVersion }) => {
+  const { version, latest } = selectedVersion
+  if (version == null || latest) {
     return null
   }
-  return <Button kind="hollow-neutral" onClick={onSelect}>v{version}</Button>;
+  return <Button kind="hollow-primary" onClick={onSelect}>Update Available!</Button>;
 };
 
 

@@ -10,7 +10,14 @@ const VersionInfo = ({ info }) => {
   const { version, latest } = info;
 
   let theVersion = `v${version}`;
-  if (latest) return (<span className="VersionInfo"><strong>{theVersion}</strong> [ latest ]</span>);
+  if (latest) {
+    return (
+      <span className="VersionInfo">
+        <strong>{theVersion}</strong>
+        <span className="VersionInfo--latest">[ latest ]</span>
+      </span>
+    );
+  }
   return (
     <span className="VersionInfo">
       {theVersion}

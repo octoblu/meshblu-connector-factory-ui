@@ -60,8 +60,9 @@ class Create extends Component {
 
   createDevice() {
     const { connector } = this.props.params;
+    const { octoblu } = this.props
     const { pkg } = this.props.details.selectedVersion;
-    this.props.dispatch(createConnectorAction({ connector, pkg }))
+    this.props.dispatch(createConnectorAction({ connector, pkg, octoblu }))
   }
 
   versionSelect(selectedVersion) {
@@ -92,8 +93,9 @@ Create.propTypes = {
   dispatch: PropTypes.func.isRequired,
 }
 
-function mapStateToProps({ available, details, connector }) {
-  return { available, details, connector }
+function mapStateToProps({ available, details, connector, octoblu }) {
+  const { uuid, token } = octoblu
+  return { available, details, connector, octoblu: { uuid, token } }
 }
 
 export default connect(mapStateToProps)(Create)

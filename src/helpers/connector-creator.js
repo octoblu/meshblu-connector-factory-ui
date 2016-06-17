@@ -9,7 +9,7 @@ import {
 import { generateOtp } from '../services/otp-service';
 import { getConnectorMetadata } from '../helpers/connector-metadata';
 
-export function createConnector({ pkg, connector }, callback) {
+export function createConnector({ pkg, connector, octoblu }, callback) {
   getSchema({ pkg }, (error, schema) => {
     if (error) return callback(error);
     const connectorOptions = {
@@ -20,9 +20,9 @@ export function createConnector({ pkg, connector }, callback) {
     registerConnector(connectorOptions, (error, device) => {
       if (error) return callback(error);
       const { uuid, token } = device;
-      getConnectorMetadata({ pkg }, (error, metadata) => {
+      getConnectorMetadata({ pkg, octoblu }, (error, metadata) => {
         if (error != null) return callback(error);
-        generateOtp({ uuid, token, metadata  }, (error, response) => {
+        generateOtp({ uuid, token, metadata }, (error, response) => {
           if (error != null) return callback(error);
           const { key } = response;
           return callback(null, { key, uuid });
@@ -32,7 +32,7 @@ export function createConnector({ pkg, connector }, callback) {
   });
 }
 
-export function updateAndGenerateKey({ pkg, connector, uuid }, callback) {
+export function updateAndGenerateKey({ pkg, connector, uuid, octoblu }, callback) {
   getSchema({ pkg }, (error, schema) => {
     if (error) return callback(error);
     const properties = _.assign({
@@ -47,7 +47,7 @@ export function updateAndGenerateKey({ pkg, connector, uuid }, callback) {
       generateAndStoreToken({ uuid }, (error, device) => {
         if (error != null) return callback(error);
         const { uuid, token } = device;
-        getConnectorMetadata({ pkg }, (error, metadata) => {
+        getConnectorMetadata({ pkg, octoblu }, (error, metadata) => {
           if (error != null) return callback(error);
           generateOtp({ uuid, token, metadata  }, (error, response) => {
             if (error != null) return callback(error);

@@ -15,7 +15,7 @@ function getNewMetadata({ pkg }) {
   return pkg.meshbluConnector;
 }
 
-export function getConnectorMetadata({ pkg }, callback) {
+export function getConnectorMetadata({ pkg, octoblu }, callback) {
   const { version, name } = pkg;
   const connector = getConnectorName(name);
   const legacy = _.isEmpty(pkg.meshbluConnector);
@@ -53,6 +53,7 @@ export function getConnectorMetadata({ pkg }, callback) {
       connectorAssemblerVersion,
       dependencyManagerVersion,
       ignitionVersion,
+      octoblu,
     })
   })
 }

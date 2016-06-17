@@ -1,11 +1,13 @@
 import * as actionTypes from '../../constants/action-types';
-import { fetchOctobluUser } from '../../helpers/authentication';
+import { fetchOctobluUser, getMeshbluConfig } from '../../helpers/authentication';
 import { setFetching } from '../page-actions'
 
-function fetchOctobluUserSuccess(user) {
+function fetchOctobluUserSuccess({ user, uuid, token }) {
   return {
     type: actionTypes.FETCH_OCTOBLU_USER_SUCCESS,
     user,
+    uuid,
+    token,
   }
 }
 
@@ -23,7 +25,8 @@ export function fetchOctobluUserAction() {
       if (error || !user) {
         dispatch(authenticateUser())
       }
-      dispatch(fetchOctobluUserSuccess(user))
+      const { uuid, token } = getMeshbluConfig()
+      dispatch(fetchOctobluUserSuccess({ user, uuid, token }))
     })
   }
 }

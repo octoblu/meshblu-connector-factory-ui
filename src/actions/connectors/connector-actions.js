@@ -14,10 +14,10 @@ function connectorGeneratedSuccess({ key, uuid }) {
   }
 }
 
-export function createConnectorAction({ connector, pkg }) {
+export function createConnectorAction({ connector, pkg, octoblu }) {
   return (dispatch) => {
     dispatch(setFetching(true))
-    createConnector({ connector, pkg }, (error, response) => {
+    createConnector({ connector, pkg, octoblu }, (error, response) => {
       dispatch(setFetching(false))
       if (error) {
         dispatch(setError(error))
@@ -29,10 +29,10 @@ export function createConnectorAction({ connector, pkg }) {
   }
 }
 
-export function generateConnectorAction({ uuid, connector, pkg }) {
+export function generateConnectorAction({ uuid, connector, pkg, octoblu }) {
   return (dispatch) => {
     dispatch(setFetching(true))
-    updateAndGenerateKey({ uuid, connector, pkg }, (error, response) => {
+    updateAndGenerateKey({ uuid, connector, pkg, octoblu }, (error, response) => {
       dispatch(setFetching(false))
       if (error) {
         dispatch(setError(error))

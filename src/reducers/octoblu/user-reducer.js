@@ -7,6 +7,8 @@ import {
 const initialState = {
   user: {},
   updatedAt: null,
+  uuid: null,
+  token: null,
 }
 
 export default function types(state = initialState, action) {
@@ -17,7 +19,7 @@ export default function types(state = initialState, action) {
       return initialState
 
     case actionTypes.FETCH_OCTOBLU_USER_SUCCESS:
-      return { ...state, user: action.user, updatedAt: Date.now() }
+      return { ...state, user: action.user, uuid: action.uuid, token: action.token, updatedAt: Date.now() }
 
     default:
       return state

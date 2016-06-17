@@ -50,8 +50,9 @@ class Generate extends Component {
   updateAndGenerate() {
     const { uuid } = this.props.params;
     const { pkg } = this.props.details.selectedVersion;
-    const { connector } = this.props.device;
-    this.props.dispatch(generateConnectorAction({ uuid, pkg, connector }))
+    const { octoblu, device } = this.props
+    const { connector } = device;
+    this.props.dispatch(generateConnectorAction({ uuid, pkg, connector, octoblu }))
   }
 
   versionSelect(selectedVersion) {
@@ -77,8 +78,9 @@ Generate.propTypes = {
   dispatch: PropTypes.func.isRequired,
 }
 
-function mapStateToProps({ device, details, connector }) {
-  return { device: device.item, details, connector }
+function mapStateToProps({ device, details, connector, octoblu }) {
+  const { uuid, token } = octoblu
+  return { device: device.item, details, connector, octoblu: { uuid, token } }
 }
 
 export default connect(mapStateToProps)(Generate)

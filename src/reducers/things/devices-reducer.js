@@ -19,6 +19,9 @@ export default function types(state = initialState, action) {
     case actionTypes.FETCH_MY_DEVICES_SUCCESS:
       return { ...state, updatedAt: Date.now(), items: getDevices(action) }
 
+    case actionTypes.CLEAR_MY_DEVICES:
+      return { ...state, updatedAt: null }
+
     default:
       return state
   }

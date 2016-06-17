@@ -21,6 +21,9 @@ export default function types(state = initialState, action) {
     case actionTypes.FETCH_AVAILABLE_NODES_SUCCESS:
       return { ...state, updatedAt: Date.now(), legacy: getConnectors(action), latest: latestConnectors }
 
+    case actionTypes.FETCH_MY_DEVICES_SUCCESS:
+      return { ...state, updatedAt: null }
+
     default:
       return state
   }

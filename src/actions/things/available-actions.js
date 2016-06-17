@@ -11,6 +11,18 @@ function fetchAvailableNodesSuccess(connectors) {
   }
 }
 
+function clearAvailableUpdatedAtResult() {
+  return {
+    type: actionTypes.CLEAR_AVAILABLE_NODES,
+  }
+}
+
+export function clearAvailableUpdatedAt() {
+  return (dispatch) => {
+    dispatch(clearAvailableUpdatedAtResult())
+  }
+}
+
 export function fetchAvailableNodes() {
   return (dispatch) => {
     dispatch(setFetching(true))

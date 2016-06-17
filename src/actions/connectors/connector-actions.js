@@ -1,5 +1,6 @@
 import * as actionTypes from '../../constants/action-types';
 import { setFetching, setError } from '../page-actions'
+import { clearMyDevicesUpdatedAt } from '../things/device-actions'
 import {
   createConnector,
   updateAndGenerateKey,
@@ -22,6 +23,7 @@ export function createConnectorAction({ connector, pkg }) {
         dispatch(setError(error))
         return
       }
+      dispatch(clearMyDevicesUpdatedAt())
       dispatch(connectorGeneratedSuccess(response))
     })
   }

@@ -17,6 +17,18 @@ function fetchMyDevicesSuccess({ devices, useBaseProps }) {
   }
 }
 
+function clearMyDevicesUpdatedAtResult() {
+  return {
+    type: actionTypes.CLEAR_MY_DEVICES,
+  }
+}
+
+export function clearMyDevicesUpdatedAt() {
+  return (dispatch) => {
+    dispatch(clearMyDevicesUpdatedAtResult())
+  }
+}
+
 export function fetchMyDevices({ useBaseProps }) {
   return (dispatch) => {
     dispatch(setFetching(true))
@@ -73,6 +85,7 @@ export function updateDeviceAction({ uuid, properties }) {
         dispatch(setError(error))
         return
       }
+      dispatch(clearMyDevicesUpdatedAtResult())
       dispatch(updateDeviceSuccess())
       dispatch(fetchDevice({ uuid }))
     });

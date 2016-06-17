@@ -88,9 +88,9 @@ class PageLayout extends Component {
   }
 
   render() {
-    const { children, fetching, error } = this.props
+    const { children, fetchingCount, error } = this.props
 
-    if (fetching) {
+    if (fetchingCount > 0) {
       return this.renderPage(<Spinner size="large" />)
     }
 
@@ -111,8 +111,8 @@ PageLayout.propTypes = propTypes;
 PageLayout.defaultProps = defaultProps;
 
 function mapStateToProps({ page }) {
-  const { fetching, error, fragments } = page
-  return { fetching, error, fragments }
+  const { fetchingCount, error, fragments } = page
+  return { fetchingCount, error, fragments }
 }
 
 export default connect(mapStateToProps)(PageLayout)

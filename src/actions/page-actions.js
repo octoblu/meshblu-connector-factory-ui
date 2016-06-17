@@ -7,6 +7,12 @@ function setFetchingResult(fetching) {
   }
 }
 
+function resetPageStateResult() {
+  return {
+    type: actionTypes.PAGE_LAYOUT_RESET,
+  }
+}
+
 function setErrorResult(error) {
   return {
     type: actionTypes.PAGE_LAYOUT_ERROR,
@@ -36,5 +42,11 @@ export function setError(error) {
 export function setBreadcrumbs(fragments) {
   return (dispatch) => {
     dispatch(setBreadcrumbsResult(fragments))
+  }
+}
+
+export function resetPageState() {
+  return (dispatch) => {
+    dispatch(resetPageStateResult())
   }
 }

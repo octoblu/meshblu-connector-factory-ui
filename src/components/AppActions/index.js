@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router'
+import { Button } from 'zooid-ui'
 
 const AppActions = () => {
   return (
@@ -8,7 +9,7 @@ const AppActions = () => {
       <li>|</li>
       <li><Link to="/things/all" className="Button Button--no-style">All Things</Link></li>
       <li>|</li>
-      <li><Link to="/getting-started" className="Button Button--no-style">Getting Started</Link></li>
+      <li><Button href="https://meshblu-connectors.readme.io" kind="no-style">Getting Started</Button></li>
     </ul>
   )
 };

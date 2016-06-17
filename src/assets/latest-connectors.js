@@ -1,10 +1,10 @@
  const Connectors = [
-  //  {
-  //    _id: '9811c66d-2211-472a-9be0-e79cc397ce21',
-  //    name: 'Lightblue Bean',
-  //    type: 'device:bean',
-  //    connector: 'meshblu-connector-bean',
-  //  },
+   {
+     _id: '9811c66d-2211-472a-9be0-e79cc397ce21',
+     name: 'Lightblue Bean',
+     type: 'device:bean',
+     connector: 'meshblu-connector-bean',
+   },
    {
      _id: '5440604b-7062-4c2e-8f75-23b856fd3b59',
      name: 'Phillips Hue',

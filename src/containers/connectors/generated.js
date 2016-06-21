@@ -73,7 +73,7 @@ class Create extends Component {
               <h2>Already have an Installer?</h2>
               <br />
               <h3>Use the One Time Password</h3>
-              <h3><code>{key}</code></h3>
+              <h3 className="Generated--code"><code>{key}</code></h3>
               <p>* Paste key into an existing installer *</p>
               <Button onClick={this.onDownload} kind="no-style">Next Step</Button>
             </div>

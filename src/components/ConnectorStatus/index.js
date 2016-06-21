@@ -14,7 +14,6 @@ const getStatusInfo = ({ statusDevice, device }) => {
   if (connectorMetadata != null) {
     stopped = connectorMetadata.stopped;
   }
-  console.log(statusDevice, stopped)
   if (lastPong && !stopped) {
     const { date, response, error } = lastPong;
     const { running } = response;

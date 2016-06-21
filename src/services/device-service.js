@@ -20,13 +20,23 @@ export function registerStatusDevice({ owner, uuid }, callback) {
     receiveWhitelist: [uuid, owner],
   }, (error, device) => {
     if (error) return callback(error)
-    const properties = {
-      statusDevice: device.uuid,
-    }
-    updateDevice({ uuid, properties }, (error) => {
-      callback(error)
-    })
+    callback(null, device.uuid)
   })
+}
+
+function afterRegisterConnector({ statusDeviceUUID, uuid }, callback) {
+  const properties = {
+    statusDevice: statusDeviceUUID,
+    octoblu: {
+      links: [
+        {
+          url: `https://connector-factory.octoblu.com/things/configure/${uuid}`,
+          title: 'View in Connector Factory',
+        },
+      ],
+    },
+  }
+  updateDevice({ uuid, properties }, callback)
 }
 
 export function registerConnector({ connector, version, customProps }, callback) {
@@ -42,14 +52,6 @@ export function registerConnector({ connector, version, customProps }, callback)
     configureWhitelist: [owner],
     sendWhitelist: [owner],
     receiveWhitelist: [owner],
-    octoblu: {
-      links: [
-        {
-          url: 'https://connector-factory.octoblu.com',
-          title: 'View in Connector Factory',
-        },
-      ],
-    },
     connectorMetadata: {
       stopped: false,
       version,
@@ -58,9 +60,12 @@ export function registerConnector({ connector, version, customProps }, callback)
   meshblu.register(deviceProps, (error, device) => {
     if (error != null) return callback(error)
     const { uuid } = device
-    registerStatusDevice({ owner, uuid }, (error) => {
+    registerStatusDevice({ owner, uuid }, (error, statusDeviceUUID) => {
       if (error != null) return callback(error)
-      callback(null, device)
+      afterRegisterConnector({ uuid, statusDeviceUUID }, (error) => {
+        if (error != null) return callback(error)
+        callback(null, device)
+      })
     })
   });
 }

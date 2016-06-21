@@ -13,13 +13,15 @@ class OctobluOauth extends Component {
   }
 
   render() {
-    const { user, uuid, token } = this.props.octoblu
+    const { children, octoblu } = this.props
+    const { user, uuid, token } = octoblu
     if (!user || !uuid || !token) {
       return null
     }
+
     return (
       <div>
-        {this.props.children}
+        {children}
         <ZooidOctobluIntercom appId="ux5bbkjz" uuid={uuid} token={token} />
       </div>
     );

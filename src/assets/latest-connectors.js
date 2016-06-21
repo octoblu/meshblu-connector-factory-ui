@@ -41,12 +41,18 @@
      type: 'device:shell',
      connector: 'meshblu-connector-shell',
    },
-  //  {
-  //    _id: 'ff1f3686-7062-4c2e-8f75-23b856fd3b59',
-  //    name: 'Beacon',
-  //    type: 'device:beacon',
-  //    connector: 'meshblu-connector-beacon',
-  //  },
+   {
+     _id: 'ff1f3686-7062-4c2e-8f75-23b856fd3b59',
+     name: 'Beacon Receiver',
+     type: 'device:beacon-receiver',
+     connector: 'meshblu-connector-beacon-receiver',
+   },
+   {
+     _id: 'aea7edb3-2af7-43b2-8f19-c5129d793cce',
+     name: 'Beacon Transmitter',
+     type: 'device:beacon-transmitter',
+     connector: 'meshblu-connector-beacon-transmitter',
+   },
   //  {
   //    _id: '41af9401-e876-4a22-a2d0-5cbf25e237ea',
   //    name: 'Lifx',

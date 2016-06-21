@@ -53,12 +53,12 @@
   //    type: 'device:lifx',
   //    connector: 'meshblu-connector-lifx',
   //  },
-  //  {
-  //    _id: '8781825d-5adf-4921-9d12-5993f8d1619b',
-  //    name: 'HTTP Connector',
-  //    type: 'device:http-connector',
-  //    connector: 'meshblu-connector-http',
-  //  },
+   {
+     _id: '8781825d-5adf-4921-9d12-5993f8d1619b',
+     name: 'HTTP Connector',
+     type: 'device:http-connector',
+     connector: 'meshblu-connector-http',
+   },
   //  {
   //    _id: '8781825d-8446-497d-abb4-67b475723403',
   //    name: 'Myo',

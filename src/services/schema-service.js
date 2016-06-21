@@ -1,14 +1,25 @@
 import request from 'superagent';
-import _ from 'lodash';
 
-export function getSchema({ pkg }, callback) {
-  if (!_.get(pkg, 'meshbluConnector.schemasUrl')) {
-    callback(null, {});
+const DOWNLOAD_RELEASE_URI = 'https://file-downloader.octoblu.com/github-release'
+
+function getSchemaURL({ meshbluConnector, version }) {
+  const { schemasUrl, githubSlug } = meshbluConnector || {}
+  if (schemasUrl) {
+    // return schemasUrl
+  }
+  if (!githubSlug) {
     return
   }
-  const { schemasUrl } = pkg.meshbluConnector;
-  request
-    .get(schemasUrl)
+  return `${DOWNLOAD_RELEASE_URI}/${githubSlug}/v${version}/schemas.json`
+}
+
+export function getSchema({ pkg }, callback) {
+  const schemasUrl = getSchemaURL(pkg)
+  if (!schemasUrl) {
+    callback(null, {})
+    return
+  }
+  request.get(schemasUrl)
     .end((error, response) => {
       if (error) {
         callback(error);

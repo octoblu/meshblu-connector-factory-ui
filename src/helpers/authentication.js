@@ -1,5 +1,6 @@
 import url from 'url';
 import cookie from 'react-cookie';
+import moment from 'moment';
 import MeshbluHttp from 'browser-meshblu-http/dist/meshblu-http.js';
 
 import {
@@ -37,7 +38,11 @@ export function fetchOctobluUser(callback) {
 export function storeAuthentication(nextState, replace) {
   const { access_token, redirect_uri } = nextState.location.query;
   const bearerToken = decodeURIComponent(access_token);
-  cookie.save('meshbluBearerToken', bearerToken, { path: '/' });
+  const cookieOptions = {
+    path: '/',
+    expires: moment().add(1, 'year').toDate(),
+  }
+  cookie.save('meshbluBearerToken', bearerToken, cookieOptions);
   replace(redirect_uri);
 }
 

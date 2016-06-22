@@ -91,6 +91,7 @@ export function getDevices(callback) {
   meshblu.devices({
     owner: meshbluConfig.uuid,
     connector: { $exists: true },
+    connectorMetadata: { $exists: true },
     type: { $ne: 'device:gateblu' },
   }, callback);
 }

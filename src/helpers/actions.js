@@ -5,3 +5,9 @@ export function needsUpdate({ updatedAt }, seconds = 30) {
   const secondsAgo = moment().subtract(seconds, 'seconds')
   return moment(updatedAt).isBefore(secondsAgo)
 }
+
+export function onEnterRedirectTo(path) {
+  return (nextState, replace) => {
+    replace(path)
+  }
+}

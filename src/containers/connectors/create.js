@@ -30,8 +30,8 @@ class Create extends Component {
         link: '/',
       },
       {
-        label: 'All Things',
-        link: '/things/all',
+        label: 'Available Connectors',
+        link: '/connectors/available',
       },
       {
         label: 'Create',
@@ -49,13 +49,9 @@ class Create extends Component {
   }
 
   getNodeType() {
-    const { legacy, latest } = this.props.available
+    const { latest } = this.props.available
     const { connector } = this.props.params
-    const foundLatest = _.find(latest, { connector })
-    if (foundLatest) return foundLatest
-    const foundLegacy = _.find(legacy, { connector })
-    if (foundLegacy) return foundLegacy
-    return {}
+    return _.find(latest, { connector }) || {}
   }
 
   createDevice() {

@@ -36,14 +36,14 @@ class Home extends Component {
         className="Pretty--EmptyState"
         title="No connectors installed yet"
         cta="Create One"
-        action={() => browserHistory.push('/things/all')}
+        action={() => browserHistory.push('/connectors/available')}
       />
     )
     return (
       <PageLayout title="Dashboard" actions={<AppActions />}>
         <ShortList
           title="Recently Installed Connectors"
-          linkTo="/things/all"
+          linkTo="/things/available"
           showEmptyState={_.isEmpty(devices.items)}
           emptyState={devicesEmptyState}
         >
@@ -51,7 +51,7 @@ class Home extends Component {
         </ShortList>
         <ShortList
           title="Top Connectors"
-          linkTo="/things/all"
+          linkTo="/connectors/available"
         >
           <NodeTypes nodeTypes={_.slice(available.latest, 0, 6)} />
         </ShortList>

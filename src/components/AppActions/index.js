@@ -7,7 +7,7 @@ const AppActions = () => {
     <ul>
       <li><Link to="/things/my" className="Button Button--no-style">My Things</Link></li>
       <li>|</li>
-      <li><Link to="/things/all" className="Button Button--no-style">All Things</Link></li>
+      <li><Link to="/connectors/available" className="Button Button--no-style">Available Connectors</Link></li>
       <li>|</li>
       <li><Button href="https://meshblu-connectors.readme.io" kind="no-style">Getting Started</Button></li>
     </ul>

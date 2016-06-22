@@ -1,14 +1,7 @@
-import _ from 'lodash';
 import { getAllLatestVersions } from '../services/go-version-service';
 
 export function getConnectorName(connector) {
   return connector.replace(/^meshblu\-(connector\-)/, '');
-}
-
-function getLegacyMetadata({ pkg }) {
-  return {
-    githubSlug: `octoblu/${pkg.name}`,
-  };
 }
 
 function getNewMetadata({ pkg }) {
@@ -18,12 +11,7 @@ function getNewMetadata({ pkg }) {
 export function getConnectorMetadata({ pkg, octoblu }, callback) {
   const { version, name } = pkg;
   const connector = getConnectorName(name);
-  const legacy = _.isEmpty(pkg.meshbluConnector);
-  let metadata = getLegacyMetadata({ pkg });
-
-  if (!legacy) {
-    metadata = getNewMetadata({ pkg });
-  }
+  const metadata = getNewMetadata({ pkg });
 
   const { githubSlug } = metadata;
   let {
@@ -46,7 +34,7 @@ export function getConnectorMetadata({ pkg, octoblu }, callback) {
       connectorAssemblerVersion = versions.connectorAssemblerVersion;
     }
     callback(null, {
-      legacy,
+      legacy: false,
       connector,
       tag,
       githubSlug,

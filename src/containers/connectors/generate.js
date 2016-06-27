@@ -1,13 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
-
 import { setBreadcrumbs } from '../../actions/page-actions'
 import PageLayout from '../page-layout';
 
 import VersionsSelect from '../../components/VersionsSelect';
 
-import { generateConnectorAction } from '../../actions/connectors/connector-actions';
+import { generateConnectorAction, gotToGeneratedConnector } from '../../actions/connectors/connector-actions';
 import { selectVersion } from '../../actions/connectors/detail-actions';
 import { fetchDevice } from '../../actions/things/device-actions';
 
@@ -43,16 +41,17 @@ class Generate extends Component {
   componentWillReceiveProps(nextProps) {
     const { key, uuid } = nextProps.connector;
     if (key && uuid) {
-      this.props.dispatch(push(`/connectors/generated/${uuid}/${key}`))
+      this.props.dispatch(gotToGeneratedConnector({ key, uuid }))
     }
   }
 
   updateAndGenerate() {
     const { uuid } = this.props.params;
-    const { pkg } = this.props.details.selectedVersion;
+    const { version } = this.props.details.selectedVersion;
     const { octoblu, device } = this.props
-    const { connector } = device;
-    this.props.dispatch(generateConnectorAction({ uuid, pkg, connector, octoblu }))
+    const { githubSlug } = device;
+    const { connector } = device.item;
+    this.props.dispatch(generateConnectorAction({ uuid, githubSlug, connector, version, octoblu }))
   }
 
   versionSelect(selectedVersion) {
@@ -63,11 +62,11 @@ class Generate extends Component {
     const { device } = this.props
     const { info, selectedVersion } = this.props.details
     return (
-      <PageLayout type={device.type} title="Generate Installer">
+      <PageLayout type={device.item.type} title="Generate Installer">
         <VersionsSelect
           onSelect={this.updateAndGenerate}
           selected={selectedVersion}
-          versions={info.versions}
+          versions={info.tags}
         />
       </PageLayout>
     )
@@ -80,7 +79,7 @@ Generate.propTypes = {
 
 function mapStateToProps({ device, details, connector, octoblu }) {
   const { uuid, token } = octoblu
-  return { device: device.item, details, connector, octoblu: { uuid, token } }
+  return { device, details, connector, octoblu: { uuid, token } }
 }
 
 export default connect(mapStateToProps)(Generate)

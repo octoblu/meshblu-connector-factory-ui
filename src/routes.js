@@ -21,6 +21,7 @@ export default ({ history }) => {
         <IndexRoute component={Home} />
         <Route path="/connectors">
           <IndexRoute component={Installed} />
+          <Route path="/connectors/create/:owner/:connector" component={Create} />
           <Route path="/connectors/create/:connector" component={Create} />
           <Route path="/connectors/available" component={Available} />
           <Route path="/connectors/generate/:uuid" component={Generate} />

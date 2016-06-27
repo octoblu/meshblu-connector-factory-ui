@@ -39,7 +39,7 @@ function afterRegisterConnector({ statusDeviceUUID, uuid }, callback) {
   updateDevice({ uuid, properties }, callback)
 }
 
-export function registerConnector({ connector, version, customProps }, callback) {
+export function registerConnector({ githubSlug, connector, version, customProps }, callback) {
   const meshbluConfig = getMeshbluConfig();
   const meshblu = new MeshbluHttp(meshbluConfig);
   const connectorName = getConnectorName(connector);
@@ -55,6 +55,7 @@ export function registerConnector({ connector, version, customProps }, callback)
     connectorMetadata: {
       stopped: false,
       version,
+      githubSlug,
     },
   }, customProps);
   meshblu.register(deviceProps, (error, device) => {

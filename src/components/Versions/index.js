@@ -26,7 +26,7 @@ function majorAndMinorList(versions) {
 }
 
 function filterAndSortVersions(_versions) {
-  const sortedAndReversed = _.reverse(_.keys(_versions));
+  const sortedAndReversed = _.keys(_versions);
   const majorMinors = majorAndMinorList(sortedAndReversed);
   _.each(sortedAndReversed, (version) => {
     const [major, minor] = version.split('.');
@@ -40,9 +40,9 @@ const Versions = ({ versions, onSelect }) => {
   const versionKeys = filterAndSortVersions(versions);
 
   const versionsList = _.map(versionKeys, (version, i) => {
-    const pkg = versions[version];
+    const details = versions[version];
     const latest = !i;
-    const versionInfo = { version, pkg, latest };
+    const versionInfo = { version, details, latest };
     const onSelectEvent = () => {
       onSelect(versionInfo);
     };

@@ -9,18 +9,19 @@ import {
 import { generateOtp } from '../services/otp-service';
 import { getConnectorMetadata } from '../helpers/connector-metadata';
 
-export function createConnector({ pkg, connector, octoblu }, callback) {
-  getSchema({ pkg }, (error, schema) => {
+export function createConnector({ githubSlug, version, connector, octoblu }, callback) {
+  getSchema({ githubSlug, version }, (error, schema) => {
     if (error) return callback(error);
     const connectorOptions = {
       connector,
-      version: pkg.version,
+      version,
+      githubSlug,
       customProps: _.assign({ name: _.startCase(connector) }, schema),
     }
     registerConnector(connectorOptions, (error, device) => {
       if (error) return callback(error);
       const { uuid, token } = device;
-      getConnectorMetadata({ pkg, octoblu }, (error, metadata) => {
+      getConnectorMetadata({ connector, githubSlug, version, octoblu }, (error, metadata) => {
         if (error != null) return callback(error);
         generateOtp({ uuid, token, metadata }, (error, response) => {
           if (error != null) return callback(error);
@@ -32,14 +33,15 @@ export function createConnector({ pkg, connector, octoblu }, callback) {
   });
 }
 
-export function updateAndGenerateKey({ pkg, connector, uuid, octoblu }, callback) {
-  getSchema({ pkg }, (error, schema) => {
+export function updateAndGenerateKey({ uuid, githubSlug, version, connector, octoblu }, callback) {
+  getSchema({ githubSlug, version }, (error, schema) => {
     if (error) return callback(error);
     const properties = _.assign({
       connector,
       connectorMetadata: {
         stopped: false,
-        version: pkg.version,
+        githubSlug,
+        version,
       },
     }, schema);
     updateDevice({ uuid, properties }, (error) => {
@@ -47,7 +49,7 @@ export function updateAndGenerateKey({ pkg, connector, uuid, octoblu }, callback
       generateAndStoreToken({ uuid }, (error, device) => {
         if (error != null) return callback(error);
         const { uuid, token } = device;
-        getConnectorMetadata({ pkg, octoblu }, (error, metadata) => {
+        getConnectorMetadata({ connector, githubSlug, version, octoblu }, (error, metadata) => {
           if (error != null) return callback(error);
           generateOtp({ uuid, token, metadata  }, (error, response) => {
             if (error != null) return callback(error);

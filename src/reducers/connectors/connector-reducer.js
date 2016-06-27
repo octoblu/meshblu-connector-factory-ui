@@ -10,6 +10,9 @@ export default function types(state = initialState, action) {
     case actionTypes.CONNECTOR_GENERATED_SUCCESS:
       return { ...state, key: action.key, uuid: action.uuid }
 
+    case actionTypes.CLEAR_GENERATED_CONNECTOR:
+      return initialState
+
     default:
       return state
   }

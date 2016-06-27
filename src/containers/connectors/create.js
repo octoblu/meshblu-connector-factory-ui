@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux'
 
 import PageLayout from '../page-layout'
 import { setBreadcrumbs } from '../../actions/page-actions'
@@ -9,8 +8,7 @@ import { setBreadcrumbs } from '../../actions/page-actions'
 import VersionsSelect from '../../components/VersionsSelect';
 
 import { fetchConnectorDetails, selectVersion } from '../../actions/connectors/detail-actions';
-import { createConnectorAction } from '../../actions/connectors/connector-actions';
-import { fetchAvailableNodes } from '../../actions/things/available-actions'
+import { createConnectorAction, gotToGeneratedConnector } from '../../actions/connectors/connector-actions';
 
 class Create extends Component {
   constructor(props) {
@@ -20,10 +18,10 @@ class Create extends Component {
     }
     this.versionSelect = this.versionSelect.bind(this);
     this.createDevice = this.createDevice.bind(this);
+    this.getGithubSlug = this.getGithubSlug.bind(this);
   }
 
   componentDidMount() {
-    const { connector } = this.props.params;
     this.props.dispatch(setBreadcrumbs([
       {
         label: 'Dashboard',
@@ -37,28 +35,41 @@ class Create extends Component {
         label: 'Create',
       },
     ]))
-    this.props.dispatch(fetchAvailableNodes())
-    this.props.dispatch(fetchConnectorDetails({ connector }))
+    const githubSlug = this.getGithubSlug()
+    this.props.dispatch(fetchConnectorDetails({ githubSlug }))
   }
 
   componentWillReceiveProps(nextProps) {
     const { key, uuid } = nextProps.connector;
     if (key && uuid) {
-      this.props.dispatch(push(`/connectors/generated/${uuid}/${key}`))
+      this.props.dispatch(gotToGeneratedConnector({ key, uuid }))
     }
   }
 
-  getNodeType() {
-    const { latest } = this.props.available
-    const { connector } = this.props.params
-    return _.find(latest, { connector }) || {}
+  getConnectorDetails() {
+    const githubSlug = this.getGithubSlug()
+    let found = null
+    _.some(_.values(this.props.available.registries), (registry) => {
+      found = _.find(registry.items, { githubSlug })
+      if (found) {
+        return true
+      }
+      return false
+    })
+    return found || {}
+  }
+
+  getGithubSlug() {
+    const { owner = 'octoblu', connector } = this.props.params
+    return `${owner}/${connector}`
   }
 
   createDevice() {
-    const { connector } = this.props.params;
     const { octoblu } = this.props
-    const { pkg } = this.props.details.selectedVersion;
-    this.props.dispatch(createConnectorAction({ connector, pkg, octoblu }))
+    const { version } = this.props.details.selectedVersion;
+    const githubSlug = this.getGithubSlug()
+    const { connector } = this.props.params
+    this.props.dispatch(createConnectorAction({ connector, githubSlug, version, octoblu }))
   }
 
   versionSelect(selectedVersion) {
@@ -66,7 +77,7 @@ class Create extends Component {
   }
 
   renderContent(content) {
-    const { type, name } = this.getNodeType()
+    const { type, name } = this.getConnectorDetails()
     return (
       <PageLayout type={type} title={`Create ${name}`}>
         {content}
@@ -80,7 +91,7 @@ class Create extends Component {
     return this.renderContent(<VersionsSelect
       onSelect={this.createDevice}
       selected={selectedVersion}
-      versions={info.versions}
+      versions={info.tags}
     />);
   }
 }

@@ -6,14 +6,14 @@ import './index.css';
 import classNames from 'classnames';
 
 function getRegistryCards(items) {
-  return _.map(items, (_nodeType) => {
-    const { name, type, connector } = _nodeType;
+  return _.map(items, (item) => {
+    const { name, type, githubSlug } = item;
     return (
       <CardItem
-        key={connector}
+        key={githubSlug}
         title={name}
         iconType={type}
-        linkTo={`/connectors/create/${connector}`}
+        linkTo={`/connectors/create/${githubSlug}`}
         linkTitle="Create"
       />
     )

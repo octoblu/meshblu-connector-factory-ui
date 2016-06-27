@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { connectorDetails } from '../services/detail-service';
 const INSTALLER_BASE_URI = 'https://github.com/octoblu/electron-meshblu-connector-installer';
 
@@ -9,11 +10,23 @@ export function getFileExtension({ platform }) {
 }
 
 export function getInstallerUri({ platform }, callback) {
-  connectorDetails({ connector: 'electron-meshblu-connector-installer' }, (error, info) => {
+  connectorDetails({ githubSlug: 'octoblu/electron-meshblu-connector-installer' }, (error, info) => {
     if (error) return callback(error)
-    const tag = info['dist-tags'].latest
-    const ext = getFileExtension({ platform });
-    callback(null, `${INSTALLER_BASE_URI}/releases/download/v${tag}/MeshbluConnectorInstaller-${platform}.${ext}`);
+    const latest = _.first(_.values(info.tags))
+    if (!latest) {
+      callback(new Error('Missing latest'))
+      return
+    }
+    const asset = _.find(latest.assets, (asset = {}) => {
+      return asset.name.indexOf(platform) > -1
+    })
+
+    if (!asset) {
+      callback(new Error('Unable to get latest installer release'))
+      return
+    }
+    const tag = _.first(_.keys(info.tags))
+    callback(null, `${INSTALLER_BASE_URI}/releases/download/${tag}/${asset.name}`);
   })
 }
 

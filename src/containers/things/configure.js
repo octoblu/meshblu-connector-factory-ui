@@ -102,10 +102,11 @@ class Configure extends Component {
     this.props.dispatch(selectVersion(selectedVersion))
   }
 
-  updateVersion({ version, pkg }) {
+  updateVersion({ version }) {
+    const { githubSlug } = this.props.device
     const { connectorMetadata } = this.props.device.item;
     connectorMetadata.version = version;
-    getSchema({ pkg }, (error, schema = {}) => {
+    getSchema({ githubSlug, version }, (error, schema = {}) => {
       if (error) return this.setState({ error })
       const { schemas } = schema
       const properties = { connectorMetadata }
@@ -161,7 +162,7 @@ class Configure extends Component {
       return this.renderContent(<VersionsSelect
         onSelect={this.updateVersion}
         selected={selectedVersion}
-        versions={info.versions}
+        versions={info.tags}
       />);
     }
 

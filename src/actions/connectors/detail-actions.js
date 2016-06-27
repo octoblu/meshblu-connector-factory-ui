@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import * as actionTypes from '../../constants/action-types';
 import { setFetching, setError } from '../page-actions'
 import { connectorDetails } from '../../services/detail-service';
@@ -9,15 +10,16 @@ function fetchConnectorDetailsSuccess({ details, version }) {
     version,
   }
 }
+
 function getVersion({ details, version }) {
-  if (!version) return details['dist-tags'].latest
-  return version
+  if (version && details.tags[version]) return version
+  return _.first(_.keys(details.tags))
 }
 
-export function fetchConnectorDetails({ connector, version, fetching = true }) {
+export function fetchConnectorDetails({ githubSlug, version, fetching = true }) {
   return (dispatch) => {
     dispatch(setFetching(fetching))
-    connectorDetails({ connector }, (error, details) => {
+    connectorDetails({ githubSlug }, (error, details) => {
       dispatch(setFetching(false))
       if (error) {
         dispatch(setError(error))

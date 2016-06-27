@@ -61,9 +61,10 @@ export function fetchDevice({ uuid, useBaseProps, updateDetails = true, fetching
         return
       }
       if (updateDetails) {
-        const { connector, connectorMetadata } = device
-        const { version } = connectorMetadata
-        dispatch(fetchConnectorDetails({ connector, version, fetching }))
+        const { connector, connectorMetadata } = device || {}
+        const bkwdGithubSlug = `octoblu/${connector}`
+        const { version, githubSlug = bkwdGithubSlug } = connectorMetadata || {}
+        dispatch(fetchConnectorDetails({ githubSlug, version, fetching }))
       }
       dispatch(fetchDeviceSuccess({ device, useBaseProps }))
     })

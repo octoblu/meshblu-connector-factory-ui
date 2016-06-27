@@ -3,9 +3,8 @@ import AppActions from '../../components/AppActions';
 import { connect } from 'react-redux';
 import PageLayout from '../page-layout';
 import { setBreadcrumbs } from '../../actions/page-actions'
-import { fetchAvailableNodes } from '../../actions/things/available-actions'
 
-import NodeTypes from '../../components/NodeTypes';
+import RegistryList from '../../components/RegistryList';
 
 class Available extends Component {
   componentDidMount() {
@@ -18,15 +17,14 @@ class Available extends Component {
         label: 'Available Connectors',
       },
     ]))
-    this.props.dispatch(fetchAvailableNodes());
   }
 
   render() {
-    const { latest } = this.props.available;
+    const { registries } = this.props.available;
 
     return (<PageLayout title="Available Connectors" actions={<AppActions />}>
       <div>
-        <NodeTypes nodeTypes={latest} />
+        <RegistryList registries={registries} />
       </div>
     </PageLayout>)
   }

@@ -1,14 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { browserHistory } from 'react-router'
 import _ from 'lodash';
-import NodeTypes from '../components/NodeTypes';
+import RegistryList from '../components/RegistryList';
 import AppActions from '../components/AppActions';
 import { EmptyState } from 'zooid-ui';
-import ShortList from './short-list'
+import ShortList from '../components/ShortList'
 import InstalledDevices from '../components/InstalledDevices';
 import { connect } from 'react-redux';
 import { needsUpdate } from '../helpers/actions'
-import { fetchAvailableNodes } from '../actions/things/available-actions'
 import { fetchMyDevices } from '../actions/things/device-actions'
 import { setBreadcrumbs } from '../actions/page-actions'
 import PageLayout from './page-layout'
@@ -23,9 +22,6 @@ class Home extends Component {
     ]))
     if (needsUpdate(this.props.devices)) {
       this.props.dispatch(fetchMyDevices({ useBaseProps: true }))
-    }
-    if (needsUpdate(this.props.devices)) {
-      this.props.dispatch(fetchAvailableNodes())
     }
   }
 
@@ -43,17 +39,17 @@ class Home extends Component {
       <PageLayout title="Dashboard" actions={<AppActions />}>
         <ShortList
           title="Recently Installed Connectors"
-          linkTo="/things/available"
+          linkTo="/things/my"
           showEmptyState={_.isEmpty(devices.items)}
           emptyState={devicesEmptyState}
         >
-          <InstalledDevices devices={_.slice(devices.items, 0, 6)} />
+          <InstalledDevices devices={devices.items} type="short" />
         </ShortList>
         <ShortList
           title="Top Connectors"
           linkTo="/connectors/available"
         >
-          <NodeTypes nodeTypes={_.slice(available.latest, 0, 6)} />
+          <RegistryList registries={available.registries} registryKey="octoblu-official" type="short" />
         </ShortList>
       </PageLayout>
     );

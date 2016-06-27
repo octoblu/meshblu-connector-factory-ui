@@ -5,14 +5,18 @@ import './index.css';
 import CardItem from '../CardItem';
 import classNames from 'classnames';
 
-const InstalledDevices = ({ devices, className }) => {
+const InstalledDevices = ({ devices, type, className }) => {
   const componentClass = classNames(
     'InstalledDevices',
     'CardItemList',
     className
   );
 
-  let items = _.map(devices, (device) => {
+  let devicesList = devices
+  if (type && type === 'short') {
+    devicesList = _.slice(devices, 0, 6)
+  }
+  let items = _.map(devicesList, (device) => {
     const { name, uuid } = device;
     let type = device.type || 'device:other';
 
@@ -36,6 +40,7 @@ const InstalledDevices = ({ devices, className }) => {
 InstalledDevices.propTypes = {
   className: PropTypes.string,
   devices: PropTypes.array.isRequired,
+  type: PropTypes.string,
 }
 
 export default InstalledDevices

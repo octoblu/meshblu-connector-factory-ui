@@ -16,6 +16,12 @@ export function getBearerToken() {
 
 export function getMeshbluConfig() {
   const bearerToken = getBearerToken();
+  if (!bearerToken) {
+    return {
+      host: MESHBLU_HOSTNAME,
+      port: MESHBLU_PORT,
+    }
+  }
   const parts = atob(bearerToken).split(':');
   return {
     hostname: MESHBLU_HOSTNAME,
@@ -56,7 +62,8 @@ export function removeCookie() {
 
 export function logout(nextState, replace) {
   removeCookie()
-  replace('/');
+  replace('/')
+  window.location.reload()
 }
 
 export function buildRedirectUri() {

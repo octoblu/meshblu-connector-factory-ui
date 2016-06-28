@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import * as actionTypes from '../../constants/action-types'
 
 const initialState = {
@@ -18,24 +17,24 @@ const initialState = {
   updatedAt: null,
 }
 
-function getVersion(version) {
+function getVersion(version = '') {
   return version.replace('v', '')
 }
 
 function getCurrentVersion({ details, version }) {
   return {
     version: getVersion(version),
-    latest: _.first(_.keys(details.tags)) === version,
+    latest: details.latest.tag === version,
     details: details.tags[version],
   }
 }
 
 function getLastestVersion({ details }) {
-  const version = _.first(_.keys(details.tags))
+  const version = details.latest.tag
   return {
     version: getVersion(version),
     latest: true,
-    details: details.tags[version],
+    details: details.latest,
   }
 }
 

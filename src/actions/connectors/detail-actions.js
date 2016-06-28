@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import * as actionTypes from '../../constants/action-types';
 import { setFetching, setError } from '../page-actions'
 import { connectorDetails } from '../../services/detail-service';
@@ -13,7 +12,7 @@ function fetchConnectorDetailsSuccess({ details, version }) {
 
 function getVersion({ details, version }) {
   if (version && details.tags[version]) return version
-  return _.first(_.keys(details.tags))
+  return details.latest.tag
 }
 
 export function fetchConnectorDetails({ githubSlug, version, fetching = true }) {

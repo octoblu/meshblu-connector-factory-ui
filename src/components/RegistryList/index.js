@@ -7,11 +7,13 @@ import classNames from 'classnames';
 
 function getRegistryCards(items) {
   return _.map(items, (item) => {
-    const { name, type, githubSlug } = item;
+    const { _id, name, description, type, githubSlug } = item;
+    let shortDescription = _.truncate(description, { length: 100 })
     return (
       <CardItem
-        key={githubSlug}
+        key={_id}
         title={name}
+        description={shortDescription}
         iconType={type}
         linkTo={`/connectors/create/${githubSlug}`}
         linkTitle="Create"

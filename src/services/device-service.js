@@ -1,11 +1,14 @@
 import MeshbluHttp from 'browser-meshblu-http/dist/meshblu-http.js';
 import { getMeshbluConfig } from '../helpers/authentication';
-import { getConnectorName } from '../helpers/connector-metadata';
-import _ from 'lodash';
 
 export function updateDevice({ uuid, properties }, callback) {
   const meshblu = new MeshbluHttp(getMeshbluConfig());
   meshblu.update(uuid, properties, callback);
+}
+
+export function updateDeviceDangerously({ uuid, properties }, callback) {
+  const meshblu = new MeshbluHttp(getMeshbluConfig());
+  meshblu.updateDangerously(uuid, properties, callback);
 }
 
 export function registerStatusDevice({ owner, uuid }, callback) {
@@ -26,39 +29,24 @@ export function registerStatusDevice({ owner, uuid }, callback) {
 
 function afterRegisterConnector({ statusDeviceUUID, uuid }, callback) {
   const properties = {
-    statusDevice: statusDeviceUUID,
-    octoblu: {
-      links: [
-        {
-          url: `https://connector-factory.octoblu.com/things/configure/${uuid}`,
-          title: 'View in Connector Factory',
-        },
-      ],
+    $set: {
+      statusDevice: statusDeviceUUID,
+    },
+    $addToSet: {
+      'octoblu.links': {
+        url: `https://connector-factory.octoblu.com/things/configure/${uuid}`,
+        title: 'View in Connector Factory',
+      },
     },
   }
-  updateDevice({ uuid, properties }, callback)
+  updateDeviceDangerously({ uuid, properties }, callback)
 }
 
-export function registerConnector({ githubSlug, connector, version, customProps }, callback) {
+export function registerConnector({ properties }, callback) {
   const meshbluConfig = getMeshbluConfig();
   const meshblu = new MeshbluHttp(meshbluConfig);
-  const connectorName = getConnectorName(connector);
   const owner = meshbluConfig.uuid
-  const deviceProps = _.assign({
-    type: `device:${connectorName}`,
-    connector,
-    owner,
-    discoverWhitelist: [owner],
-    configureWhitelist: [owner],
-    sendWhitelist: [owner],
-    receiveWhitelist: [owner],
-    connectorMetadata: {
-      stopped: false,
-      version,
-      githubSlug,
-    },
-  }, customProps);
-  meshblu.register(deviceProps, (error, device) => {
+  meshblu.register(properties, (error, device) => {
     if (error != null) return callback(error)
     const { uuid } = device
     registerStatusDevice({ owner, uuid }, (error, statusDeviceUUID) => {
@@ -89,10 +77,20 @@ export function generateAndStoreToken({ uuid }, callback) {
 export function getDevices(callback) {
   const meshbluConfig = getMeshbluConfig();
   const meshblu = new MeshbluHttp(meshbluConfig);
-  meshblu.devices({
+  const query = {
     owner: meshbluConfig.uuid,
-    connector: { $exists: true },
     connectorMetadata: { $exists: true },
     type: { $ne: 'device:gateblu' },
-  }, callback);
+  }
+  const projection = {
+    uuid: true,
+    name: true,
+    type: true,
+    online: true,
+    lastPong: true,
+    connectorMetadata: true,
+    statusDevice: true,
+    octoblu: true,
+  }
+  meshblu.search({ query, projection }, callback);
 }

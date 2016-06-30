@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { setBreadcrumbs } from '../../actions/page-actions'
@@ -5,7 +6,7 @@ import PageLayout from '../page-layout';
 
 import VersionsSelect from '../../components/VersionsSelect';
 
-import { generateConnectorAction, gotToGeneratedConnector } from '../../actions/connectors/connector-actions';
+import { upsertConnectorAction, gotToGeneratedConnector } from '../../actions/connectors/connector-actions';
 import { selectVersion } from '../../actions/connectors/detail-actions';
 import { fetchDevice } from '../../actions/things/device-actions';
 
@@ -14,6 +15,8 @@ class Generate extends Component {
     super(props);
     this.versionSelect = this.versionSelect.bind(this);
     this.updateAndGenerate = this.updateAndGenerate.bind(this);
+    this.getGithubSlug = this.getGithubSlug.bind(this);
+    this.getRegistryItem = this.getRegistryItem.bind(this);
   }
 
   componentDidMount() {
@@ -45,13 +48,40 @@ class Generate extends Component {
     }
   }
 
+  getGithubSlug() {
+    const { connector, connectorMetadata } = this.props.device.item
+    if (connectorMetadata && connectorMetadata.githubSlug) {
+      return connectorMetadata.githubSlug
+    }
+    return `octoblu/${connector}`
+  }
+
+  getRegistryItem() {
+    const { registries } = this.props.available
+    const githubSlug = this.getGithubSlug()
+    let found = null
+    _.some(_.values(registries), (registry) => {
+      found = _.find(registry.items, { githubSlug })
+      return found
+    })
+    if (!found) {
+      return {
+        githubSlug,
+      }
+    }
+    return found
+  }
+
   updateAndGenerate() {
     const { uuid } = this.props.params;
     const { version } = this.props.details.selectedVersion;
     const { octoblu, device } = this.props
-    const { githubSlug } = device;
+    let { registryItem } = device.item.octoblu || {};
+    if (!registryItem) {
+      registryItem = this.getRegistryItem()
+    }
     const { connector } = device.item;
-    this.props.dispatch(generateConnectorAction({ uuid, githubSlug, connector, version, octoblu }))
+    this.props.dispatch(upsertConnectorAction({ uuid, registryItem, version, connector, octoblu }))
   }
 
   versionSelect(selectedVersion) {

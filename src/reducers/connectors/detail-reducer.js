@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import * as actionTypes from '../../constants/action-types'
 
 const initialState = {
@@ -21,6 +22,12 @@ function getVersion(version = '') {
   return version.replace('v', '')
 }
 
+function filterTags(tags) {
+  return _.omitBy(tags, ({ assets }) => {
+    return _.some(assets, { name: 'schemas.json' })
+  })
+}
+
 function getCurrentVersion({ details, version }) {
   return {
     version: getVersion(version),
@@ -39,10 +46,12 @@ function getLastestVersion({ details }) {
 }
 
 function getVersionsState(action) {
+  const { details, version } = action
+  details.tags = filterTags(details.tags)
   return {
-    info: action.details,
-    latestVersion: getLastestVersion(action),
-    selectedVersion: getCurrentVersion(action),
+    info: details,
+    latestVersion: getLastestVersion({ details, version }),
+    selectedVersion: getCurrentVersion({ details, version }),
   }
 }
 

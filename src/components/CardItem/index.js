@@ -10,6 +10,7 @@ import './index.css';
 
 const propTypes = {
   title: PropTypes.string.isRequired,
+  description: PropTypes.string,
   linkTo: PropTypes.string.isRequired,
   linkTitle: PropTypes.string.isRequired,
   iconType: PropTypes.string,
@@ -24,7 +25,7 @@ const getDeviceIcon = ({ iconType }) => {
   )
 }
 
-const CardItem = ({ title, linkTo, linkTitle, iconType }) => {
+const CardItem = ({ title, description, linkTo, linkTitle, iconType }) => {
   return (
     <div className="CardItem--container">
       <Card className="CardItem">
@@ -33,6 +34,9 @@ const CardItem = ({ title, linkTo, linkTitle, iconType }) => {
           <div className="CardItem-body">
             <div className="CardItem-title">
               {title}
+            </div>
+            <div className="CardItem-description">
+              {description}
             </div>
           </div>
           <footer className="CardItem-footer">

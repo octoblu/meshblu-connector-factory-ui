@@ -13,5 +13,8 @@ export function getSchema({ githubSlug, version }, callback) {
     callback(null, {})
     return
   }
-  getJSON({ uri }, callback)
+  getJSON({ uri }, (error, schema = {}) => {
+    if (error) return callback(null)
+    callback(null, schema.schemas || {})
+  })
 }

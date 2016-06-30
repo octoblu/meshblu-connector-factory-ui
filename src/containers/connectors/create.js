@@ -8,7 +8,7 @@ import { setBreadcrumbs } from '../../actions/page-actions'
 import VersionsSelect from '../../components/VersionsSelect';
 
 import { fetchConnectorDetails, selectVersion } from '../../actions/connectors/detail-actions';
-import { createConnectorAction, gotToGeneratedConnector } from '../../actions/connectors/connector-actions';
+import { upsertConnectorAction, gotToGeneratedConnector } from '../../actions/connectors/connector-actions';
 
 class Create extends Component {
   constructor(props) {
@@ -19,6 +19,7 @@ class Create extends Component {
     this.versionSelect = this.versionSelect.bind(this);
     this.createDevice = this.createDevice.bind(this);
     this.getGithubSlug = this.getGithubSlug.bind(this);
+    this.getRegistryItem = this.getRegistryItem.bind(this);
   }
 
   componentDidMount() {
@@ -64,12 +65,27 @@ class Create extends Component {
     return `${owner}/${connector}`
   }
 
+  getRegistryItem() {
+    const githubSlug = this.getGithubSlug()
+    const { registries } = this.props.available
+    let found = null
+    _.some(_.values(registries), (registry) => {
+      found = _.find(registry.items, { githubSlug })
+    })
+    if (!found) {
+      return {
+        githubSlug,
+      }
+    }
+    return found
+  }
+
   createDevice() {
     const { octoblu } = this.props
     const { version } = this.props.details.selectedVersion;
-    const githubSlug = this.getGithubSlug()
+    const registryItem = this.getRegistryItem()
     const { connector } = this.props.params
-    this.props.dispatch(createConnectorAction({ connector, githubSlug, version, octoblu }))
+    this.props.dispatch(upsertConnectorAction({ registryItem, version, connector, octoblu }))
   }
 
   versionSelect(selectedVersion) {

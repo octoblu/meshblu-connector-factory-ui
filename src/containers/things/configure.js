@@ -106,9 +106,8 @@ class Configure extends Component {
     const { githubSlug } = this.props.device
     const { connectorMetadata } = this.props.device.item;
     connectorMetadata.version = version;
-    getSchema({ githubSlug, version }, (error, schema = {}) => {
+    getSchema({ githubSlug, version }, (error, schemas) => {
       if (error) return this.setState({ error })
-      const { schemas } = schema
       const properties = { connectorMetadata }
       if (schemas) {
         properties.schemas = schemas

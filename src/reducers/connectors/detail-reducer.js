@@ -25,19 +25,22 @@ function getVersion(version = '') {
 function filterTags(tags) {
   return _.omitBy(tags, ({ assets }) => {
     return _.some(assets, { name: 'schemas.json' })
-  })
+  }) || {};
 }
 
 function getCurrentVersion({ details, version }) {
+  const { latest = {} } = details
+  const { tags = {} } = details
   return {
     version: getVersion(version),
-    latest: details.latest.tag === version,
-    details: details.tags[version],
+    latest: latest.tag === version,
+    details: tags[version],
   }
 }
 
 function getLastestVersion({ details }) {
-  const version = details.latest.tag
+  const { latest = {} } = details
+  const version = latest.tag
   return {
     version: getVersion(version),
     latest: true,

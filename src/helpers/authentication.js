@@ -1,7 +1,7 @@
 import url from 'url';
 import cookie from 'react-cookie';
 import moment from 'moment';
-import MeshbluHttp from 'browser-meshblu-http/dist/meshblu-http.js';
+import MeshbluHttp from 'browser-meshblu-http';
 
 import {
   CLIENT_ID,

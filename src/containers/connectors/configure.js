@@ -45,12 +45,12 @@ class Configure extends Component {
   componentDidMount() {
     this.props.dispatch(setBreadcrumbs([
       {
-        label: 'Dashboard',
+        label: 'Connectors',
         link: '/',
       },
       {
-        label: 'My Things',
-        link: '/things/my',
+        label: 'My Connectors',
+        link: '/connectors/my',
       },
       {
         label: 'Configure',

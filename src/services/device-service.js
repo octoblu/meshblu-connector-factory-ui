@@ -1,4 +1,4 @@
-import MeshbluHttp from 'browser-meshblu-http/dist/meshblu-http.js';
+import MeshbluHttp from 'browser-meshblu-http';
 import { getMeshbluConfig } from '../helpers/authentication';
 
 export function updateDevice({ uuid, properties }, callback) {
@@ -34,7 +34,7 @@ function afterRegisterConnector({ statusDeviceUUID, uuid }, callback) {
     },
     $addToSet: {
       'octoblu.links': {
-        url: `https://connector-factory.octoblu.com/things/configure/${uuid}`,
+        url: `https://connector-factory.octoblu.com/connectors/configure/${uuid}`,
         title: 'View in Connector Factory',
       },
     },

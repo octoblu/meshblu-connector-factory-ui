@@ -12,11 +12,11 @@ class Installed extends Component {
   componentDidMount() {
     this.props.dispatch(setBreadcrumbs([
       {
-        label: 'Dashboard',
+        label: 'Connectors',
         link: '/',
       },
       {
-        label: 'My Things',
+        label: 'My Connectors',
       },
     ]))
     if (needsUpdate(this.props.devices)) {
@@ -27,7 +27,7 @@ class Installed extends Component {
   render() {
     const { devices } = this.props;
     return (
-      <PageLayout title="My Things" actions={<AppActions />} >
+      <PageLayout title="My Connectors" actions={<AppActions />} >
         <InstalledDevices devices={devices.items} />
       </PageLayout>
     );

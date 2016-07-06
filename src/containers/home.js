@@ -16,7 +16,7 @@ class Home extends Component {
   componentDidMount() {
     this.props.dispatch(setBreadcrumbs([
       {
-        label: 'Dashboard',
+        label: 'Connectors',
         link: '/',
       },
     ]))
@@ -36,10 +36,10 @@ class Home extends Component {
       />
     )
     return (
-      <PageLayout title="Dashboard" actions={<AppActions />}>
+      <PageLayout title="Connectors" actions={<AppActions />}>
         <ShortList
           title="Recently Installed Connectors"
-          linkTo="/things/my"
+          linkTo="/connectors/my"
           showEmptyState={_.isEmpty(devices.items)}
           emptyState={devicesEmptyState}
         >

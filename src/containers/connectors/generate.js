@@ -23,16 +23,16 @@ class Generate extends Component {
     const { uuid } = this.props.params;
     this.props.dispatch(setBreadcrumbs([
       {
-        label: 'Dashboard',
+        label: 'Connectors',
         link: '/',
       },
       {
-        label: 'My Things',
-        link: '/things/my',
+        label: 'My Connectors',
+        link: '/connectors/my',
       },
       {
         label: 'Configure',
-        link: `/things/configure/${uuid}`,
+        link: `/connectors/configure/${uuid}`,
       },
       {
         label: 'Generate',

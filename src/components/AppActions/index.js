@@ -5,7 +5,7 @@ import { Button } from 'zooid-ui'
 const AppActions = () => {
   return (
     <ul>
-      <li><Link to="/things/my" className="Button Button--no-style">My Things</Link></li>
+      <li><Link to="/connectors/my" className="Button Button--no-style">My Connectors</Link></li>
       <li>|</li>
       <li><Link to="/connectors/available" className="Button Button--no-style">Available Connectors</Link></li>
       <li>|</li>

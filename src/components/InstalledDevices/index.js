@@ -26,7 +26,7 @@ const InstalledDevices = ({ devices, type, className }) => {
         key={uuid}
         title={nameStr}
         iconType={type}
-        linkTo={`/things/configure/${uuid}`}
+        linkTo={`/connectors/configure/${uuid}`}
         linkTitle="Configure"
       />
     )

@@ -14,7 +14,7 @@ const ConfigureCard = ({ uuid }) => {
       <main className="ConfigureCard-main">
         <div className="ConfigureCard-body">
           <h3>Next Step</h3>
-          <Link className="ConfigureCard-button Button Button--hollow-approve" to={`/things/configure/${uuid}`}>Configure Thing</Link>
+          <Link className="ConfigureCard-button Button Button--hollow-approve" to={`/connectors/configure/${uuid}`}>Configure Thing</Link>
         </div>
       </main>
     </Card>

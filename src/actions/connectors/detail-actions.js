@@ -12,6 +12,7 @@ function fetchConnectorDetailsSuccess({ details, version }) {
 
 function getVersion({ details, version }) {
   if (version && details.tags[version]) return version
+  if (!details.latest) return version
   return details.latest.tag
 }
 

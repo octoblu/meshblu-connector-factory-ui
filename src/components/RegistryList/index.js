@@ -46,7 +46,7 @@ function renderList({ registry, key, type }) {
   )
 }
 
-const RegistryList = ({ registries, registryKey, type, className }) => {
+const RegistryList = ({ registries = {}, registryKey, type, className }) => {
   const componentClass = classNames(
     'RegistryList',
     className

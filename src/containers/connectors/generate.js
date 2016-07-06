@@ -107,9 +107,9 @@ Generate.propTypes = {
   dispatch: PropTypes.func.isRequired,
 }
 
-function mapStateToProps({ device, details, connector, octoblu }) {
+function mapStateToProps({ available, device, details, connector, octoblu }) {
   const { uuid, token } = octoblu
-  return { device, details, connector, octoblu: { uuid, token } }
+  return { available, device, details, connector, octoblu: { uuid, token } }
 }
 
 export default connect(mapStateToProps)(Generate)

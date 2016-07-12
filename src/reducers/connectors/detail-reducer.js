@@ -5,6 +5,7 @@ const initialState = {
   selectedVersion: {
     latest: false,
     version: null,
+    tag: null,
     details: {},
   },
   info: {
@@ -13,19 +14,36 @@ const initialState = {
   latestVersion: {
     latest: true,
     version: null,
+    tag: null,
     details: {},
   },
   updatedAt: null,
 }
 
 function getVersion(version = '') {
-  return version.replace('v', '')
+  return `v${version.replace('v', '')}`
 }
 
 function filterTags(tags) {
-  return _.omitBy(tags, ({ assets }) => {
-    return _.some(assets, { name: 'schemas.json' })
+  return _.omitBy(tags, ({ prerelease, draft, assets }) => {
+    if (prerelease) return true
+    if (draft) return true
+    const countOfBundles = _.reduce(assets, (sum, { name }) => {
+      if (_.endsWith(name, '.tar.gz') || _.endsWith(name, '.zip')) {
+        return sum + 1
+      }
+      return sum
+    }, 0)
+    return countOfBundles < 4
   }) || {}
+}
+
+function filterAndMapTags(tags, latestTag) {
+  return _.mapValues(filterTags(tags), (tag = {}) => {
+    tag.latest = latestTag === tag.tag
+    tag.version = tag.tag
+    return tag
+  })
 }
 
 function getCurrentVersion({ details, version }) {
@@ -33,6 +51,7 @@ function getCurrentVersion({ details, version }) {
   const { tags = {} } = details
   return {
     version: getVersion(version),
+    tag: getVersion(version),
     latest: latest.tag === version,
     details: tags[version],
   }
@@ -43,6 +62,7 @@ function getLastestVersion({ details }) {
   const version = latest.tag
   return {
     version: getVersion(version),
+    tag: getVersion(version),
     latest: true,
     details: details.latest,
   }
@@ -50,11 +70,13 @@ function getLastestVersion({ details }) {
 
 function getVersionsState(action) {
   const { details, version } = action
-  details.tags = filterTags(details.tags)
+  const latestVersion = getLastestVersion({ details, version })
+  const selectedVersion = getCurrentVersion({ details, version })
+  details.tags = filterAndMapTags(details.tags, latestVersion.version)
   return {
     info: details,
-    latestVersion: getLastestVersion({ details, version }),
-    selectedVersion: getCurrentVersion({ details, version }),
+    latestVersion,
+    selectedVersion,
   }
 }
 

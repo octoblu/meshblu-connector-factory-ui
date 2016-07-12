@@ -1,7 +1,12 @@
 .Versions {
   width: 350px;
   margin: auto;
+  margin-top: 2rem;
   padding-left: 30px;
+}
+
+.Versions .List-item {
+  border: 1px solid #E0E0E0;
 }
 
 .Versions--icon {

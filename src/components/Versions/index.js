@@ -18,38 +18,34 @@ const propTypes = {
 
 function majorAndMinorList(versions) {
   const majorMinors = {}
-  _.each(versions, (version) => {
+  _.each(versions, (info, version) => {
     const [major, minor] = version.split('.')
     majorMinors[`${major}.${minor}`] = false
   })
   return majorMinors
 }
 
-function filterAndSortVersions(_versions) {
-  const sortedAndReversed = _.keys(_versions)
-  const majorMinors = majorAndMinorList(sortedAndReversed)
-  _.each(sortedAndReversed, (version) => {
+function filterAndSortVersions(versions) {
+  const majorMinors = majorAndMinorList(versions)
+  _.each(versions, (info, version) => {
     const [major, minor] = version.split('.')
     if (majorMinors[`${major}.${minor}`]) return
-    majorMinors[`${major}.${minor}`] = version
+    majorMinors[`${major}.${minor}`] = info
   })
   return _.values(majorMinors)
 }
 
 const Versions = ({ versions, onSelect }) => {
-  const versionKeys = filterAndSortVersions(versions)
+  const convertedVersions = filterAndSortVersions(versions)
 
-  const versionsList = _.map(versionKeys, (version, i) => {
-    const details = versions[version]
-    const latest = !i
-    const versionInfo = { version, details, latest }
+  const versionsList = _.map(convertedVersions, (version, i) => {
     const onSelectEvent = () => {
-      onSelect(versionInfo)
+      onSelect(version)
     }
     return (
-      <ListItem key={version}>
+      <ListItem key={version.tag}>
         <div onClick={onSelectEvent}>
-          <VersionInfo info={versionInfo} />
+          <VersionInfo info={version} />
           <i className="Versions--icon"><MdNavigateNext /></i>
         </div>
       </ListItem>

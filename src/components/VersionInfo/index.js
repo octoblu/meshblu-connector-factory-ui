@@ -7,12 +7,11 @@ const propTypes = {
 }
 
 const VersionInfo = ({ info }) => {
-  const { version, latest } = info
-  if (!version) {
+  const { tag, latest } = info
+  if (!tag) {
     return null
   }
-  const tag = version.replace('v', '')
-  const theVersion = `v${tag}`
+  const theVersion = `v${tag.replace('v', '')}`
   if (latest) {
     return (
       <span className="VersionInfo">

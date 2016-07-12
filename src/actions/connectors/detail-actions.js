@@ -11,9 +11,9 @@ function fetchConnectorDetailsSuccess({ details, version }) {
 }
 
 function getVersion({ details, version }) {
-  if (version && details.tags[version]) return version
-  if (!details.latest) return version
-  return details.latest.tag
+  if (version && details.tags[version]) return `v${version.replace('v', '')}`
+  if (!details.latest) return `v${version.replace('v', '')}`
+  return `v${details.latest.tag.replace('v', '')}`
 }
 
 export function fetchConnectorDetails({ githubSlug, version, fetching = true }) {

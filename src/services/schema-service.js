@@ -2,8 +2,7 @@ import { getJSON } from './fetch-json-service'
 const DOWNLOAD_RELEASE_URI = 'https://file-downloader.octoblu.com/github-release'
 
 function getSchemaURL({ githubSlug, version }) {
-  const betterVersion = version.replace('v', '')
-  const tag = `v${betterVersion}`
+  const tag = `v${version.replace('v', '')}`
   return `${DOWNLOAD_RELEASE_URI}/${githubSlug}/${tag}/schemas.json`
 }
 

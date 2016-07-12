@@ -1,7 +1,10 @@
+import _ from 'lodash'
 import { getMeshbluConfig } from '../helpers/authentication'
 import { getSchema } from '../services/schema-service'
-import { getFriendlyName, getConnectorMetadata } from '../helpers/connector-metadata'
+import { getDefaultValues } from './default-schemas'
+import { getFriendlyName, getConnectorMetadata } from './connector-metadata'
 import {
+  updateDevice,
   updateDeviceDangerously,
   registerConnector,
   generateAndStoreToken,
@@ -78,11 +81,19 @@ function createConnector({ registryItem, version, connector, schemas }, callback
   registerConnector({ properties }, (error, device) => {
     if (error != null) return callback(error)
     const { uuid, token } = device
-    callback(null, { uuid, token })
+    const defaultValues = getDefaultValues(schemas)
+    if (_.isEmpty(defaultValues)) {
+      return callback(null, { uuid, token })
+    }
+    updateDevice({ uuid, properties: defaultValues }, (error) => {
+      if (error != null) return callback(error)
+      callback(null, { uuid, token })
+    })
   })
 }
 
 export function upsertConnector({ uuid, registryItem, version, connector, octoblu }, callback) {
+  version = `v${version.replace('v', '')}`
   getSchema({ githubSlug: registryItem.githubSlug, version }, (error, schemas) => {
     if (error) return callback(error)
     const generateKey = generateKeyWrapper({ uuid, registryItem, version, connector, octoblu }, callback)

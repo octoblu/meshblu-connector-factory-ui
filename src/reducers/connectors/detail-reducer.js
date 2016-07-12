@@ -34,7 +34,7 @@ function filterTags(tags) {
       }
       return sum
     }, 0)
-    return countOfBundles < 4
+    return countOfBundles < 1
   }) || {}
 }
 
@@ -70,7 +70,7 @@ function getLastestVersion({ details }) {
 
 function getVersionsState(action) {
   const { details, version } = action
-  const latestVersion = getLastestVersion({ details, version })
+  const latestVersion = getLastestVersion({ details })
   const selectedVersion = getCurrentVersion({ details, version })
   details.tags = filterAndMapTags(details.tags, latestVersion.version)
   return {

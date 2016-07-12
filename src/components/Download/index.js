@@ -19,6 +19,39 @@ import {
 
 import './index.css'
 
+function matchAsset(asset, searchFor) {
+  if (asset.indexOf(searchFor) > -1) {
+    return true
+  }
+  return false
+}
+
+function getIcon(asset) {
+  if (matchAsset(asset, 'darwin')) {
+    return <FaApple />
+  }
+  if (matchAsset(asset, 'windows')) {
+    return <FaWindows />
+  }
+  if (matchAsset(asset, 'linux')) {
+    return <FaLinux />
+  }
+  return null
+}
+
+function getArch(asset) {
+  if (/386/.test(asset)) {
+    return '[x86]'
+  }
+  if (/amd64/.test(asset)) {
+    return '[x64]'
+  }
+  if (/arm/.test(asset)) {
+    return '[arm]'
+  }
+  return null
+}
+
 export default class Download extends Component {
   constructor(props) {
     super(props)
@@ -32,38 +65,36 @@ export default class Download extends Component {
     this.getButton = this.getButton.bind(this)
   }
 
-  getButtonRow(os, platforms) {
-    const buttons = _.map(platforms, (platform) => {
-      return this.getButton(platform)
+  getButtonRow(friendlyName, searchFor, assets) {
+    const filterAssets = _.filter(assets, ({ name }) => {
+      return matchAsset(name, searchFor)
     })
+    console.log({ assets, filterAssets, searchFor })
+    const buttons = _.map(filterAssets, ({ name }) => {
+      return this.getButton(name)
+    })
+    if (_.isEmpty(_.compact(buttons))) {
+      return null
+    }
     return (
       <div className="Download--row">
-        <h4>{os}</h4>
+        <h4>{friendlyName}</h4>
         {buttons}
       </div>
     )
   }
 
-  getButton(platform) {
-    let Icon = null
-    if (/^darwin/.test(platform)) {
-      Icon = <FaApple />
-    }
-    if (/^windows/.test(platform)) {
-      Icon = <FaWindows />
-    }
-    if (/^linux/.test(platform)) {
-      Icon = <FaLinux />
-    }
-    let arch = '[x64]'
-    if (/386$/.test(platform)) {
-      arch = '[x86]'
+  getButton(asset) {
+    const Icon = getIcon(asset)
+    const arch = getArch(asset)
+    if (Icon == null || arch == null) {
+      return null
     }
     return (
       <Button
-        key={platform}
+        key={asset}
         kind="hollow-primary"
-        onClick={this.download(platform)}
+        onClick={this.download(asset)}
       >
         <i className="Download--icon">{Icon}</i> {arch} Download
       </Button>
@@ -112,6 +143,7 @@ export default class Download extends Component {
     if (error) {
       return this.renderContent(<ErrorState description={error.message} />)
     }
+
     if (downloading) {
       return this.renderContent(
         <div className="Download--Box">
@@ -130,11 +162,13 @@ export default class Download extends Component {
       )
     }
 
+    const { assets } = this.props.selectedVersion.details
+
     return this.renderContent(
       <div className="Download--actions">
-        {this.getButtonRow('macOS', ['darwin-amd64'])}
-        {this.getButtonRow('Windows', ['windows-amd64', 'windows-386'])}
-        {this.getButtonRow('Linux', ['linux-amd64', 'linux-386'])}
+        {this.getButtonRow('macOS', 'darwin', assets)}
+        {this.getButtonRow('Windows', 'windows', assets)}
+        {this.getButtonRow('Linux', 'linux', assets)}
       </div>
     )
   }
@@ -142,5 +176,6 @@ export default class Download extends Component {
 
 Download.propTypes = {
   otp: PropTypes.string.isRequired,
+  selectedVersion: PropTypes.object.isRequired,
   onDownload: PropTypes.func.isRequired,
 }

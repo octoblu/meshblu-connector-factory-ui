@@ -8,6 +8,7 @@ import {
 } from 'zooid-ui'
 
 import '../../styles/generated.css'
+import { fetchDevice } from '../../actions/things/device-actions'
 
 import Download from '../../components/Download'
 import ConfigureCard from '../../components/ConfigureCard'
@@ -36,6 +37,8 @@ class Create extends Component {
         label: 'Download',
       },
     ]))
+    const { uuid } = this.props.params
+    this.props.dispatch(fetchDevice({ uuid }))
   }
 
   onDownload() {
@@ -44,7 +47,7 @@ class Create extends Component {
 
   renderContent(content) {
     return (
-      <PageLayout title="">
+      <PageLayout>
         <h1 className="CenterTitle">Download Installer</h1>
         {content}
       </PageLayout>
@@ -54,6 +57,7 @@ class Create extends Component {
   render() {
     const { uuid, key } = this.props.params
     const { downloaded } = this.state
+    const { selectedVersion } = this.props.details
 
     let nextStep = null
     if (downloaded) {
@@ -66,7 +70,7 @@ class Create extends Component {
     return this.renderContent(
       <div className="Generated">
         <div className="Generated--col">
-          <Download otp={key} onDownload={this.onDownload} />
+          <Download otp={key} selectedVersion={selectedVersion} onDownload={this.onDownload} />
           <div className="Generated--key-section">
             <OrLine />
             <div className="Generated--key-content">
@@ -85,8 +89,8 @@ class Create extends Component {
   }
 }
 
-function mapStateToProps() {
-  return {}
+function mapStateToProps({ device, details }) {
+  return { device, details }
 }
 
 export default connect(mapStateToProps)(Create)

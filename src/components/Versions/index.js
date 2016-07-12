@@ -51,6 +51,9 @@ const Versions = ({ versions, onSelect }) => {
       </ListItem>
     )
   })
+  if (_.isEmpty(versionsList)) {
+    return null
+  }
   return (
     <div className="Versions">
       <h2>Select Version:</h2>

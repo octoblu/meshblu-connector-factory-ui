@@ -12,6 +12,7 @@ branches:
 before_deploy:
 - npm run build
 - cp index.html dist
+- mkdir -p dist/assets
 - cp assets/* dist/assets
 - for file in `find dist -type f`; do gzip --best $file && mv $file.gz $file; done
 after_deploy:

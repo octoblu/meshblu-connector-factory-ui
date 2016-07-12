@@ -37,6 +37,7 @@
     "bootstrap-webpack": "0.0.5",
     "browser-meshblu-http": "^5.2.9",
     "jquery": "^3.0.0",
+    "json-schema-defaults": "^0.1.1",
     "less": "^2.7.1",
     "lodash": "^4.13.1",
     "moment": "^2.13.0",

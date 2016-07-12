@@ -1,15 +1,15 @@
-import _ from 'lodash';
-import React, { Component, PropTypes } from 'react';
+import _ from 'lodash'
+import React, { Component, PropTypes } from 'react'
 
 import {
   Spinner,
   ErrorState,
   Button,
-} from 'zooid-ui';
+} from 'zooid-ui'
 
-import FaApple from 'react-icons/lib/fa/apple';
-import FaWindows from 'react-icons/lib/fa/windows';
-import FaLinux from 'react-icons/lib/fa/linux';
+import FaApple from 'react-icons/lib/fa/apple'
+import FaWindows from 'react-icons/lib/fa/windows'
+import FaLinux from 'react-icons/lib/fa/linux'
 
 import {
   getInstallerUri,
@@ -17,35 +17,35 @@ import {
   getDownloadUri,
 } from '../../helpers/installer'
 
-import './index.css';
+import './index.css'
 
 export default class Download extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       error: null,
       downloading: false,
       downloadURI: null,
-    };
-    this.download = this.download.bind(this);
-    this.getButtonRow = this.getButtonRow.bind(this);
-    this.getButton = this.getButton.bind(this);
+    }
+    this.download = this.download.bind(this)
+    this.getButtonRow = this.getButtonRow.bind(this)
+    this.getButton = this.getButton.bind(this)
   }
 
   getButtonRow(os, platforms) {
     const buttons = _.map(platforms, (platform) => {
       return this.getButton(platform)
-    });
+    })
     return (
       <div className="Download--row">
         <h4>{os}</h4>
         {buttons}
       </div>
-    );
+    )
   }
 
   getButton(platform) {
-    let Icon = null;
+    let Icon = null
     if (/^darwin/.test(platform)) {
       Icon = <FaApple />
     }
@@ -55,9 +55,9 @@ export default class Download extends Component {
     if (/^linux/.test(platform)) {
       Icon = <FaLinux />
     }
-    let arch = '[x64]';
+    let arch = '[x64]'
     if (/386$/.test(platform)) {
-      arch = '[x86]';
+      arch = '[x86]'
     }
     return (
       <Button
@@ -67,30 +67,30 @@ export default class Download extends Component {
       >
         <i className="Download--icon">{Icon}</i> {arch} Download
       </Button>
-    );
+    )
   }
 
   download(platform) {
-    const { otp } = this.props;
+    const { otp } = this.props
     return () => {
-      this.setState({ downloading: true });
+      this.setState({ downloading: true })
       getInstallerUri({ platform }, (error, uri) => {
         if (error) {
-          return this.setState({ error });
+          return this.setState({ error })
         }
-        const fileName = getFileName({ otp, platform });
-        const link = document.createElement('a');
+        const fileName = getFileName({ otp, platform })
+        const link = document.createElement('a')
         if (!_.isUndefined(link.download)) {
-          link.download = fileName;
+          link.download = fileName
         }
-        const downloadURI = getDownloadUri({ uri, fileName });
+        const downloadURI = getDownloadUri({ uri, fileName })
         _.delay(() => {
           this.props.onDownload()
-          this.setState({ downloadURI, downloading: false });
+          this.setState({ downloadURI, downloading: false })
         }, 20 * 1000)
-        link.href = downloadURI;
-        link.click();
-      });
+        link.href = downloadURI
+        link.click()
+      })
     }
   }
 
@@ -99,7 +99,7 @@ export default class Download extends Component {
       <div>
         {content}
       </div>
-    );
+    )
   }
 
   render() {
@@ -107,10 +107,10 @@ export default class Download extends Component {
       error,
       downloading,
       downloadURI,
-    } = this.state;
+    } = this.state
 
     if (error) {
-      return this.renderContent(<ErrorState description={error.message} />);
+      return this.renderContent(<ErrorState description={error.message} />)
     }
     if (downloading) {
       return this.renderContent(
@@ -118,7 +118,7 @@ export default class Download extends Component {
           <Spinner size="large" />
           <h1 className="Download--action-title">Downloading...</h1>
         </div>
-      );
+      )
     }
 
     if (downloadURI) {
@@ -127,7 +127,7 @@ export default class Download extends Component {
           <h3>If download hasn't started, use link below.</h3>
           <a href={downloadURI}>manual download link</a>
         </div>
-      );
+      )
     }
 
     return this.renderContent(
@@ -136,11 +136,11 @@ export default class Download extends Component {
         {this.getButtonRow('Windows', ['windows-amd64', 'windows-386'])}
         {this.getButtonRow('Linux', ['linux-amd64', 'linux-386'])}
       </div>
-    );
+    )
   }
 }
 
 Download.propTypes = {
   otp: PropTypes.string.isRequired,
   onDownload: PropTypes.func.isRequired,
-};
+}

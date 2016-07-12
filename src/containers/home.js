@@ -1,12 +1,12 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react'
 import { browserHistory } from 'react-router'
-import _ from 'lodash';
-import RegistryList from '../components/RegistryList';
-import AppActions from '../components/AppActions';
-import { EmptyState } from 'zooid-ui';
+import _ from 'lodash'
+import RegistryList from '../components/RegistryList'
+import AppActions from '../components/AppActions'
+import { EmptyState } from 'zooid-ui'
 import ShortList from '../components/ShortList'
-import InstalledDevices from '../components/InstalledDevices';
-import { connect } from 'react-redux';
+import InstalledDevices from '../components/InstalledDevices'
+import { connect } from 'react-redux'
 import { needsUpdate } from '../helpers/actions'
 import { fetchMyDevices } from '../actions/things/device-actions'
 import { setBreadcrumbs } from '../actions/page-actions'
@@ -26,7 +26,7 @@ class Home extends Component {
   }
 
   render() {
-    const { available, devices } = this.props;
+    const { available, devices } = this.props
     const devicesEmptyState = (
       <EmptyState
         className="Pretty--EmptyState"
@@ -52,7 +52,7 @@ class Home extends Component {
           <RegistryList registries={available.registries} registryKey="octoblu-official" type="short" />
         </ShortList>
       </PageLayout>
-    );
+    )
   }
 }
 

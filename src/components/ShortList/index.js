@@ -1,9 +1,9 @@
-import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+import React, { Component, PropTypes } from 'react'
+import { Link } from 'react-router'
 
 class ShortList extends Component {
   render() {
-    const { title, children, linkTo, emptyState, showEmptyState } = this.props;
+    const { title, children, linkTo, emptyState, showEmptyState } = this.props
     if (showEmptyState) {
       return emptyState
     }
@@ -15,7 +15,7 @@ class ShortList extends Component {
           <Link className="ActionButton Button Button--no-style" to={linkTo}>See More</Link>
         </footer>
       </div>
-    );
+    )
   }
 }
 

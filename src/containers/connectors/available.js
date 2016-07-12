@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from 'react';
-import AppActions from '../../components/AppActions';
-import { connect } from 'react-redux';
-import PageLayout from '../page-layout';
+import React, { Component, PropTypes } from 'react'
+import AppActions from '../../components/AppActions'
+import { connect } from 'react-redux'
+import PageLayout from '../page-layout'
 import { setBreadcrumbs } from '../../actions/page-actions'
 
-import RegistryList from '../../components/RegistryList';
+import RegistryList from '../../components/RegistryList'
 
 class Available extends Component {
   componentDidMount() {
@@ -20,7 +20,7 @@ class Available extends Component {
   }
 
   render() {
-    const { registries } = this.props.available;
+    const { registries } = this.props.available
 
     return (<PageLayout title="Available Connectors" actions={<AppActions />}>
       <div>

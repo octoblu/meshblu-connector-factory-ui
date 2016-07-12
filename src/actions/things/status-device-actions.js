@@ -1,10 +1,10 @@
-import * as actionTypes from '../../constants/action-types';
+import * as actionTypes from '../../constants/action-types'
 import { setFetching, setError } from '../page-actions'
 import {
   getDevice,
   sendMessage,
   updateDevice,
-} from '../../services/device-service';
+} from '../../services/device-service'
 
 function getStatusDeviceUUID({ statusDevice } = {}) {
   return statusDevice
@@ -69,7 +69,7 @@ export function pingStatusDevice({ device }) {
         return
       }
       dispatch(pingStatusDeviceSuccess())
-    });
+    })
   }
 }
 
@@ -89,6 +89,6 @@ export function updateStatusDevice({ device, properties }) {
       }
       dispatch(updateStatusDeviceSuccess())
       dispatch(fetchStatusDevice({ device }))
-    });
+    })
   }
 }

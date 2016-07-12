@@ -1,25 +1,25 @@
-import _ from 'lodash';
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
+import _ from 'lodash'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 
 import PageLayout from '../page-layout'
 import { setBreadcrumbs } from '../../actions/page-actions'
 
-import VersionsSelect from '../../components/VersionsSelect';
+import VersionsSelect from '../../components/VersionsSelect'
 
-import { fetchConnectorDetails, selectVersion } from '../../actions/connectors/detail-actions';
-import { upsertConnectorAction, gotToGeneratedConnector } from '../../actions/connectors/connector-actions';
+import { fetchConnectorDetails, selectVersion } from '../../actions/connectors/detail-actions'
+import { upsertConnectorAction, gotToGeneratedConnector } from '../../actions/connectors/connector-actions'
 
 class Create extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       selectedVersion: null,
     }
-    this.versionSelect = this.versionSelect.bind(this);
-    this.createDevice = this.createDevice.bind(this);
-    this.getGithubSlug = this.getGithubSlug.bind(this);
-    this.getRegistryItem = this.getRegistryItem.bind(this);
+    this.versionSelect = this.versionSelect.bind(this)
+    this.createDevice = this.createDevice.bind(this)
+    this.getGithubSlug = this.getGithubSlug.bind(this)
+    this.getRegistryItem = this.getRegistryItem.bind(this)
   }
 
   componentDidMount() {
@@ -41,7 +41,7 @@ class Create extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { key, uuid } = nextProps.connector;
+    const { key, uuid } = nextProps.connector
     if (key && uuid) {
       this.props.dispatch(gotToGeneratedConnector({ key, uuid }))
     }
@@ -82,7 +82,7 @@ class Create extends Component {
 
   createDevice() {
     const { octoblu } = this.props
-    const { version } = this.props.details.selectedVersion;
+    const { version } = this.props.details.selectedVersion
     const registryItem = this.getRegistryItem()
     const { connector } = this.props.params
     this.props.dispatch(upsertConnectorAction({ registryItem, version, connector, octoblu }))
@@ -98,7 +98,7 @@ class Create extends Component {
       <PageLayout type={type} title={`Create ${name}`}>
         {content}
       </PageLayout>
-    );
+    )
   }
 
   render() {
@@ -108,7 +108,7 @@ class Create extends Component {
       onSelect={this.createDevice}
       selected={selectedVersion}
       versions={info.tags}
-    />);
+    />)
   }
 }
 

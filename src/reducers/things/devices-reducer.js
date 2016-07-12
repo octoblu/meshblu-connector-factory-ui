@@ -1,6 +1,6 @@
 import * as actionTypes from '../../constants/action-types'
 import { BASE_DEVICE_PROPS } from '../../constants/devices'
-import _ from 'lodash';
+import _ from 'lodash'
 
 const initialState = {
   items: [],

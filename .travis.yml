@@ -12,6 +12,7 @@ branches:
 before_deploy:
 - npm run build
 - cp index.html dist
+- cp assets/* dist/assets
 - for file in `find dist -type f`; do gzip --best $file && mv $file.gz $file; done
 after_deploy:
 - "./deploy/invalidate-cloudfront.sh $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY $TRAVIS_BRANCH"

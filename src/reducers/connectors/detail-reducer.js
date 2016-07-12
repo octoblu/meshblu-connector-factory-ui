@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _ from 'lodash'
 import * as actionTypes from '../../constants/action-types'
 
 const initialState = {
@@ -25,7 +25,7 @@ function getVersion(version = '') {
 function filterTags(tags) {
   return _.omitBy(tags, ({ assets }) => {
     return _.some(assets, { name: 'schemas.json' })
-  }) || {};
+  }) || {}
 }
 
 function getCurrentVersion({ details, version }) {

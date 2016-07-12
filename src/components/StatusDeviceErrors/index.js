@@ -1,18 +1,18 @@
-import React, { PropTypes, Component } from 'react';
-import _ from 'lodash';
-import moment from 'moment';
+import React, { PropTypes, Component } from 'react'
+import _ from 'lodash'
+import moment from 'moment'
 
 import DebugLines from '../DebugLines'
 import {
   Button,
-} from 'zooid-ui';
+} from 'zooid-ui'
 
-import './index.css';
+import './index.css'
 
 const propTypes = {
   statusDevice: PropTypes.object,
   clearErrors: PropTypes.func,
-};
+}
 
 const defaultProps = {
   statusDevice: {},
@@ -50,7 +50,7 @@ class StatusDeviceErrors extends Component {
   }
 }
 
-StatusDeviceErrors.propTypes = propTypes;
-StatusDeviceErrors.defaultProps = defaultProps;
+StatusDeviceErrors.propTypes = propTypes
+StatusDeviceErrors.defaultProps = defaultProps
 
-export default StatusDeviceErrors;
+export default StatusDeviceErrors

@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PageLayout from '../page-layout';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import PageLayout from '../page-layout'
 import { setBreadcrumbs } from '../../actions/page-actions'
 
 import {
   Button,
-} from 'zooid-ui';
+} from 'zooid-ui'
 
-import '../../styles/generated.css';
+import '../../styles/generated.css'
 
-import Download from '../../components/Download';
-import ConfigureCard from '../../components/ConfigureCard';
-import OrLine from '../../components/OrLine';
+import Download from '../../components/Download'
+import ConfigureCard from '../../components/ConfigureCard'
+import OrLine from '../../components/OrLine'
 
 class Create extends Component {
   constructor(props) {
@@ -19,7 +19,7 @@ class Create extends Component {
     this.state = {
       downloaded: false,
     }
-    this.onDownload = this.onDownload.bind(this);
+    this.onDownload = this.onDownload.bind(this)
   }
 
   componentDidMount() {
@@ -48,12 +48,12 @@ class Create extends Component {
         <h1 className="CenterTitle">Download Installer</h1>
         {content}
       </PageLayout>
-    );
+    )
   }
 
   render() {
-    const { uuid, key } = this.props.params;
-    const { downloaded } = this.state;
+    const { uuid, key } = this.props.params
+    const { downloaded } = this.state
 
     let nextStep = null
     if (downloaded) {
@@ -81,7 +81,7 @@ class Create extends Component {
         </div>
         {nextStep}
       </div>
-    );
+    )
   }
 }
 

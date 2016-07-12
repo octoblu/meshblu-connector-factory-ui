@@ -1,4 +1,4 @@
-import * as actionTypes from '../constants/action-types';
+import * as actionTypes from '../constants/action-types'
 
 function setFetchingResult(fetching) {
   return {

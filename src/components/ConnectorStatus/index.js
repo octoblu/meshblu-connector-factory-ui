@@ -1,22 +1,22 @@
-import React, { PropTypes } from 'react';
-import { needsUpdate } from '../../helpers/actions';
-import './index.css';
+import React, { PropTypes } from 'react'
+import { needsUpdate } from '../../helpers/actions'
+import './index.css'
 
 const propTypes = {
   device: PropTypes.object.isRequired,
   statusDevice: PropTypes.object.isRequired,
-};
+}
 
 const getStatusInfo = ({ statusDevice, device }) => {
   const { lastPong } = statusDevice || {}
-  let stopped = false;
+  let stopped = false
   const { connectorMetadata, online } = device || {}
   if (connectorMetadata != null) {
-    stopped = connectorMetadata.stopped;
+    stopped = connectorMetadata.stopped
   }
   if (lastPong && !stopped) {
-    const { date, response, error } = lastPong;
-    const { running } = response;
+    const { date, response, error } = lastPong
+    const { running } = response
     if (!needsUpdate({ updatedAt: date }, 60)) {
       if (error != null) {
         return { statusText: 'connector error', online: true }
@@ -40,12 +40,12 @@ const renderContent = (content) => {
 const ConnectorStatus = ({ statusDevice, device }) => {
   const { statusText, online } = getStatusInfo({ device, statusDevice })
   if (online) {
-    return renderContent(<span className="ConnectorStatus--Online">{statusText}</span>);
+    return renderContent(<span className="ConnectorStatus--Online">{statusText}</span>)
   }
-  return renderContent(<span className="ConnectorStatus--Offline">{statusText}</span>);
-};
+  return renderContent(<span className="ConnectorStatus--Offline">{statusText}</span>)
+}
 
 
-ConnectorStatus.propTypes = propTypes;
+ConnectorStatus.propTypes = propTypes
 
-export default ConnectorStatus;
+export default ConnectorStatus

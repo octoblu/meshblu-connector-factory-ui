@@ -1,20 +1,20 @@
-import chai, { expect } from 'chai';
-import chaiEnzyme from 'chai-enzyme';
-import { shallow } from 'enzyme';
-import React from 'react';
+import chai, { expect } from 'chai'
+import chaiEnzyme from 'chai-enzyme'
+import { shallow } from 'enzyme'
+import React from 'react'
 
-import NotFound from './';
+import NotFound from './'
 
-chai.use(chaiEnzyme());
+chai.use(chaiEnzyme())
 
 describe('<NotFound />', () => {
-  let sut;
+  let sut
 
   beforeEach(() => {
-    sut = shallow(<NotFound />);
-  });
+    sut = shallow(<NotFound />)
+  })
 
   it('should exist', () => {
-    expect(sut).to.be.present;
-  });
-});
+    expect(sut).to.be.present
+  })
+})

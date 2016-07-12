@@ -1,13 +1,13 @@
 import _ from 'lodash'
-import React, { PropTypes } from 'react';
+import React, { PropTypes } from 'react'
 
 import CardItem from '../CardItem'
-import './index.css';
-import classNames from 'classnames';
+import './index.css'
+import classNames from 'classnames'
 
 function getRegistryCards(items) {
   return _.map(items, (item) => {
-    const { _id, name, description, type, githubSlug } = item;
+    const { _id, name, description, type, githubSlug } = item
     let shortDescription = _.truncate(description, { length: 100 })
     return (
       <CardItem
@@ -26,7 +26,7 @@ function getHeader({ name, version }) {
   return <h4>{name} <small>v{version}</small></h4>
 }
 
-function renderList({ registry, key, type }) {
+function renderList({ registry, registryKey, type }) {
   let { items } = registry
   const { name, version } = registry
 
@@ -39,7 +39,7 @@ function renderList({ registry, key, type }) {
   }
 
   return (
-    <div key={key} className="RegistryList--section">
+    <div key={registryKey} className="RegistryList--section">
       <header>{getHeader({ name, version })}</header>
       <main className="CardItemList">{getRegistryCards(items)}</main>
     </div>
@@ -50,7 +50,7 @@ const RegistryList = ({ registries = {}, registryKey, type, className }) => {
   const componentClass = classNames(
     'RegistryList',
     className
-  );
+  )
 
   let registryList = []
   if (registryKey) {
@@ -67,7 +67,7 @@ const RegistryList = ({ registries = {}, registryKey, type, className }) => {
       {registryList}
     </div>
   )
-};
+}
 
 RegistryList.propTypes = {
   className: PropTypes.string,

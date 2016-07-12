@@ -1,11 +1,11 @@
-import * as actionTypes from '../../constants/action-types';
+import * as actionTypes from '../../constants/action-types'
 import { setFetching, setError } from '../page-actions'
 
 import {
   getDevices,
   getDevice,
   updateDevice,
-} from '../../services/device-service';
+} from '../../services/device-service'
 
 import { fetchConnectorDetails } from '../connectors/detail-actions'
 
@@ -91,6 +91,6 @@ export function updateDeviceAction({ uuid, properties }) {
       dispatch(clearMyDevicesUpdatedAtResult())
       dispatch(updateDeviceSuccess())
       dispatch(fetchDevice({ uuid, updateDetails: false }))
-    });
+    })
   }
 }

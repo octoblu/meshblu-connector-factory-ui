@@ -1,8 +1,8 @@
-import _ from 'lodash';
-import React, { PropTypes, Component } from 'react';
-import OctobluOauth from './octoblu-oauth';
+import _ from 'lodash'
+import React, { PropTypes, Component } from 'react'
+import OctobluOauth from './octoblu-oauth'
 import { Link } from 'react-router'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import {
   Spinner,
   ErrorState,
@@ -13,15 +13,15 @@ import {
   PageActions,
   PageTitle,
   DeviceIcon,
-} from 'zooid-ui';
+} from 'zooid-ui'
 
-import '../styles/page-layout.css';
+import '../styles/page-layout.css'
 
 const propTypes = {
   title: PropTypes.string,
   actions: PropTypes.element,
   type: PropTypes.string,
-};
+}
 
 const defaultProps = {
   actions: null,
@@ -84,7 +84,7 @@ class PageLayout extends Component {
           </OctobluOauth>
         </Page>
       </div>
-    );
+    )
   }
 
   render() {
@@ -95,7 +95,7 @@ class PageLayout extends Component {
     }
 
     if (error) {
-      const message = _.isString(error) ? error : error.message;
+      const message = _.isString(error) ? error : error.message
       return this.renderPage(<ErrorState title={message} />)
     }
 
@@ -107,8 +107,8 @@ class PageLayout extends Component {
   }
 }
 
-PageLayout.propTypes = propTypes;
-PageLayout.defaultProps = defaultProps;
+PageLayout.propTypes = propTypes
+PageLayout.defaultProps = defaultProps
 
 function mapStateToProps({ page }) {
   const { fetchingCount, error, fragments } = page

@@ -1,26 +1,26 @@
-import { getMeshbluConfig } from '../helpers/authentication';
-import { getSchema } from '../services/schema-service';
+import { getMeshbluConfig } from '../helpers/authentication'
+import { getSchema } from '../services/schema-service'
 import { getFriendlyName, getConnectorMetadata } from '../helpers/connector-metadata'
 import {
   updateDeviceDangerously,
   registerConnector,
   generateAndStoreToken,
-} from '../services/device-service';
+} from '../services/device-service'
 
-import { generateOtp } from '../services/otp-service';
+import { generateOtp } from '../services/otp-service'
 
 function generateKeyWrapper({ registryItem, connector, version, octoblu }, callback) {
   return (error, device) => {
-    if (error) return callback(error);
-    const { uuid, token } = device || {};
+    if (error) return callback(error)
+    const { uuid, token } = device || {}
     getConnectorMetadata({ connector, githubSlug: registryItem.githubSlug, version, octoblu }, (error, metadata) => {
-      if (error != null) return callback(error);
+      if (error != null) return callback(error)
       generateOtp({ uuid, token, metadata }, (error, response) => {
-        if (error != null) return callback(error);
-        const { key } = response || {};
-        return callback(null, { key, uuid });
-      });
-    });
+        if (error != null) return callback(error)
+        const { key } = response || {}
+        return callback(null, { key, uuid })
+      })
+    })
   }
 }
 
@@ -45,13 +45,13 @@ function updateConnector({ uuid, registryItem, version, connector, schemas }, ca
     },
   }
   updateDeviceDangerously({ uuid, properties }, (error) => {
-    if (error != null) return callback(error);
+    if (error != null) return callback(error)
     generateAndStoreToken({ uuid }, (error, device) => {
-      if (error != null) return callback(error);
-      const { uuid, token } = device;
-      callback(null, { uuid, token });
-    });
-  });
+      if (error != null) return callback(error)
+      const { uuid, token } = device
+      callback(null, { uuid, token })
+    })
+  })
 }
 
 function createConnector({ registryItem, version, connector, schemas }, callback) {
@@ -76,19 +76,19 @@ function createConnector({ registryItem, version, connector, schemas }, callback
     },
   }
   registerConnector({ properties }, (error, device) => {
-    if (error != null) return callback(error);
-    const { uuid, token } = device;
-    callback(null, { uuid, token });
+    if (error != null) return callback(error)
+    const { uuid, token } = device
+    callback(null, { uuid, token })
   })
 }
 
 export function upsertConnector({ uuid, registryItem, version, connector, octoblu }, callback) {
   getSchema({ githubSlug: registryItem.githubSlug, version }, (error, schemas) => {
-    if (error) return callback(error);
+    if (error) return callback(error)
     const generateKey = generateKeyWrapper({ uuid, registryItem, version, connector, octoblu }, callback)
     if (uuid) {
       return updateConnector({ uuid, registryItem, version, connector, schemas }, generateKey)
     }
     return createConnector({ registryItem, version, connector, schemas }, generateKey)
-  });
+  })
 }

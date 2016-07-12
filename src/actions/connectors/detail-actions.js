@@ -1,6 +1,6 @@
-import * as actionTypes from '../../constants/action-types';
+import * as actionTypes from '../../constants/action-types'
 import { setFetching, setError } from '../page-actions'
-import { connectorDetails } from '../../services/detail-service';
+import { connectorDetails } from '../../services/detail-service'
 
 function fetchConnectorDetailsSuccess({ details, version }) {
   return {
@@ -25,7 +25,7 @@ export function fetchConnectorDetails({ githubSlug, version, fetching = true }) 
         dispatch(setError(error))
         return
       }
-      dispatch(fetchConnectorDetailsSuccess({ details, version: getVersion({ details, version }) }));
+      dispatch(fetchConnectorDetailsSuccess({ details, version: getVersion({ details, version }) }))
     })
   }
 }

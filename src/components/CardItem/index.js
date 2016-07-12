@@ -1,12 +1,12 @@
-import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
+import React, { PropTypes } from 'react'
+import { Link } from 'react-router'
 
 import {
   Card,
   DeviceIcon,
-} from 'zooid-ui';
+} from 'zooid-ui'
 
-import './index.css';
+import './index.css'
 
 const propTypes = {
   title: PropTypes.string.isRequired,
@@ -14,7 +14,7 @@ const propTypes = {
   linkTo: PropTypes.string.isRequired,
   linkTitle: PropTypes.string.isRequired,
   iconType: PropTypes.string,
-};
+}
 
 const getDeviceIcon = ({ iconType }) => {
   if (!iconType) return null
@@ -45,9 +45,9 @@ const CardItem = ({ title, description, linkTo, linkTitle, iconType }) => {
         </main>
       </Card>
     </div>
-  );
-};
+  )
+}
 
-CardItem.propTypes = propTypes;
+CardItem.propTypes = propTypes
 
-export default CardItem;
+export default CardItem

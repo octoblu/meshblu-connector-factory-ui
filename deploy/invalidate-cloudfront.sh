@@ -18,7 +18,7 @@ create_invalidation(){
   local git_tag=$1
   aws cloudfront create-invalidation \
     --distribution-id EEZR7362A9WQ7 \
-    --invalidation-batch "{\"Paths\": {\"Quantity\": 3, \"Items\": [\"/index.html\", \"/bundle.js\", \"/bundle.js.map\"]}, \"CallerReference\": \"travis-$git_tag\"}"
+    --invalidation-batch "{\"Paths\": {\"Quantity\": 4, \"Items\": [\"/index.html\", \"/bundle.js\", \"/bundle.js.map\", \"/assets/*\"]}, \"CallerReference\": \"travis-$git_tag\"}"
 }
 
 main(){

@@ -1,51 +1,51 @@
-import React, { PropTypes } from 'react';
-import _  from 'lodash';
-import VersionInfo from '../VersionInfo';
+import React, { PropTypes } from 'react'
+import _  from 'lodash'
+import VersionInfo from '../VersionInfo'
 
 import {
   List,
   ListItem,
-} from 'zooid-ui';
+} from 'zooid-ui'
 
-import MdNavigateNext from 'react-icons/lib/md/navigate-next';
+import MdNavigateNext from 'react-icons/lib/md/navigate-next'
 
-import './index.css';
+import './index.css'
 
 const propTypes = {
   versions: PropTypes.object.isRequired,
   onSelect: PropTypes.func.isRequired,
-};
+}
 
 function majorAndMinorList(versions) {
-  const majorMinors = {};
+  const majorMinors = {}
   _.each(versions, (version) => {
-    const [major, minor] = version.split('.');
-    majorMinors[`${major}.${minor}`] = false;
-  });
-  return majorMinors;
+    const [major, minor] = version.split('.')
+    majorMinors[`${major}.${minor}`] = false
+  })
+  return majorMinors
 }
 
 function filterAndSortVersions(_versions) {
-  const sortedAndReversed = _.keys(_versions);
-  const majorMinors = majorAndMinorList(sortedAndReversed);
+  const sortedAndReversed = _.keys(_versions)
+  const majorMinors = majorAndMinorList(sortedAndReversed)
   _.each(sortedAndReversed, (version) => {
-    const [major, minor] = version.split('.');
-    if (majorMinors[`${major}.${minor}`]) return;
-    majorMinors[`${major}.${minor}`] = version;
-  });
-  return _.values(majorMinors);
+    const [major, minor] = version.split('.')
+    if (majorMinors[`${major}.${minor}`]) return
+    majorMinors[`${major}.${minor}`] = version
+  })
+  return _.values(majorMinors)
 }
 
 const Versions = ({ versions, onSelect }) => {
-  const versionKeys = filterAndSortVersions(versions);
+  const versionKeys = filterAndSortVersions(versions)
 
   const versionsList = _.map(versionKeys, (version, i) => {
-    const details = versions[version];
-    const latest = !i;
-    const versionInfo = { version, details, latest };
+    const details = versions[version]
+    const latest = !i
+    const versionInfo = { version, details, latest }
     const onSelectEvent = () => {
-      onSelect(versionInfo);
-    };
+      onSelect(versionInfo)
+    }
     return (
       <ListItem key={version}>
         <div onClick={onSelectEvent}>
@@ -53,8 +53,8 @@ const Versions = ({ versions, onSelect }) => {
           <i className="Versions--icon"><MdNavigateNext /></i>
         </div>
       </ListItem>
-    );
-  });
+    )
+  })
   return (
     <div className="Versions">
       <h2>Select Version:</h2>
@@ -62,9 +62,9 @@ const Versions = ({ versions, onSelect }) => {
         {versionsList}
       </List>
     </div>
-  );
-};
+  )
+}
 
-Versions.propTypes = propTypes;
+Versions.propTypes = propTypes
 
-export default Versions;
+export default Versions

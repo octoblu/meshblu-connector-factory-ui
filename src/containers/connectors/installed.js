@@ -1,12 +1,12 @@
-import React, { Component, PropTypes } from 'react';
-import AppActions from '../../components/AppActions';
-import { connect } from 'react-redux';
+import React, { Component, PropTypes } from 'react'
+import AppActions from '../../components/AppActions'
+import { connect } from 'react-redux'
 import { fetchMyDevices } from '../../actions/things/device-actions'
-import PageLayout from '../page-layout';
+import PageLayout from '../page-layout'
 import { needsUpdate } from '../../helpers/actions'
 import { setBreadcrumbs } from '../../actions/page-actions'
 
-import InstalledDevices from '../../components/InstalledDevices';
+import InstalledDevices from '../../components/InstalledDevices'
 
 class Installed extends Component {
   componentDidMount() {
@@ -25,12 +25,12 @@ class Installed extends Component {
   }
 
   render() {
-    const { devices } = this.props;
+    const { devices } = this.props
     return (
       <PageLayout title="My Connectors" actions={<AppActions />} >
         <InstalledDevices devices={devices.items} />
       </PageLayout>
-    );
+    )
   }
 }
 

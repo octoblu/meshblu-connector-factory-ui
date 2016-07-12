@@ -1,18 +1,18 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router';
-import Toast from 'zooid-ui-toast';
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { Link } from 'react-router'
+import Toast from 'zooid-ui-toast'
 
 import {
   AppBar,
   AppBarPrimary,
   AppBarSecondary,
-} from 'zooid-ui';
+} from 'zooid-ui'
 
-import 'zooid-ui/dist/style.css';
-import '../styles/the-app.css';
+import 'zooid-ui/dist/style.css'
+import '../styles/the-app.css'
 
-import { hasAuth } from '../helpers/authentication';
+import { hasAuth } from '../helpers/authentication'
 import { resetPageState } from '../actions/page-actions'
 
 class AppLayout extends Component {
@@ -56,7 +56,7 @@ class AppLayout extends Component {
         </div>
         <Toast message={toast} timeout={30000} />
       </div>
-    );
+    )
   }
 }
 

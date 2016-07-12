@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { Link } from 'react-router'
 import { Button } from 'zooid-ui'
 
@@ -12,6 +12,6 @@ const AppActions = () => {
       <li><Button href="https://meshblu-connectors.readme.io" kind="no-style">Getting Started</Button></li>
     </ul>
   )
-};
+}
 
-export default AppActions;
+export default AppActions

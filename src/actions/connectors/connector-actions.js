@@ -1,8 +1,8 @@
-import * as actionTypes from '../../constants/action-types';
+import * as actionTypes from '../../constants/action-types'
 import { setFetching, setError } from '../page-actions'
 import { clearMyDevicesUpdatedAt } from '../things/device-actions'
 import { push } from 'react-router-redux'
-import { upsertConnector } from '../../helpers/connector-creator';
+import { upsertConnector } from '../../helpers/connector-creator'
 
 function connectorGeneratedSuccess({ key, uuid }) {
   return {

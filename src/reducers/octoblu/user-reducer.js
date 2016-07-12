@@ -2,7 +2,7 @@ import * as actionTypes from '../../constants/action-types'
 import {
   getAuthenticationUri,
   removeCookie,
-} from '../../helpers/authentication';
+} from '../../helpers/authentication'
 
 const initialState = {
   user: {},

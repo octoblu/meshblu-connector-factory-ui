@@ -1,14 +1,14 @@
-import MeshbluHttp from 'browser-meshblu-http';
-import { getMeshbluConfig } from '../helpers/authentication';
+import MeshbluHttp from 'browser-meshblu-http'
+import { getMeshbluConfig } from '../helpers/authentication'
 
 export function updateDevice({ uuid, properties }, callback) {
-  const meshblu = new MeshbluHttp(getMeshbluConfig());
-  meshblu.update(uuid, properties, callback);
+  const meshblu = new MeshbluHttp(getMeshbluConfig())
+  meshblu.update(uuid, properties, callback)
 }
 
 export function updateDeviceDangerously({ uuid, properties }, callback) {
-  const meshblu = new MeshbluHttp(getMeshbluConfig());
-  meshblu.updateDangerously(uuid, properties, callback);
+  const meshblu = new MeshbluHttp(getMeshbluConfig())
+  meshblu.updateDangerously(uuid, properties, callback)
 }
 
 export function registerStatusDevice({ owner, uuid }, callback) {
@@ -43,8 +43,8 @@ function afterRegisterConnector({ statusDeviceUUID, uuid }, callback) {
 }
 
 export function registerConnector({ properties }, callback) {
-  const meshbluConfig = getMeshbluConfig();
-  const meshblu = new MeshbluHttp(meshbluConfig);
+  const meshbluConfig = getMeshbluConfig()
+  const meshblu = new MeshbluHttp(meshbluConfig)
   const owner = meshbluConfig.uuid
   meshblu.register(properties, (error, device) => {
     if (error != null) return callback(error)
@@ -56,27 +56,27 @@ export function registerConnector({ properties }, callback) {
         callback(null, device)
       })
     })
-  });
+  })
 }
 
 export function getDevice({ uuid }, callback) {
-  const meshblu = new MeshbluHttp(getMeshbluConfig());
-  meshblu.device(uuid, callback);
+  const meshblu = new MeshbluHttp(getMeshbluConfig())
+  meshblu.device(uuid, callback)
 }
 
 export function sendMessage(message, callback) {
-  const meshblu = new MeshbluHttp(getMeshbluConfig());
-  meshblu.message(message, callback);
+  const meshblu = new MeshbluHttp(getMeshbluConfig())
+  meshblu.message(message, callback)
 }
 
 export function generateAndStoreToken({ uuid }, callback) {
-  const meshblu = new MeshbluHttp(getMeshbluConfig());
-  meshblu.generateAndStoreToken(uuid, {}, callback);
+  const meshblu = new MeshbluHttp(getMeshbluConfig())
+  meshblu.generateAndStoreToken(uuid, {}, callback)
 }
 
 export function getDevices(callback) {
-  const meshbluConfig = getMeshbluConfig();
-  const meshblu = new MeshbluHttp(meshbluConfig);
+  const meshbluConfig = getMeshbluConfig()
+  const meshblu = new MeshbluHttp(meshbluConfig)
   const query = {
     owner: meshbluConfig.uuid,
     connectorMetadata: { $exists: true },
@@ -92,5 +92,5 @@ export function getDevices(callback) {
     statusDevice: true,
     octoblu: true,
   }
-  meshblu.search({ query, projection }, callback);
+  meshblu.search({ query, projection }, callback)
 }

@@ -1,18 +1,18 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes } from 'react'
 
 import {
   Button,
   Card,
-} from 'zooid-ui';
+} from 'zooid-ui'
 
-import VersionInfo from '../VersionInfo';
+import VersionInfo from '../VersionInfo'
 
-import './index.css';
+import './index.css'
 
 const propTypes = {
   info: PropTypes.object.isRequired,
   onSelect: PropTypes.func.isRequired,
-};
+}
 
 const SelectedVersion = ({ info, onSelect }) => {
   const onSelectEvent = () => {
@@ -29,9 +29,9 @@ const SelectedVersion = ({ info, onSelect }) => {
         </main>
       </Card>
     </div>
-  );
-};
+  )
+}
 
-SelectedVersion.propTypes = propTypes;
+SelectedVersion.propTypes = propTypes
 
-export default SelectedVersion;
+export default SelectedVersion

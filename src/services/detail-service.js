@@ -1,4 +1,4 @@
-import request from 'superagent';
+import request from 'superagent'
 import { CONNECTOR_SERVICE_URI } from '../constants/config'
 
 export function connectorDetails({ githubSlug }, callback) {
@@ -13,5 +13,5 @@ export function connectorDetails({ githubSlug }, callback) {
         return
       }
       callback(null, response.body)
-    });
+    })
 }

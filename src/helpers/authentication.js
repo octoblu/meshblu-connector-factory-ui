@@ -1,55 +1,55 @@
-import url from 'url';
-import cookie from 'react-cookie';
-import moment from 'moment';
-import MeshbluHttp from 'browser-meshblu-http';
+import url from 'url'
+import cookie from 'react-cookie'
+import moment from 'moment'
+import MeshbluHttp from 'browser-meshblu-http'
 
 import {
   CLIENT_ID,
   PROVIDER_URI,
   MESHBLU_PORT,
   MESHBLU_HOSTNAME,
-} from '../constants/config';
+} from '../constants/config'
 
 export function getBearerToken() {
-  return cookie.load('meshbluBearerToken');
+  return cookie.load('meshbluBearerToken')
 }
 
 export function getMeshbluConfig() {
-  const bearerToken = getBearerToken();
+  const bearerToken = getBearerToken()
   if (!bearerToken) {
     return {
       host: MESHBLU_HOSTNAME,
       port: MESHBLU_PORT,
     }
   }
-  const parts = atob(bearerToken).split(':');
+  const parts = atob(bearerToken).split(':')
   return {
     hostname: MESHBLU_HOSTNAME,
     port: MESHBLU_PORT,
     uuid: parts[0],
     token: parts[1],
-  };
+  }
 }
 
 export function fetchOctobluUser(callback) {
   if (!getBearerToken()) {
-    return callback();
+    return callback()
   }
 
-  const meshbluConfig = getMeshbluConfig();
-  const meshbluHttp = new MeshbluHttp(meshbluConfig);
-  return meshbluHttp.whoami(callback);
+  const meshbluConfig = getMeshbluConfig()
+  const meshbluHttp = new MeshbluHttp(meshbluConfig)
+  return meshbluHttp.whoami(callback)
 }
 
 export function storeAuthentication(nextState, replace) {
-  const { access_token, redirect_uri } = nextState.location.query;
-  const bearerToken = decodeURIComponent(access_token);
+  const { access_token, redirect_uri } = nextState.location.query
+  const bearerToken = decodeURIComponent(access_token)
   const cookieOptions = {
     path: '/',
     expires: moment().add(1, 'year').toDate(),
   }
-  cookie.save('meshbluBearerToken', bearerToken, cookieOptions);
-  replace(redirect_uri);
+  cookie.save('meshbluBearerToken', bearerToken, cookieOptions)
+  replace(redirect_uri)
 }
 
 export function hasAuth() {
@@ -57,7 +57,7 @@ export function hasAuth() {
 }
 
 export function removeCookie() {
-  cookie.remove('meshbluBearerToken', { path: '/' });
+  cookie.remove('meshbluBearerToken', { path: '/' })
 }
 
 export function logout(nextState, replace) {
@@ -67,17 +67,17 @@ export function logout(nextState, replace) {
 }
 
 export function buildRedirectUri() {
-  const { pathname, query } = url.parse(window.location.href);
-  return url.format({ pathname, query });
+  const { pathname, query } = url.parse(window.location.href)
+  return url.format({ pathname, query })
 }
 
 export function buildAuthenticateRedirectUri() {
-  const { protocol, hostname, port } = window.location;
-  const pathname = '/authenticated';
+  const { protocol, hostname, port } = window.location
+  const pathname = '/authenticated'
 
   const query = {
     redirect_uri: buildRedirectUri(),
-  };
+  }
 
   return url.format({
     protocol,
@@ -85,11 +85,11 @@ export function buildAuthenticateRedirectUri() {
     port,
     pathname,
     query,
-  });
+  })
 }
 
 export function getAuthenticationUri() {
-  const { protocol, host, port } = url.parse(PROVIDER_URI);
+  const { protocol, host, port } = url.parse(PROVIDER_URI)
   return url.format({
     protocol,
     host,
@@ -100,5 +100,5 @@ export function getAuthenticationUri() {
       redirect_uri: buildAuthenticateRedirectUri(),
       response_type: 'token',
     },
-  });
+  })
 }

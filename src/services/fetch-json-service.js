@@ -1,4 +1,4 @@
-import request from 'superagent';
+import request from 'superagent'
 
 export function getJSON({ uri }, callback) {
   request.get(uri)

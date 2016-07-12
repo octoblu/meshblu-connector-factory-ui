@@ -1,26 +1,26 @@
 import _ from 'lodash'
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import { setBreadcrumbs } from '../../actions/page-actions'
-import PageLayout from '../page-layout';
+import PageLayout from '../page-layout'
 
-import VersionsSelect from '../../components/VersionsSelect';
+import VersionsSelect from '../../components/VersionsSelect'
 
-import { upsertConnectorAction, gotToGeneratedConnector } from '../../actions/connectors/connector-actions';
-import { selectVersion } from '../../actions/connectors/detail-actions';
-import { fetchDevice } from '../../actions/things/device-actions';
+import { upsertConnectorAction, gotToGeneratedConnector } from '../../actions/connectors/connector-actions'
+import { selectVersion } from '../../actions/connectors/detail-actions'
+import { fetchDevice } from '../../actions/things/device-actions'
 
 class Generate extends Component {
   constructor(props) {
-    super(props);
-    this.versionSelect = this.versionSelect.bind(this);
-    this.updateAndGenerate = this.updateAndGenerate.bind(this);
-    this.getGithubSlug = this.getGithubSlug.bind(this);
-    this.getRegistryItem = this.getRegistryItem.bind(this);
+    super(props)
+    this.versionSelect = this.versionSelect.bind(this)
+    this.updateAndGenerate = this.updateAndGenerate.bind(this)
+    this.getGithubSlug = this.getGithubSlug.bind(this)
+    this.getRegistryItem = this.getRegistryItem.bind(this)
   }
 
   componentDidMount() {
-    const { uuid } = this.props.params;
+    const { uuid } = this.props.params
     this.props.dispatch(setBreadcrumbs([
       {
         label: 'Connectors',
@@ -42,7 +42,7 @@ class Generate extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { key, uuid } = nextProps.connector;
+    const { key, uuid } = nextProps.connector
     if (key && uuid) {
       this.props.dispatch(gotToGeneratedConnector({ key, uuid }))
     }
@@ -73,19 +73,19 @@ class Generate extends Component {
   }
 
   updateAndGenerate() {
-    const { uuid } = this.props.params;
-    const { version } = this.props.details.selectedVersion;
+    const { uuid } = this.props.params
+    const { version } = this.props.details.selectedVersion
     const { octoblu, device } = this.props
-    let { registryItem } = device.item.octoblu || {};
+    let { registryItem } = device.item.octoblu || {}
     if (!registryItem) {
       registryItem = this.getRegistryItem()
     }
-    const { connector } = device.item;
+    const { connector } = device.item
     this.props.dispatch(upsertConnectorAction({ uuid, registryItem, version, connector, octoblu }))
   }
 
   versionSelect(selectedVersion) {
-    this.props.dispatch(selectVersion(selectedVersion));
+    this.props.dispatch(selectVersion(selectedVersion))
   }
 
   render() {

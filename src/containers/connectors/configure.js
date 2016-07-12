@@ -1,45 +1,45 @@
-import _ from 'lodash';
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import PageLayout from '../page-layout';
+import _ from 'lodash'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import PageLayout from '../page-layout'
 import { setBreadcrumbs } from '../../actions/page-actions'
 
 import {
   EmptyState,
 } from 'zooid-ui'
 
-import DeviceActions from '../../components/DeviceActions';
-import DeviceSchema from '../../components/DeviceSchema';
-import VersionsSelect from '../../components/VersionsSelect';
-import StatusDeviceErrors from '../../components/StatusDeviceErrors';
-import DeviceInfoBar from '../../components/DeviceInfoBar';
+import DeviceActions from '../../components/DeviceActions'
+import DeviceSchema from '../../components/DeviceSchema'
+import VersionsSelect from '../../components/VersionsSelect'
+import StatusDeviceErrors from '../../components/StatusDeviceErrors'
+import DeviceInfoBar from '../../components/DeviceInfoBar'
 
-import { selectVersion } from '../../actions/connectors/detail-actions';
-import { fetchDevice, updateDeviceAction } from '../../actions/things/device-actions';
+import { selectVersion } from '../../actions/connectors/detail-actions'
+import { fetchDevice, updateDeviceAction } from '../../actions/things/device-actions'
 import {
   updateStatusDevice,
   pingStatusDevice,
   fetchStatusDevice,
-} from '../../actions/things/status-device-actions';
+} from '../../actions/things/status-device-actions'
 
-import { getSchema } from '../../services/schema-service';
+import { getSchema } from '../../services/schema-service'
 import { needsUpdate } from '../../helpers/actions'
 
 class Configure extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       changeVersion: false,
       showErrors: false,
-    };
-    this.handleConfig  = this.handleConfig.bind(this);
-    this.changeState  = this.changeState.bind(this);
-    this.updateVersion = this.updateVersion.bind(this);
-    this.changeVersion = this.changeVersion.bind(this);
-    this.versionSelect  = this.versionSelect.bind(this);
-    this.showErrors = this.showErrors.bind(this);
-    this.clearErrors = this.clearErrors.bind(this);
-    this.shouldUpdateDevices = this.shouldUpdateDevices.bind(this);
+    }
+    this.handleConfig  = this.handleConfig.bind(this)
+    this.changeState  = this.changeState.bind(this)
+    this.updateVersion = this.updateVersion.bind(this)
+    this.changeVersion = this.changeVersion.bind(this)
+    this.versionSelect  = this.versionSelect.bind(this)
+    this.showErrors = this.showErrors.bind(this)
+    this.clearErrors = this.clearErrors.bind(this)
+    this.shouldUpdateDevices = this.shouldUpdateDevices.bind(this)
   }
 
   componentDidMount() {
@@ -66,7 +66,7 @@ class Configure extends Component {
   }
 
   shouldUpdateDevices() {
-    const { device, statusDevice, details } = this.props;
+    const { device, statusDevice, details } = this.props
     if (!device.item) return
 
     if (needsUpdate(statusDevice, 10)) {
@@ -104,8 +104,8 @@ class Configure extends Component {
 
   updateVersion({ version }) {
     const { githubSlug } = this.props.device
-    const { connectorMetadata } = this.props.device.item;
-    connectorMetadata.version = version;
+    const { connectorMetadata } = this.props.device.item
+    connectorMetadata.version = version
     getSchema({ githubSlug, version }, (error, schemas) => {
       if (error) return this.setState({ error })
       const properties = { connectorMetadata }
@@ -114,22 +114,22 @@ class Configure extends Component {
       }
       this.handleConfig({ properties })
       this.setState({ changeVersion: false })
-    });
+    })
   }
 
   changeState({ stopped }) {
-    const { connectorMetadata } = this.props.device.item;
-    connectorMetadata.stopped = stopped;
+    const { connectorMetadata } = this.props.device.item
+    connectorMetadata.stopped = stopped
     this.handleConfig({ properties: { connectorMetadata } })
   }
 
   handleConfig({ properties }) {
-    const { uuid } = this.props.params;
+    const { uuid } = this.props.params
     this.props.dispatch(updateDeviceAction({ uuid, properties }))
   }
 
   renderContent(content) {
-    const { device, statusDevice, details } = this.props;
+    const { device, statusDevice, details } = this.props
     const { type, name } = device.item
     const title = name || 'Unknown Name'
     const actions = (
@@ -149,7 +149,7 @@ class Configure extends Component {
         <DeviceInfoBar statusDevice={statusDevice.item} device={device.item} />
         {content}
       </PageLayout>
-    );
+    )
   }
 
   render() {
@@ -162,7 +162,7 @@ class Configure extends Component {
         onSelect={this.updateVersion}
         selected={selectedVersion}
         versions={info.tags}
-      />);
+      />)
     }
 
     if (!_.isEmpty(statusDevice.item.errors)) {
@@ -188,7 +188,7 @@ class Configure extends Component {
       <div>
         <DeviceSchema device={device.item} onSubmit={this.handleConfig} />
       </div>
-    );
+    )
   }
 }
 

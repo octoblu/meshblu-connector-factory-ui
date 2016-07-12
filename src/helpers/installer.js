@@ -1,12 +1,12 @@
 import _ from 'lodash'
-import { connectorDetails } from '../services/detail-service';
-const INSTALLER_BASE_URI = 'https://github.com/octoblu/electron-meshblu-connector-installer';
+import { connectorDetails } from '../services/detail-service'
+const INSTALLER_BASE_URI = 'https://github.com/octoblu/electron-meshblu-connector-installer'
 
 export function getFileExtension({ platform }) {
   if (/^darwin/.test(platform)) {
-    return 'dmg';
+    return 'dmg'
   }
-  return 'zip';
+  return 'zip'
 }
 
 export function getInstallerUri({ platform }, callback) {
@@ -26,17 +26,17 @@ export function getInstallerUri({ platform }, callback) {
       return
     }
     const tag = _.first(_.keys(info.tags))
-    callback(null, `${INSTALLER_BASE_URI}/releases/download/${tag}/${asset.name}`);
+    callback(null, `${INSTALLER_BASE_URI}/releases/download/${tag}/${asset.name}`)
   })
 }
 
 export function getDownloadUri({ uri, fileName }) {
-  const uriEncoded = encodeURIComponent(uri);
-  const fileNameEncoded = encodeURIComponent(fileName);
+  const uriEncoded = encodeURIComponent(uri)
+  const fileNameEncoded = encodeURIComponent(fileName)
   return `https://file-downloader.octoblu.com/download?fileName=${fileNameEncoded}&uri=${uriEncoded}`
 }
 
 export function getFileName({ otp, platform }) {
-  const ext = getFileExtension({ platform });
-  return `MeshbluConnectorInstaller-${otp}.${ext}`;
+  const ext = getFileExtension({ platform })
+  return `MeshbluConnectorInstaller-${otp}.${ext}`
 }

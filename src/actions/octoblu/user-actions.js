@@ -1,6 +1,6 @@
-import * as actionTypes from '../../constants/action-types';
+import * as actionTypes from '../../constants/action-types'
 import { fetchAvailableConnectors } from '../things/available-actions'
-import { fetchOctobluUser, getMeshbluConfig } from '../../helpers/authentication';
+import { fetchOctobluUser, getMeshbluConfig } from '../../helpers/authentication'
 import { setFetching } from '../page-actions'
 
 function fetchOctobluUserSuccess({ user, uuid, token }) {

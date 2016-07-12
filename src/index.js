@@ -1,14 +1,14 @@
-import React from 'react';
-import { render } from 'react-dom';
+import React from 'react'
+import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { applyMiddleware, createStore } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux'
-import { browserHistory } from 'react-router';
+import { browserHistory } from 'react-router'
 
-import AppRoutes from './routes';
-import reducers from './reducers';
+import AppRoutes from './routes'
+import reducers from './reducers'
 
 const createStoreWithMiddleware = applyMiddleware(
   thunkMiddleware,
@@ -24,4 +24,4 @@ render(
     <AppRoutes history={history} />
   </Provider>,
   document.getElementById('app')
-);
+)

@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import ZooidOctobluIntercom from 'zooid-octoblu-intercom'
@@ -24,7 +24,7 @@ class OctobluOauth extends Component {
         {children}
         <ZooidOctobluIntercom appId="ux5bbkjz" uuid={uuid} token={token} />
       </div>
-    );
+    )
   }
 }
 

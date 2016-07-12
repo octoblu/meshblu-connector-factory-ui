@@ -1,9 +1,9 @@
-import React from 'react';
+import React from 'react'
 
-import './index.css';
+import './index.css'
 
 const NotFound = () => {
-  return <h1>Not Found :(</h1>;
-};
+  return <h1>Not Found :(</h1>
+}
 
-export default NotFound;
+export default NotFound

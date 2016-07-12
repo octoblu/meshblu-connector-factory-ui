@@ -1,12 +1,12 @@
-import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
-import { Card } from 'zooid-ui';
+import React, { PropTypes } from 'react'
+import { Link } from 'react-router'
+import { Card } from 'zooid-ui'
 
 import './index.css'
 
 const propTypes = {
   uuid: PropTypes.string.isRequired,
-};
+}
 
 const ConfigureCard = ({ uuid }) => {
   return (
@@ -18,9 +18,9 @@ const ConfigureCard = ({ uuid }) => {
         </div>
       </main>
     </Card>
-  );
-};
+  )
+}
 
-ConfigureCard.propTypes = propTypes;
+ConfigureCard.propTypes = propTypes
 
-export default ConfigureCard;
+export default ConfigureCard

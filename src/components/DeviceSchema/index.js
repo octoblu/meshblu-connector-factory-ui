@@ -1,13 +1,13 @@
-import React, { PropTypes, Component } from 'react';
-import ReactDOM from 'react-dom';
-import _  from 'lodash';
+import React, { PropTypes, Component } from 'react'
+import ReactDOM from 'react-dom'
+import _  from 'lodash'
 
 import './index.css'
 
 const propTypes = {
   device: PropTypes.object,
   onSubmit: PropTypes.func.isRequired,
-};
+}
 
 const defaultProps = {}
 
@@ -16,16 +16,16 @@ import {
   FormActions,
   FormField,
   FormInput,
-} from 'zooid-ui';
+} from 'zooid-ui'
 
 import {
   DeviceConfigureSchemaContainer,
-} from 'zooid-meshblu-device-editor';
+} from 'zooid-meshblu-device-editor'
 
 class DeviceSchema extends Component {
   constructor(props) {
     super(props)
-    this.handleNameChange  = this.handleNameChange.bind(this);
+    this.handleNameChange  = this.handleNameChange.bind(this)
   }
 
   shouldComponentUpdate(nextProps) {
@@ -38,14 +38,14 @@ class DeviceSchema extends Component {
   }
 
   handleNameChange() {
-    const ref = this.refs.deviceName;
-    const deviceName = ReactDOM.findDOMNode(ref).value;
+    const ref = this.refs.deviceName
+    const deviceName = ReactDOM.findDOMNode(ref).value
     const { onSubmit } = this.props
-    onSubmit({ properties: { name: deviceName } });
+    onSubmit({ properties: { name: deviceName } })
   }
 
   render() {
-    const { device, onSubmit } = this.props;
+    const { device, onSubmit } = this.props
     if (device == null) return null
     return (
       <div className="DeviceSchema">
@@ -61,7 +61,7 @@ class DeviceSchema extends Component {
   }
 }
 
-DeviceSchema.defaultProps = defaultProps;
-DeviceSchema.propTypes = propTypes;
+DeviceSchema.defaultProps = defaultProps
+DeviceSchema.propTypes = propTypes
 
-export default DeviceSchema;
+export default DeviceSchema

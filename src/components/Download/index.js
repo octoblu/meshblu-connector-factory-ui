@@ -26,30 +26,71 @@ function matchAsset(asset, searchFor) {
   return false
 }
 
-function getIcon(asset) {
+function getOS({ asset }) {
   if (matchAsset(asset, 'darwin')) {
-    return <FaApple />
+    return 'darwin'
   }
   if (matchAsset(asset, 'windows')) {
-    return <FaWindows />
+    return 'windows'
   }
   if (matchAsset(asset, 'linux')) {
+    return 'linux'
+  }
+  return null
+}
+
+function getIcon({ asset }) {
+  const os = getOS({ asset })
+  if (os === 'darwin') {
+    return <FaApple />
+  }
+  if (os === 'windows') {
+    return <FaWindows />
+  }
+  if (os === 'linux') {
     return <FaLinux />
   }
   return null
 }
 
-function getArch(asset) {
+function getArch({ asset }) {
   if (/386/.test(asset)) {
-    return '[x86]'
+    return '386'
   }
   if (/amd64/.test(asset)) {
-    return '[x64]'
+    return 'amd64'
   }
   if (/arm/.test(asset)) {
+    return 'arm'
+  }
+  return null
+}
+
+function getDisplayArch({ asset }) {
+  const arch = getArch({ asset })
+  if (arch === '386') {
+    return '[x86]'
+  }
+  if (arch === 'amd64') {
+    return '[x64]'
+  }
+  if (arch === 'arm') {
     return '[arm]'
   }
   return null
+}
+
+
+function getPlatformFromAsset({ asset }) {
+  const arch = getArch({ asset })
+  const os = getOS({ asset })
+  if (arch == null) {
+    return null
+  }
+  if (os == null) {
+    return null
+  }
+  return `${os}-${arch}`
 }
 
 export default class Download extends Component {
@@ -69,9 +110,9 @@ export default class Download extends Component {
     const filterAssets = _.filter(assets, ({ name }) => {
       return matchAsset(name, searchFor)
     })
-    console.log({ assets, filterAssets, searchFor })
     const buttons = _.map(filterAssets, ({ name }) => {
-      return this.getButton(name)
+      const platform = getPlatformFromAsset({ asset: name })
+      return this.getButton({ asset: name, platform })
     })
     if (_.isEmpty(_.compact(buttons))) {
       return null
@@ -84,9 +125,9 @@ export default class Download extends Component {
     )
   }
 
-  getButton(asset) {
-    const Icon = getIcon(asset)
-    const arch = getArch(asset)
+  getButton({ asset, platform }) {
+    const Icon = getIcon({ asset })
+    const arch = getDisplayArch({ asset })
     if (Icon == null || arch == null) {
       return null
     }
@@ -94,14 +135,14 @@ export default class Download extends Component {
       <Button
         key={asset}
         kind="hollow-primary"
-        onClick={this.download(asset)}
+        onClick={this.download({ platform })}
       >
         <i className="Download--icon">{Icon}</i> {arch} Download
       </Button>
     )
   }
 
-  download(platform) {
+  download({ platform }) {
     const { otp } = this.props
     return () => {
       this.setState({ downloading: true })

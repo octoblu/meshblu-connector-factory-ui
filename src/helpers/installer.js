@@ -12,7 +12,7 @@ export function getFileExtension({ platform }) {
 export function getInstallerUri({ platform }, callback) {
   connectorDetails({ githubSlug: 'octoblu/electron-meshblu-connector-installer' }, (error, info) => {
     if (error) return callback(error)
-    const latest = _.first(_.values(info.tags))
+    const { latest } = info || {}
     if (!latest) {
       callback(new Error('Missing latest'))
       return
@@ -25,8 +25,8 @@ export function getInstallerUri({ platform }, callback) {
       callback(new Error('Unable to get latest installer release'))
       return
     }
-    const tag = _.first(_.keys(info.tags))
-    callback(null, `${INSTALLER_BASE_URI}/releases/download/${tag}/${asset.name}`)
+
+    callback(null, `${INSTALLER_BASE_URI}/releases/download/${latest.tag}/${asset.name}`)
   })
 }
 

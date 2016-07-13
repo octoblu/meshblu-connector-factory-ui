@@ -1,21 +1,17 @@
-import request from 'superagent'
 import async from 'async'
-
-const RAW_GITHUB_URI = 'https://raw.githubusercontent.com'
+import { connectorDetails } from './detail-service'
 
 export function getLatestGoVersion({ githubSlug }, callback) {
-  return request
-    .get(`${RAW_GITHUB_URI}/${githubSlug}/master/version.go`)
-    .end((error, response) => {
-      if (error) return callback(error)
-      if (!response.ok) return callback(new Error('Invalid Response'))
-      const rgx = new RegExp('"(.+)"')
-      const { text } = response
-      let version = text.match(rgx)[1]
-      version = version.replace('v', '')
-      version = `v${version}`
-      return callback(null, version)
-    })
+  connectorDetails({ githubSlug }, (error, info) => {
+    if (error) return callback(error)
+    const { latest } = info || {}
+    if (!latest || !latest.tag) {
+      callback(new Error('Invalid release'))
+      return
+    }
+    const tag = `v${latest.tag.replace('v', '')}`
+    callback(null, tag)
+  })
 }
 
 export function getLatestIgnitionVersion(callback) {

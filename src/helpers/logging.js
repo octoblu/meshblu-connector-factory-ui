@@ -29,10 +29,8 @@ export default class Logger {
       }
     })
 
-    logger.error = (ex, context) => {
-      Raven.captureException(ex, {
-        extra: context,
-      })
+    logger.error = function (ex, ...extra) {
+      Raven.captureException(ex, { extra })
     }
 
     return {

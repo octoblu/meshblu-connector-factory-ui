@@ -60,6 +60,7 @@ export function registerConnector({ properties }, callback) {
 }
 
 export function getDevice({ uuid }, callback) {
+  if (uuid == null) return callback(new Error('Device Not Found'))
   const meshblu = new MeshbluHttp(getMeshbluConfig())
   meshblu.device(uuid, callback)
 }
@@ -77,6 +78,9 @@ export function generateAndStoreToken({ uuid }, callback) {
 export function getDevices(callback) {
   const meshbluConfig = getMeshbluConfig()
   const meshblu = new MeshbluHttp(meshbluConfig)
+  if (meshblu.uuid == null) {
+    return callback(null, [])
+  }
   const query = {
     owner: meshbluConfig.uuid,
     connectorMetadata: { $exists: true },

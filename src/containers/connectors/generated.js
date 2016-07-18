@@ -3,10 +3,6 @@ import { connect } from 'react-redux'
 import PageLayout from '../page-layout'
 import { setBreadcrumbs } from '../../actions/page-actions'
 
-import {
-  Button,
-} from 'zooid-ui'
-
 import '../../styles/generated.css'
 import { fetchDevice } from '../../actions/things/device-actions'
 
@@ -59,14 +55,6 @@ class Create extends Component {
     const { downloaded } = this.state
     const { selectedVersion } = this.props.details
 
-    let nextStep = null
-    if (downloaded) {
-      nextStep = (
-        <div className="Generated--col">
-          <ConfigureCard uuid={uuid} />
-        </div>
-      )
-    }
     return this.renderContent(
       <div className="Generated">
         <div className="Generated--col">
@@ -79,11 +67,12 @@ class Create extends Component {
               <h3>Use the One Time Password</h3>
               <h3 className="Generated--code"><code>{key}</code></h3>
               <p>* Paste key into an existing installer *</p>
-              <Button onClick={this.onDownload} kind="no-style">Next Step</Button>
             </div>
           </div>
         </div>
-        {nextStep}
+        <div className="Generated--col">
+          <ConfigureCard uuid={uuid} downloaded={downloaded} onDownload={this.onDownload} />
+        </div>
       </div>
     )
   }

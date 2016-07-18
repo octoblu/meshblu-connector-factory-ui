@@ -18,7 +18,7 @@ export function getMeshbluConfig() {
   const bearerToken = getBearerToken()
   if (!bearerToken) {
     return {
-      host: MESHBLU_HOSTNAME,
+      hostname: MESHBLU_HOSTNAME,
       port: MESHBLU_PORT,
     }
   }

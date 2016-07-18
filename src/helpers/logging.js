@@ -25,7 +25,7 @@ export default class Logger {
         if (method === 'error') {
           return
         }
-        logger[method] = console[method].bind(console)
+        logger[method] = _.noop
       }
     })
 

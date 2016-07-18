@@ -16,7 +16,8 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        'NODE_ENV': JSON.stringify('production')
+        'NODE_ENV': JSON.stringify('production'),
+        'SENTRY_DSN': JSON.stringify('https://262ab2f8e7f04d13bc0f6e03e00d2f86@app.getsentry.com/87245')
       }
     }),
     new webpack.NoErrorsPlugin(),

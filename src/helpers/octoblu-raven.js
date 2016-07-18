@@ -1,24 +1,18 @@
 import _ from 'lodash'
+import createLogger from 'redux-logger'
 import Raven from 'raven-js'
 
-export default class Logger {
-  constructor({ dsn, log = true }) {
-    this.log = log
-    this.dsn = dsn
+export default class OctobluRaven {
+  constructor({ dsn } = {}) {
+    this.dsn = process.env.SENTRY_DSN || dsn
   }
 
-  init() {
-    if (!this.log || !this.dsn) {
-      return
+  getLogger() {
+    if (!this.dsn) {
+      return createLogger()
     }
+
     Raven.config(this.dsn).install()
-  }
-
-  getOptions() {
-    if (!this.log || !this.dsn) {
-      return
-    }
-
     const logErrorNow = function (ex, ...extra) {
       console.error('error', ex, { ...extra })
       Raven.captureException(ex, { ...extra })
@@ -31,10 +25,10 @@ export default class Logger {
       return action.error != null
     }
 
-    return {
+    return createLogger({
       level: logError,
       predicate,
       logErrors: false,
-    }
+    })
   }
 }

@@ -19,23 +19,22 @@ export default class Logger {
       return
     }
 
-    const logger = {}
-    _.each(_.keys(console), (method) => {
-      if (_.isFunction(console[method])) {
-        if (method === 'error') {
-          return
-        }
-        logger[method] = _.noop
-      }
-    })
+    const logErrorNow = function (ex, ...extra) {
+      console.error('error', ex, { ...extra })
+      Raven.captureException(ex, { ...extra })
+      return false
+    }
 
-    logger.error = function (ex, ...extra) {
-      Raven.captureException(ex, { extra })
+    const logError = _.debounce(logErrorNow, 100)
+
+    const predicate = (_, action) => {
+      return action.error != null
     }
 
     return {
-      level: 'error',
-      logger,
+      level: logError,
+      predicate,
+      logErrors: false,
     }
   }
 }

@@ -35,6 +35,7 @@ export function setFetching(fetching) {
 
 export function setError(error) {
   return (dispatch) => {
+    dispatch(resetPageStateResult())
     dispatch(setErrorResult(error))
   }
 }

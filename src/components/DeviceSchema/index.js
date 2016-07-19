@@ -46,7 +46,7 @@ class DeviceSchema extends Component {
 
   render() {
     const { device, onSubmit } = this.props
-    if (device == null) return null
+    if (_.isEmpty(_.get(device, 'schemas'))) return null
     return (
       <div className="DeviceSchema">
         <FormField label="Device Name" name="deviceName">

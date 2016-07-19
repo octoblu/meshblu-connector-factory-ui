@@ -18,14 +18,18 @@ function getVersion({ details, version }) {
 
 export function fetchConnectorDetails({ githubSlug, version, fetching = true }) {
   return (dispatch) => {
-    dispatch(setFetching(fetching))
+    if (fetching) {
+      dispatch(setFetching(true))
+    }
     connectorDetails({ githubSlug }, (error, details) => {
-      dispatch(setFetching(false))
       if (error) {
         dispatch(setError(error))
         return
       }
       dispatch(fetchConnectorDetailsSuccess({ details, version: getVersion({ details, version }) }))
+      if (fetching) {
+        dispatch(setFetching(false))
+      }
     })
   }
 }

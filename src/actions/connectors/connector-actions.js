@@ -16,13 +16,13 @@ export function upsertConnectorAction({ uuid, registryItem, version, connector, 
   return (dispatch) => {
     dispatch(setFetching(true))
     upsertConnector({ uuid, registryItem, version, connector, octoblu }, (error, response) => {
-      dispatch(setFetching(false))
       if (error) {
         dispatch(setError(error))
         return
       }
       dispatch(clearMyDevicesUpdatedAt())
       dispatch(connectorGeneratedSuccess(response))
+      dispatch(setFetching(false))
     })
   }
 }

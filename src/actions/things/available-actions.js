@@ -20,12 +20,12 @@ export function fetchAvailableConnectors({ user }) {
       uri: OCTOBLU_OFFICIAL_REGISTRY,
     }
     async.map(registries, getJSON, (error, registries) => {
-      dispatch(setFetching(false))
       if (error) {
         dispatch(setError(error))
         return
       }
       dispatch(fetchAvailableConnectorsResult(registries))
+      dispatch(setFetching(false))
     })
   }
 }

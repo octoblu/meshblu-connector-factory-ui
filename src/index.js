@@ -1,19 +1,19 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
+import createLogger from 'redux-logger'
 import { applyMiddleware, createStore } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux'
 import { browserHistory } from 'react-router'
-import OctobluRaven from './helpers/octoblu-raven'
+import { ravenMiddleware } from './helpers/octoblu-raven'
 import AppRoutes from './routes'
 import reducers from './reducers'
 
-const octobluRaven = new OctobluRaven()
-
 const createStoreWithMiddleware = applyMiddleware(
   thunkMiddleware,
-  octobluRaven.getLogger(),
+  createLogger(),
+  ravenMiddleware(),
   routerMiddleware(browserHistory)
 )
 

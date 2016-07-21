@@ -3,10 +3,11 @@ import { Route, Router, IndexRoute } from 'react-router'
 import AppLayout from './containers/app-layout'
 import Home from './containers/home'
 import Available from './containers/connectors/available'
+import Configure from './containers/connectors/configure'
 import Create from './containers/connectors/create'
+import Download from './containers/connectors/download'
 import Generate from './containers/connectors/generate'
 import Generated from './containers/connectors/generated'
-import Configure from './containers/connectors/configure'
 import Installed from './containers/connectors/installed'
 import NotFound from './components/NotFound'
 import { onEnterRedirectTo } from './helpers/actions'
@@ -26,8 +27,15 @@ export default ({ history }) => {
           <Route path="/connectors/my" component={Installed} />
           <Route path="/connectors/available" component={Available} />
           <Route path="/connectors/generate/:uuid" component={Generate} />
-          <Route path="/connectors/generated/:uuid/:key" component={Generated} />
           <Route path="/connectors/configure/:uuid" component={Configure} />
+
+          <Route path="/connectors/generated/:uuid" component={Generated}>
+            <Route path="/connectors/generated/:uuid/:key/download" component={Download} />
+            {/*
+              <Route path="/connectors/generated/:uuid/downloading/:key" component={Downloading} />
+              <Route path="/connectors/generated/:uuid/download-options/:key" component={DownloadOptions} />
+            */}
+          </Route>
         </Route>
         <Route path="/things">
           <IndexRoute component={Installed} />

@@ -197,7 +197,7 @@ export default class Download extends Component {
     if (downloadURI) {
       return this.renderContent(
         <div className="Download--Box">
-          <h3>If the download has not started, use the link below.</h3>
+          <h3>Your download will begin shortly. If it does not, use the link below.</h3>
           <a href={downloadURI}>manual download link</a>
         </div>
       )

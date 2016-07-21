@@ -32,6 +32,6 @@ export function gotToGeneratedConnector({ key, uuid }) {
     dispatch({
       type: actionTypes.CLEAR_GENERATED_CONNECTOR,
     })
-    dispatch(push(`/connectors/generated/${uuid}/${key}`))
+    dispatch(push(`/connectors/generated/${uuid}/${key}/download`))
   }
 }

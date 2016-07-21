@@ -1,60 +1,50 @@
-import _ from 'lodash'
-import createLogger from 'redux-logger'
 import Raven from 'raven-js'
 
-let userSet = false
+const SENTRY_DSN = process.env.SENTRY_DSN
+const SENTRY_RELEASE = process.env.SENTRY_RELEASE
 
-export default class OctobluRaven {
-  constructor({ dsn } = {}) {
-    this.dsn = process.env.SENTRY_DSN || dsn
+function defaultMiddleware() {
+  return () => (next) => (action) => {
+    next(action)
   }
+}
 
-  install() {
-    if (Raven.isSetup()) {
-      return
+export function ravenConfigure({ dsn = SENTRY_DSN, release = SENTRY_RELEASE } = {}) {
+  if (!Raven.isSetup()) {
+    if (!dsn) {
+      return defaultMiddleware()
     }
-    Raven.config(this.dsn).install()
+    Raven.config(dsn, { release }).install()
   }
+}
 
-  setUser({ uuid, email }) {
-    if (userSet) {
-      return
-    }
-    this.install()
-    Raven.setUserContext({ uuid, email })
-    userSet = true
-  }
+export function ravenMiddleware(options) {
+  ravenConfigure(options)
+  if (Raven.isSetup()) {
+    return store => next => action => {
+      try {
+        Raven.captureBreadcrumb({
+          data: { redux: action.type },
+        })
 
-  getLogger() {
-    if (!this.dsn) {
-      return createLogger()
-    }
-
-    this.install()
-    const logErrorNow = function (error, ...extra) {
-      if (_.isError(_.get(error, 'error'))) {
-        console.error(error.error, ...extra)
-        Raven.captureException(error.error)
-      } else if (_.isError(error)) {
-        console.error(error, ...extra)
-        Raven.captureException(error)
-      } else if (_.isString(error)) {
-        console.error(error, ...extra)
-        Raven.captureMessage(error)
+        return next(action)
+      } catch (err) {
+        console.error('[octoblu-raven] Reporting error to Sentry:', err)
+        Raven.captureException(err, {
+          extra: {
+            action,
+            state: store.getState(),
+          },
+        })
       }
-      Raven.captureException(error)
     }
+  }
+  return defaultMiddleware()
+}
 
-    const logError = _.debounce(logErrorNow, 100)
-
-    const predicate = (_, action) => {
-      return action.error != null
-    }
-
-    return createLogger({
-      level: logError,
-      predicate,
-      logErrors: false,
-    })
+export function ravenSetUserContext({ uuid, email }, options) {
+  ravenConfigure(options)
+  if (Raven.isSetup()) {
+    Raven.setUserContext({ uuid, email })
   }
 }

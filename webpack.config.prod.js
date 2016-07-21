@@ -1,6 +1,7 @@
 var path         = require('path');
 var webpack      = require('webpack');
 var autoprefixer = require('autoprefixer');
+var version      = require('./package.json').version;
 
 module.exports = {
   devtool: 'cheap-module-source-map',
@@ -17,7 +18,8 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('production'),
-        'SENTRY_DSN': JSON.stringify('https://262ab2f8e7f04d13bc0f6e03e00d2f86@app.getsentry.com/87245')
+        'SENTRY_DSN': JSON.stringify('https://262ab2f8e7f04d13bc0f6e03e00d2f86@app.getsentry.com/87245'),
+        'SENTRY_RELEASE': JSON.stringify(version)
       }
     }),
     new webpack.NoErrorsPlugin(),

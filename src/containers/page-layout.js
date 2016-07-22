@@ -3,9 +3,9 @@ import React, { PropTypes, Component } from 'react'
 import OctobluOauth from './octoblu-oauth'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
+import ErrorState from 'zooid-error-state'
 import {
   Spinner,
-  ErrorState,
   Breadcrumb,
   TopBar,
   Page,

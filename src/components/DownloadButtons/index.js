@@ -1,27 +1,18 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
-import Button from 'zooid-button'
-import Spinner from 'zooid-spinner'
+
+import DownloadButton from '../DownloadButton'
 
 import styles from './styles.css'
-
 
 const propTypes = {}
 const defaultProps = {}
 
-const DownloadButtons = ({fetchDownloadURL, fetching, downloadURL}) => {
-  fetchDownloadURL({fetching, downloadURL})
-
-  if (fetching) {
-    return <Spinner className={styles.spinner} />
-  }
-
+const DownloadButtons = ({downloadURL, error, fetchDownloadURL, fetching, otp, os, arch}) => {
   return (
     <div className={styles.wrapper}>
-      <Button href={downloadURL} className={styles.DownloadButton} kind="primary">Download OSX Connector Installer</Button>
+      <DownloadButton downloadURL={downloadURL} error={error} fetchDownloadURL={fetchDownloadURL} fetching={fetching} otp={otp} os={os} arch={arch} />
       <Link to="">Other Install Options</Link>
-
-      <pre>{downloadURL}</pre>
     </div>
   )
 }

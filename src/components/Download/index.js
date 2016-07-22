@@ -1,9 +1,9 @@
 import _ from 'lodash'
 import React, { Component, PropTypes } from 'react'
 
+import ErrorState from 'zooid-error-state'
 import {
   Spinner,
-  ErrorState,
   Button,
 } from 'zooid-ui'
 

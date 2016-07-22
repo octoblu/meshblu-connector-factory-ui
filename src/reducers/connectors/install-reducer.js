@@ -2,19 +2,22 @@ import UserAgentParser from 'ua-parser-js'
 import * as actionTypes from '../../constants/action-types'
 
 const initialState = {
-  downloadURL: null,
   error: null,
   fetching: false,
+
+  downloadURL: null,
+  os: null,
+  arch: null,
 }
 
 export default function types(state = initialState, action) {
   switch (action.type) {
     case actionTypes.FETCH_DOWNLOAD_URL_FAILURE:
-      return { fetching: false, downloadURL: null, error: action.error }
+      return { ...initialState, error: action.error }
     case actionTypes.FETCH_DOWNLOAD_URL_FETCHING:
-      return { fetching: true,  downloadURL: null, error: null }
+      return { ...initialState, fetching: true }
     case actionTypes.FETCH_DOWNLOAD_URL_SUCCESS:
-      return { fetching: false, downloadURL: downloadURLFromDetails(action.details), error: null }
+      return fetchDownloadURLSuccess(state, action)
 
     default:
       return state
@@ -23,35 +26,56 @@ export default function types(state = initialState, action) {
 
 
 
-
-
 const ARCH_MAP = {
   'ia32': '386',
+  'ia 32': '386',
   'amd64': 'amd64',
+  'amd 64': 'amd64',
 }
 
-const GITHUB_RELEASE_PREFIX="https://github.com/octoblu/electron-meshblu-connector-installer/releases/download"
+const RELEASE_PREFIX="https://file-downloader.octoblu.com/github-release/octoblu/electron-meshblu-connector-installer/latest"
 
-function downloadURLFromDetails(details) {
-  console.log('details', details)
-  const linkSuffix = getURLSuffix()
+function fetchDownloadURLSuccess(state, action) {
+  const {os, arch, extension}  = getOsArchAndExtension()
+  const downloadURL = downloadURLFromDetails(action.details, {os, arch, extension, otp: action.otp})
+
+  if (_.isNull(downloadURL)) return { ...initialState, error: noInstallerAvailableError({os, arch}) }
+
+  return { ...initialState, os, arch, downloadURL }
+}
+
+function downloadURLFromDetails(details, {os, arch, extension, otp}) {
+  const urlSuffix = getURLSuffix({os, arch, extension})
+  const filename  = getFilename({os, arch, extension, otp})
   const tag    = _.get(details, 'latest.tag')
   const assets = _.get(details, 'latest.assets')
-  const asset = _.find(assets, (asset) => _.endsWith(asset.name, linkSuffix))
+  const asset = _.find(assets, (asset) => _.endsWith(asset.name, urlSuffix))
 
-  if (!asset) {
-    return `OS NOT SUPPORTED, linkSuffix: ${linkSuffix}`
-  }
-
-  return `${GITHUB_RELEASE_PREFIX}/${tag}/${asset.name}`
+  if (!asset) return null
+  return `${RELEASE_PREFIX}/MeshbluConnectorInstaller-${urlSuffix}?fileName=${filename}`
 }
 
-function getURLSuffix() {
+function getFilename({os, extension, otp}) {
+  return `MeshbluConnectorInstaller-${otp}.${extension}`
+}
+
+function getOsArchAndExtension(){
   const parser = new UserAgentParser()
   const os = _.lowerCase(parser.getOS().name)
+  const architecture = _.lowerCase(parser.getCPU().architecture)
 
-  if (os === "mac os") return 'darwin-amd64.dmg'
+  if (os === "mac os") return {os: 'darwin', arch: 'amd64', extension: 'dmg'}
+  if (os === "linux" && _.includes(parser.getUA(), 'armv7l')) return {os: 'linux', arch: 'arm', extension: 'zip'}
 
-  const arch = _.get(ARCH_MAP, parser.getCPU().architecture)
-  return `${os}-${arch}.zip`
+  const arch = _.get(ARCH_MAP, architecture, architecture)
+  return {os, arch, extension: 'zip'}
+}
+
+function getURLSuffix({os, arch, extension}) {
+  return `${os}-${arch}.${extension}`
+}
+
+function noInstallerAvailableError({os, arch}) {
+  if (!os || !arch) return new Error(`Failed to detect operating system/architecture. Please choose an installer manually from the Other Install Options.`)
+  return new Error(`No GUI Installer Available for ${os}-${arch}. Please choose an installer manually from the Other Install Options.`)
 }

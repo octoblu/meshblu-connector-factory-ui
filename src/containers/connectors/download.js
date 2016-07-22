@@ -1,18 +1,24 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import _ from 'lodash'
 
 import fetchDownloadURL from '../../actions/connectors/fetchDownloadURL'
 import DownloadButtons from '../../components/DownloadButtons'
 
 function mapStateToProps({install}) {
-  const {downloadURL, fetching} = install
-  return {downloadURL, fetching}
+  const {downloadURL, error, fetching, os, arch} = install
+  return {downloadURL, error, fetching, os, arch}
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchDownloadURL: ({fetching, downloadURL}) => dispatch(fetchDownloadURL({fetching, downloadURL}))
+    fetchDownloadURL: ({downloadURL, error, fetching, otp}) => dispatch(fetchDownloadURL({downloadURL, error, fetching, otp}))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DownloadButtons)
+function mergeProps(stateProps, dispatchProps, ownProps) {
+  const {otp} = ownProps.params
+  return {...ownProps, ...dispatchProps, ...stateProps, otp}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(DownloadButtons)

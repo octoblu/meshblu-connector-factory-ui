@@ -8,20 +8,15 @@ import styles from './styles.css'
 const propTypes = {}
 const defaultProps = {}
 
-const DownloadButtons = ({fetchDownloadLink, downloadLink, os, arch}) => {
-  fetchDownloadLink()
+const DownloadButtons = ({fetchDownloadURL, downloadURL}) => {
+  fetchDownloadURL()
 
   return (
     <div className={styles.wrapper}>
-      <Button className={styles.DownloadButton} kind="primary">Download OSX Connector Installer</Button>
+      <Button href={downloadURL} className={styles.DownloadButton} kind="primary">Download OSX Connector Installer</Button>
       <Link to="">Other Install Options</Link>
 
-      <dl>
-        <dt>OS</dt>
-        <dd>{os}</dd>
-        <dt>Arch</dt>
-        <dd>{arch}</dd>
-      </dl>
+      <pre>{downloadURL}</pre>
     </div>
   )
 }

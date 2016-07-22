@@ -1,18 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import fetchDownloadLink from '../../actions/connectors/fetchDownloadLink'
+import fetchDownloadURL from '../../actions/connectors/fetchDownloadURL'
 import DownloadButtons from '../../components/DownloadButtons'
 
 function mapStateToProps({install}) {
-  const {downloadLink, os, arch} = install
-  console.log('state', {os, arch})
-  return {downloadLink, os, arch}
+  return {downloadURL: install.downloadURL}
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchDownloadLink: () => dispatch(fetchDownloadLink())
+    fetchDownloadURL: () => dispatch(fetchDownloadURL())
   }
 }
 

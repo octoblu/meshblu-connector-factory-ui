@@ -1,34 +1,49 @@
 import UserAgentParser from 'ua-parser-js'
-import {FETCH_DOWNLOAD_LINK_SUCCESS} from '../../constants/action-types'
+import {FETCH_DOWNLOAD_URL_SUCCESS} from '../../constants/action-types'
 
 const initialState = {
-  downloadLink: null,
-  os: null,
-  arch: null,
+  downloadURL: null,
 }
+
+const ARCH_MAP = {
+  'ia32': '386',
+  'amd64': 'amd64',
+}
+
+const GITHUB_RELEASE_PREFIX="https://github.com/octoblu/electron-meshblu-connector-installer/releases/download"
+
 
 export default function types(state = initialState, action) {
   switch (action.type) {
-    case FETCH_DOWNLOAD_LINK_SUCCESS:
+    case FETCH_DOWNLOAD_URL_SUCCESS:
     console.log('action', action)
-      return { ...state, downloadLink: downloadLinkFromDetails(action.details),  ...getOSandArch()}
+      return { ...state, downloadURL: downloadURLFromDetails(action.details)}
 
     default:
       return state
   }
 }
 
-function downloadLinkFromDetails(details) {
-  const {os,arch} = getOSandArch()
+function downloadURLFromDetails(details) {
+  console.log('details', details)
+  const linkSuffix = getURLSuffix()
+  const tag    = _.get(details, 'latest.tag')
+  const assets = _.get(details, 'latest.assets')
+  const asset = _.find(assets, (asset) => _.endsWith(asset.name, linkSuffix))
 
-  console.log('downloadLinkFromDetails', {os, arch})
-  return _.get(details, 'latest.assets[0].name')
+  if (!asset) {
+    return `OS NOT SUPPORTED, linkSuffix: ${linkSuffix}`
+  }
+
+  return `${GITHUB_RELEASE_PREFIX}/${tag}/${asset.name}`
 }
 
-function getOSandArch() {
+function getURLSuffix() {
   const parser = new UserAgentParser()
-  const os = parser.getOS().name
+  const os = _.lowerCase(parser.getOS().name)
 
-  if (os === "Mac OS") return {os: 'darwin', arch: 'amd64'}
-  return {os: os, arch: parser.getCPU().architecture}
+  if (os === "mac os") return 'darwin-amd64.dmg'
+
+  const arch = _.get(ARCH_MAP, parser.getCPU().architecture)
+  return `${os}-${arch}.zip`
 }

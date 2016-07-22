@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import Button from 'zooid-button'
+import Spinner from 'zooid-spinner'
 
 import styles from './styles.css'
 
@@ -8,8 +9,12 @@ import styles from './styles.css'
 const propTypes = {}
 const defaultProps = {}
 
-const DownloadButtons = ({fetchDownloadURL, downloadURL}) => {
-  fetchDownloadURL()
+const DownloadButtons = ({fetchDownloadURL, fetching, downloadURL}) => {
+  fetchDownloadURL({fetching, downloadURL})
+
+  if (fetching) {
+    return <Spinner className={styles.spinner} />
+  }
 
   return (
     <div className={styles.wrapper}>

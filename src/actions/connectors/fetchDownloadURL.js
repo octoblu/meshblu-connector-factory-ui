@@ -1,9 +1,14 @@
 import _ from 'lodash'
-import { FETCH_DOWNLOAD_URL_SUCCESS, FETCH_DOWNLOAD_URL_FAILURE } from '../../constants/action-types'
+import * as actionTypes from '../../constants/action-types'
 import { connectorDetails } from '../../services/detail-service'
 
-export default function fetchElectronDownloadURL(){
+export default function fetchElectronDownloadURL({fetching, downloadURL}){
   return (dispatch) => {
+    if (fetching) return
+    if (!_.isEmpty(downloadURL)) return
+    
+    dispatch(fetchDownloadURLFetching())
+
     connectorDetails({ githubSlug: 'octoblu/electron-meshblu-connector-installer' }, (error, details) => {
       if (error) {
         dispatch(fetchDownloadURLFailure({error}))
@@ -14,15 +19,21 @@ export default function fetchElectronDownloadURL(){
   }
 }
 
+function fetchDownloadURLFetching() {
+  return {
+    type: actionTypes.FETCH_DOWNLOAD_URL_FETCHING,
+  }
+}
+
 function fetchDownloadURLFailure() {
   return {
-    type: FETCH_DOWNLOAD_URL_FAILURE,
+    type: actionTypes.FETCH_DOWNLOAD_URL_FAILURE,
   }
 }
 
 function fetchDownloadURLSuccess({ details }) {
   return {
-    type: FETCH_DOWNLOAD_URL_SUCCESS,
+    type: actionTypes.FETCH_DOWNLOAD_URL_SUCCESS,
     details: details,
   }
 }

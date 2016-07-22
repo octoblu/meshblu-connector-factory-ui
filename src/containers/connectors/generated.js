@@ -8,10 +8,6 @@ import PageLayout from '../page-layout'
 
 class Generated extends Component {
   componentWillMount() {
-    const {uuid} = this.props.params
-
-    this.props.dispatch(fetchDevice({uuid}))
-
     this.props.dispatch(setBreadcrumbs([
       {
         label: 'Connectors',

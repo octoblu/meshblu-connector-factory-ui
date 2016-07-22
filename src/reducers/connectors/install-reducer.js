@@ -1,9 +1,29 @@
 import UserAgentParser from 'ua-parser-js'
-import {FETCH_DOWNLOAD_URL_SUCCESS} from '../../constants/action-types'
+import * as actionTypes from '../../constants/action-types'
 
 const initialState = {
   downloadURL: null,
+  error: null,
+  fetching: false,
 }
+
+export default function types(state = initialState, action) {
+  switch (action.type) {
+    case actionTypes.FETCH_DOWNLOAD_URL_FAILURE:
+      return { fetching: false, downloadURL: null, error: action.error }
+    case actionTypes.FETCH_DOWNLOAD_URL_FETCHING:
+      return { fetching: true,  downloadURL: null, error: null }
+    case actionTypes.FETCH_DOWNLOAD_URL_SUCCESS:
+      return { fetching: false, downloadURL: downloadURLFromDetails(action.details), error: null }
+
+    default:
+      return state
+  }
+}
+
+
+
+
 
 const ARCH_MAP = {
   'ia32': '386',
@@ -11,18 +31,6 @@ const ARCH_MAP = {
 }
 
 const GITHUB_RELEASE_PREFIX="https://github.com/octoblu/electron-meshblu-connector-installer/releases/download"
-
-
-export default function types(state = initialState, action) {
-  switch (action.type) {
-    case FETCH_DOWNLOAD_URL_SUCCESS:
-    console.log('action', action)
-      return { ...state, downloadURL: downloadURLFromDetails(action.details)}
-
-    default:
-      return state
-  }
-}
 
 function downloadURLFromDetails(details) {
   console.log('details', details)

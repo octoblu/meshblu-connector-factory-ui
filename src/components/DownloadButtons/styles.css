@@ -12,3 +12,8 @@
 :local .DownloadButton {
   font-size: 2em;
 }
+
+:local .spinner {
+  font-size: 5em;
+  width: 100%;
+}

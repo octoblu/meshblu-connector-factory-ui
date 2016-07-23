@@ -8,11 +8,11 @@ import styles from './styles.css'
 const propTypes = {}
 const defaultProps = {}
 
-const DownloadButtons = ({downloadURL, error, fetchDownloadURL, fetching, otp, os, arch}) => {
+const DownloadButtons = ({downloadURL, error, fetchDownloadURL, fetching, uuid, otp, os, arch}) => {
   return (
     <div className={styles.wrapper}>
       <DownloadButton downloadURL={downloadURL} error={error} fetchDownloadURL={fetchDownloadURL} fetching={fetching} otp={otp} os={os} arch={arch} />
-      <Link to="">Other Install Options</Link>
+      <Link to={`/connectors/generated/${uuid}/${otp}/download-options`}>Other Install Options</Link>
     </div>
   )
 }

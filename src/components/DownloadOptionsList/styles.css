@@ -1,0 +1,22 @@
+:local .wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+:local .wrapper > * {
+  margin: 0.5em 0;
+}
+
+:local .wrapper section {
+  text-align: center;
+}
+
+:local .wrapper section h2,
+:local .wrapper section h3 {
+  margin: 0.5em 0;
+}
+
+:local .wrapper section p {
+  width: 800px;
+}

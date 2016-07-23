@@ -12,11 +12,23 @@
   text-align: center;
 }
 
-:local .wrapper section h2,
-:local .wrapper section h3 {
+:local .wrapper section h2 {
   margin: 0.5em 0;
+}
+
+:local .wrapper section h3 {
+  margin: 1em 0 0.5em;
 }
 
 :local .wrapper section p {
   width: 800px;
 }
+
+/*:local .wrapper ul {
+  display: flex;
+  justify-content: center;
+}
+
+:local .wrapper ul li {
+  margin: 0 0.5em;
+}*/

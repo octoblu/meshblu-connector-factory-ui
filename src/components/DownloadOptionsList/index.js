@@ -4,14 +4,10 @@ import OsArchButton from '../OsArchButton'
 
 import styles from './styles.css'
 
-const propTypes = {}
-const defaultProps = {}
-
 const GUI_RELEASE_PREFIX="https://file-downloader.octoblu.com/github-release/octoblu/electron-meshblu-connector-installer/latest/MeshbluConnectorInstaller"
 const CLI_RELEASE_PREFIX="https://file-downloader.octoblu.com/github-release/octoblu/go-meshblu-connector-installer/latest/meshblu-connector-installer"
 
 const DownloadList = ({otp, onItemClick}) => {
-  // <li><OsArchButton /></li>
   return (
     <div className={styles.wrapper}>
       <p>Install your connector using one of the following, then click next</p>
@@ -21,17 +17,17 @@ const DownloadList = ({otp, onItemClick}) => {
         <p>The graphical will walk you through the installation process. If in doubt, choose this option.</p>
         <h3>macOS</h3>
         <ul>
-          <li><a href={`${GUI_RELEASE_PREFIX}-darwin-amd64.dmg?fileName=MeshbluConnectorInstaller-${otp}.dmg`}>x64</a></li>
+          <li><OsArchButton os={'darwin'} arch={'amd64'} href={`${GUI_RELEASE_PREFIX}-darwin-amd64.dmg?fileName=MeshbluConnectorInstaller-${otp}.dmg`}/></li>
         </ul>
         <h3>Windows</h3>
         <ul>
-          <li><a href={`${GUI_RELEASE_PREFIX}-windows-amd64.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`}>x64</a></li>
-          <li><a href={`${GUI_RELEASE_PREFIX}-windows-386.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`}>x86</a></li>
+          <li><OsArchButton os={'windows'} arch={'amd64'} href={`${GUI_RELEASE_PREFIX}-windows-amd64.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`}/></li>
+          <li><OsArchButton os={'windows'} arch={'386'} href={`${GUI_RELEASE_PREFIX}-windows-386.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`}/></li>
         </ul>
         <h3>Linux</h3>
         <ul>
-          <li><a href={`${GUI_RELEASE_PREFIX}-linux-amd64.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`}>x64</a></li>
-          <li><a href={`${GUI_RELEASE_PREFIX}-linux-386.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`}>x86</a></li>
+          <li><OsArchButton os={'linux'} arch={'amd64'} href={`${GUI_RELEASE_PREFIX}-linux-amd64.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`}/></li>
+          <li><OsArchButton os={'linux'} arch={'386'} href={`${GUI_RELEASE_PREFIX}-linux-386.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`}/></li>
         </ul>
       </section>
 
@@ -44,25 +40,22 @@ const DownloadList = ({otp, onItemClick}) => {
 
         <h3>macOS</h3>
         <ul>
-          <li><a href={`${CLI_RELEASE_PREFIX}-darwin-amd64?fileName=meshblu-connector-installer-${otp}`}>x64</a></li>
+          <li><OsArchButton os={'darwin'} arch={'amd64'} href={`${CLI_RELEASE_PREFIX}-darwin-amd64?fileName=meshblu-connector-installer-${otp}`}/></li>
         </ul>
         <h3>Windows</h3>
         <ul>
-          <li><a href={`${CLI_RELEASE_PREFIX}-windows-amd64?fileName=meshblu-connector-installer-${otp}`}>x64</a></li>
-          <li><a href={`${CLI_RELEASE_PREFIX}-windows-386?fileName=meshblu-connector-installer-${otp}`}>x86</a></li>
+          <li><OsArchButton os={'windows'} arch={'386'} href={`${CLI_RELEASE_PREFIX}-windows-386?fileName=meshblu-connector-installer-${otp}`}/></li>
+          <li><OsArchButton os={'windows'} arch={'amd64'} href={`${CLI_RELEASE_PREFIX}-windows-amd64?fileName=meshblu-connector-installer-${otp}`}/></li>
         </ul>
         <h3>Linux</h3>
         <ul>
-          <li><a href={`${CLI_RELEASE_PREFIX}-linux-amd64?fileName=meshblu-connector-installer-${otp}`}>x64</a></li>
-          <li><a href={`${CLI_RELEASE_PREFIX}-linux-386?fileName=meshblu-connector-installer-${otp}`}>x86</a></li>
-          <li><a href={`${CLI_RELEASE_PREFIX}-linux-arm?fileName=meshblu-connector-installer-${otp}`}>ARM</a></li>
+          <li><OsArchButton os={'linux'} arch={'386'} href={`${CLI_RELEASE_PREFIX}-linux-386?fileName=meshblu-connector-installer-${otp}`}/></li>
+          <li><OsArchButton os={'linux'} arch={'amd64'} href={`${CLI_RELEASE_PREFIX}-linux-amd64?fileName=meshblu-connector-installer-${otp}`}/></li>
+          <li><OsArchButton os={'linux'} arch={'arm'} href={`${CLI_RELEASE_PREFIX}-linux-arm?fileName=meshblu-connector-installer-${otp}`}/></li>
         </ul>
       </section>
     </div>
   )
 }
-
-DownloadList.propTypes    = propTypes
-DownloadList.defaultProps = defaultProps
 
 export default DownloadList

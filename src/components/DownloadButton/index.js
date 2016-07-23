@@ -5,8 +5,15 @@ import Button from 'zooid-button'
 import Spinner from 'zooid-spinner'
 import ErrorState from 'zooid-error-state'
 
-const propTypes = {}
-const defaultProps = {}
+const propTypes = {
+  downloadURL:      PropTypes.string,
+  fetchDownloadURL: PropTypes.func.isRequired,
+  fetching:         PropTypes.bool,
+  uuid:             PropTypes.string,
+  otp:              PropTypes.string,
+  os:               PropTypes.string,
+  arch:             PropTypes.string,
+}
 
 const OS_MAP   = {'darwin': 'macOS', 'linux': 'Linux', 'windows': 'Windows'}
 const ARCH_MAP = {'amd64': 'x64', '386': 'x86', 'arm': 'ARM'}
@@ -39,6 +46,5 @@ const DownloadButton = ({downloadURL, error, fetchDownloadURL, fetching, otp, os
 }
 
 DownloadButton.propTypes    = propTypes
-DownloadButton.defaultProps = defaultProps
 
 export default DownloadButton

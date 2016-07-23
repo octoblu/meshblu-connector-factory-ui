@@ -5,8 +5,15 @@ import DownloadButton from '../DownloadButton'
 
 import styles from './styles.css'
 
-const propTypes = {}
-const defaultProps = {}
+const propTypes = {
+  downloadURL:      PropTypes.string,
+  fetchDownloadURL: PropTypes.func.isRequired,
+  fetching:         PropTypes.bool,
+  uuid:             PropTypes.string,
+  otp:              PropTypes.string,
+  os:               PropTypes.string,
+  arch:             PropTypes.string,
+}
 
 const DownloadButtons = ({downloadURL, error, fetchDownloadURL, fetching, uuid, otp, os, arch}) => {
   return (
@@ -18,6 +25,5 @@ const DownloadButtons = ({downloadURL, error, fetchDownloadURL, fetching, uuid, 
 }
 
 DownloadButtons.propTypes    = propTypes
-DownloadButtons.defaultProps = defaultProps
 
 export default DownloadButtons

@@ -1,6 +1,6 @@
 {
   "name": "meshblu-connector-factory",
-  "version": "8.3.10",
+  "version": "8.3.11",
   "description": "meshblu-connector-factory",
   "main": "index.js",
   "scripts": {
@@ -55,7 +55,7 @@
     "redux-raven-middleware": "^0.3.0",
     "redux-thunk": "^2.1.0",
     "superagent": "^2.1.0",
-    "zooid-meshblu-device-editor": "^9.0.0",
+    "zooid-meshblu-device-editor": "^9.1.4",
     "zooid-octoblu-intercom": "^1.0.1",
     "zooid-ui": "^6.0.0",
     "zooid-ui-toast": "^1.1.1"

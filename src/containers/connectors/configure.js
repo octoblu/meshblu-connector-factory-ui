@@ -58,6 +58,7 @@ class Configure extends Component {
     ]))
     const { uuid } = this.props.params
     this.props.dispatch(fetchDevice({ uuid }))
+    this.shouldUpdateDevices()
     this.updateInterval = setInterval(this.shouldUpdateDevices, 1000)
   }
 
@@ -67,7 +68,7 @@ class Configure extends Component {
 
   shouldUpdateDevices() {
     const { device, statusDevice, details } = this.props
-    if (!device.item) return
+    if (!device.item.uuid) return
 
     if (needsUpdate(statusDevice, 10)) {
       this.props.dispatch(fetchStatusDevice({ device: device.item, fetching: false }))

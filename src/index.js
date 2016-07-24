@@ -10,12 +10,15 @@ import { ravenMiddleware } from './helpers/octoblu-raven'
 import AppRoutes from './routes'
 import reducers from './reducers'
 
-const createStoreWithMiddleware = applyMiddleware(
-  thunkMiddleware,
-  createLogger(),
-  ravenMiddleware(),
-  routerMiddleware(browserHistory)
-)
+const middleware = []
+middleware.push(thunkMiddleware)
+if (process.env.NODE_ENV !== 'production') {
+  middleware.push(createLogger())
+} else {
+  middleware.push(ravenMiddleware())
+}
+middleware.push(routerMiddleware(browserHistory))
+const createStoreWithMiddleware = applyMiddleware(...middleware)
 
 const store = createStore(reducers, createStoreWithMiddleware)
 const history = syncHistoryWithStore(browserHistory, store)

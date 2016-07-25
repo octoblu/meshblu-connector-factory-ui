@@ -16,6 +16,7 @@ const InstalledDevices = ({ devices, type, className }) => {
   if (type && type === 'short') {
     devicesList = _.slice(devices, 0, 6)
   }
+
   let items = _.map(devicesList, (device) => {
     const { name, uuid } = device
     let type = device.type || 'device:other'

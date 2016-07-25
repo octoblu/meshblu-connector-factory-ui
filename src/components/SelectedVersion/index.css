@@ -31,10 +31,10 @@
   flex: 1;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
 }
 
 .SelectedVersion-body {
-  margin: auto;
   text-align: center;
 }
 

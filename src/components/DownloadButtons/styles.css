@@ -8,3 +8,7 @@
 :local .wrapper > * {
   margin: 0.5em 0;
 }
+
+:local .skip {
+  margin-top: 5em;
+}

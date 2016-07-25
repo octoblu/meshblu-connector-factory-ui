@@ -19,8 +19,8 @@ const DownloadList = ({otp, uuid, onItemClick}) => {
 
       <Tabs selectedIndex={0}>
         <TabList>
-          <Tab>Graphical</Tab>
-          <Tab>Command Line</Tab>
+          <Tab>Graphical Installer</Tab>
+          <Tab>Command Line Installer</Tab>
         </TabList>
         <TabPanel>
           <section>

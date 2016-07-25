@@ -6,6 +6,7 @@ import Available from './containers/connectors/available'
 import Configure from './containers/connectors/configure'
 import Create from './containers/connectors/create'
 import Download from './containers/connectors/download'
+import Downloading from './containers/connectors/downloading'
 import DownloadOptions from './containers/connectors/downloadOptions'
 import Generate from './containers/connectors/generate'
 import Generated from './containers/connectors/generated'
@@ -32,6 +33,7 @@ export default ({ history }) => {
 
           <Route path="/connectors/generated/:uuid" component={Generated}>
             <Route path="/connectors/generated/:uuid/:otp/download" component={Download} />
+            <Route path="/connectors/generated/:uuid/:otp/downloading" component={Downloading} />
             <Route path="/connectors/generated/:uuid/:otp/download-options" component={DownloadOptions} />
             {/*
             // <Route path="/connectors/generated/:uuid/:otp/downloading" component={Downloading} />

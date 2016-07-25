@@ -9,8 +9,9 @@ const propTypes = {
   downloadURL:      PropTypes.string,
   fetchDownloadURL: PropTypes.func.isRequired,
   fetching:         PropTypes.bool,
-  uuid:             PropTypes.string,
-  otp:              PropTypes.string,
+  onClickDownload:  PropTypes.func.isRequired,
+  uuid:             PropTypes.string.isRequired,
+  otp:              PropTypes.string.isRequired,
   os:               PropTypes.string,
   arch:             PropTypes.string,
 }
@@ -18,7 +19,8 @@ const propTypes = {
 const OS_MAP   = {'darwin': 'macOS', 'linux': 'Linux', 'windows': 'Windows'}
 const ARCH_MAP = {'amd64': 'x64', '386': 'x86', 'arm': 'ARM'}
 
-const DownloadButton = ({downloadURL, error, fetchDownloadURL, fetching, otp, os, arch}) => {
+const DownloadButton = ({downloadURL, error, fetchDownloadURL, fetching, onClickDownload, otp, uuid, os, arch}) => {
+  const onClick = (event) => onClickDownload({otp, uuid})
   const fancyOS = _.get(OS_MAP, os, os)
   const fancyArch = _.get(ARCH_MAP, arch, arch)
 
@@ -37,11 +39,12 @@ const DownloadButton = ({downloadURL, error, fetchDownloadURL, fetching, otp, os
     )
   }
 
-
   return (
-    <Button href={downloadURL} className={styles.DownloadButton} kind="primary">
-      Download for {fancyOS} {fancyArch}
-    </Button>
+    <div>
+      <Button href={downloadURL} onClick={onClick} className={styles.DownloadButton} kind="primary">
+        Download for {fancyOS} {fancyArch}
+      </Button>
+    </div>
   )
 }
 

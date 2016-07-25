@@ -1,0 +1,14 @@
+:local .wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+:local .explanation {
+  width: 800px;
+  text-align: center;
+}
+
+:local .next {
+  margin-top: 2em;
+}

@@ -20,6 +20,7 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchDownloadURL: ({downloadURL, error, fetching, otp}) => dispatch(fetchDownloadURL({downloadURL, error, fetching, otp})),
     onClickDownload:  ({uuid, otp}) => onClickDownload(dispatch, {uuid, otp}),
+    onClickSkip:  ({uuid}) => dispatch(push(`/connectors/configure/${uuid}`)),
   }
 }
 

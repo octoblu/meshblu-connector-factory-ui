@@ -11,13 +11,19 @@ const propTypes = {
   fetchDownloadURL: PropTypes.func.isRequired,
   fetching:         PropTypes.bool,
   onClickDownload:  PropTypes.func.isRequired,
+  onClickSkip:      PropTypes.func.isRequired,
   uuid:             PropTypes.string.isRequired,
   otp:              PropTypes.string.isRequired,
   os:               PropTypes.string,
   arch:             PropTypes.string,
 }
 
-const DownloadButtons = ({downloadURL, error, fetchDownloadURL, fetching, onClickDownload, otp, uuid, os, arch}) => {
+const DownloadButtons = ({downloadURL, error, fetchDownloadURL, fetching, onClickDownload, onClickSkip, otp, uuid, os, arch}) => {
+  const onClick = (event) => {
+    event.preventDefault()
+    onClickSkip({uuid})
+  }
+
   return (
     <div className={styles.wrapper}>
       <DownloadButton
@@ -32,7 +38,7 @@ const DownloadButtons = ({downloadURL, error, fetchDownloadURL, fetching, onClic
         arch={arch} />
       <Link to={`/connectors/generated/${uuid}/${otp}/download-options`}>Other Install Options</Link>
 
-      <Button kind="hollow-neutral" href={`/connectors/configure/${uuid}`} className={styles.skip}>Skip to Configure</Button>
+      <Button kind="hollow-neutral" href={`/connectors/configure/${uuid}`} onClick={onClick} className={styles.skip}>Skip to Configure</Button>
     </div>
   )
 }

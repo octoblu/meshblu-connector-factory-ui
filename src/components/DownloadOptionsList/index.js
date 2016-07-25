@@ -13,7 +13,18 @@ import styles from './styles.css'
 const GUI_RELEASE_PREFIX="https://file-downloader.octoblu.com/github-release/octoblu/electron-meshblu-connector-installer/latest/MeshbluConnectorInstaller"
 const CLI_RELEASE_PREFIX="https://file-downloader.octoblu.com/github-release/octoblu/go-meshblu-connector-installer/latest/meshblu-connector-installer"
 
-const DownloadList = ({otp, uuid, onItemClick}) => {
+const propTypes = {
+  onClickNext: PropTypes.func.isRequired,
+  uuid:        PropTypes.string.isRequired,
+  otp:         PropTypes.string.isRequired,
+}
+
+const DownloadList = ({otp, uuid, onClickNext}) => {
+  const onClick = (event) => {
+    event.preventDefault()
+    onClickNext({uuid})
+  }
+
   return (
     <div className={styles.wrapper}>
 
@@ -102,7 +113,7 @@ const DownloadList = ({otp, uuid, onItemClick}) => {
           </section>
         </TabPanel>
       </Tabs>
-      <Button kind="primary" href={`/connectors/configure/${uuid}`}>Next: Configure</Button>
+      <Button kind="primary" href={`/connectors/configure/${uuid}`} onClick={onClick}>Next: Configure</Button>
     </div>
   )
 }

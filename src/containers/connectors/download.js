@@ -26,9 +26,7 @@ function mapDispatchToProps(dispatch) {
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
   const {otp, uuid} = ownProps.params
-  const props = {...ownProps, ...dispatchProps, ...stateProps, otp, uuid}
-  console.log('props', props)
-  return props
+  return {...ownProps, ...dispatchProps, ...stateProps, otp, uuid}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(DownloadButtons)

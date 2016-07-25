@@ -9,7 +9,9 @@ import { browserHistory } from 'react-router'
 import { ravenMiddleware } from './helpers/octoblu-raven'
 import AppRoutes from './routes'
 import reducers from './reducers'
-// import 'promise-polyfill'
+
+import es6Promise from 'es6-promise'
+es6Promise.polyfill()
 
 const middleware = []
 middleware.push(thunkMiddleware)

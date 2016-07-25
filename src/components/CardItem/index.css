@@ -52,7 +52,7 @@
   overflow: hidden;
 }
 
-.CardItem-body, .CardItem-footer {
+.CardItem-body {
   flex: 1;
   display: flex;
   justify-content: space-between;
@@ -83,12 +83,18 @@
 }
 
 .CardItem-footer {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+
   margin-top: auto;
   max-height: 4rem;
-  padding-right: 1rem;
+  padding: 1rem 1rem 1rem 0;
 
   font-size: 1.5rem;
-  border-top: 1px solid #EEF1F2;
+  border-top: 1px solid #eef1f2;
+  text-align: right;
 }
 
 .CardItem-action {

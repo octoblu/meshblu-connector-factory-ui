@@ -24,3 +24,9 @@
 .PageLayout--Icon {
   margin: 1rem 2rem;
 }
+
+.PageLayout--Loading {
+  display: flex;
+  justify-content: center;
+  margin-top: 5em;
+}

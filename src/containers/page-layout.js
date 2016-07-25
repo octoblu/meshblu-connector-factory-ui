@@ -3,6 +3,7 @@ import React, { PropTypes, Component } from 'react'
 import OctobluOauth from './octoblu-oauth'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
+import DeviceIcon from 'zooid-device-icon'
 import ErrorState from 'zooid-error-state'
 import {
   Spinner,
@@ -12,7 +13,6 @@ import {
   PageHeader,
   PageActions,
   PageTitle,
-  DeviceIcon,
 } from 'zooid-ui'
 
 import '../styles/page-layout.css'
@@ -91,7 +91,7 @@ class PageLayout extends Component {
     const { children, fetchingCount, error } = this.props
 
     if (fetchingCount > 0) {
-      return this.renderPage(<Spinner size="large" />)
+      return this.renderPage(<div className="PageLayout--Loading"><Spinner size="large" /></div>)
     }
 
     if (error) {

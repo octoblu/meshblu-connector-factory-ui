@@ -1,10 +1,8 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
+import DeviceIcon from 'zooid-device-icon'
 
-import {
-  Card,
-  DeviceIcon,
-} from 'zooid-ui'
+import { Card } from 'zooid-ui'
 
 import './index.css'
 

@@ -13,8 +13,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
-  const {otp} = ownProps.params
-  return {...ownProps, ...dispatchProps, ...stateProps, otp}
+  const {otp, uuid} = ownProps.params
+  return {...ownProps, ...dispatchProps, ...stateProps, otp, uuid}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(DownloadOptionsList)

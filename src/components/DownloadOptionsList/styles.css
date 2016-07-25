@@ -10,6 +10,7 @@
 
 :local .wrapper section {
   text-align: center;
+  margin-top: 2em;
 }
 
 :local .wrapper section h2 {
@@ -20,8 +21,36 @@
   margin: 1em 0 0.5em;
 }
 
+:local .wrapper section h4 {
+  margin: 1em 0 0.5em;
+}
+
 :local .wrapper section p {
   width: 800px;
+}
+
+:local .columns {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 1em 0;
+}
+
+:local .column {
+  margin: 0 3em;
+}
+
+:local .otp {
+  background-color: #fff;
+  padding: 0.5em;
+  margin: 0.5em;
+}
+
+:local .command {
+  background-color: #fff;
+  padding: 0.5em;
+  margin: 0.5em;
+  text-align: left;
 }
 
 /*:local .wrapper ul {

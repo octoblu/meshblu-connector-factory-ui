@@ -38,7 +38,10 @@ const renderContent = (content) => {
 }
 
 const ConnectorStatus = ({ statusDevice, device }) => {
-  const { statusText, online } = getStatusInfo({ device, statusDevice })
+  if (statusDevice == null || device == null) {
+    return null
+  }
+  const { statusText, online } = getStatusInfo({ device, statusDevice }) || {}
   if (online) {
     return renderContent(<span className="ConnectorStatus--Online">{statusText}</span>)
   }

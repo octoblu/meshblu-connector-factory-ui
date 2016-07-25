@@ -16,6 +16,9 @@ class DebugLines extends Component {
 
   updateScroll() {
     const { thing } = this.refs
+    if (thing == null) {
+      return
+    }
     ReactDOM.findDOMNode(thing).scrollTop = thing.scrollHeight
   }
 

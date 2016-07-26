@@ -104,6 +104,11 @@ const DownloadList = ({otp, uuid, onClickNext}) => {
             </div>
 
             <h4>How To Use (in Bash)</h4>
+            <p>
+              In order to register as a service on Linux and Windows,
+              the installer needs to be run using <code>sudo</code>, as <code>root</code>,
+              or as any other user that has permission to modify the services.
+            </p>
             <pre className={styles.command}>
               <code>
               chmod +x meshblu-connector-installer \{'\n'}

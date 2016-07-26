@@ -80,24 +80,24 @@ const DownloadList = ({otp, uuid, onClickNext}) => {
               <div className={styles.column}>
                 <h3><FaApple /></h3>
                 <ul>
-                  <li><OsArchButton os={'darwin'} arch={'amd64'} href={`${CLI_RELEASE_PREFIX}-darwin-amd64?fileName=meshblu-connector-installer-${otp}`}/></li>
+                  <li><OsArchButton os={'darwin'} arch={'amd64'} href={`${CLI_RELEASE_PREFIX}-darwin-amd64?fileName=meshblu-connector-installer`}/></li>
                 </ul>
               </div>
 
               <div className={styles.column}>
                 <h3><FaWindows /></h3>
                 <ul>
-                  <li><OsArchButton os={'windows'} arch={'386'} href={`${CLI_RELEASE_PREFIX}-windows-386?fileName=meshblu-connector-installer-${otp}`}/></li>
-                  <li><OsArchButton os={'windows'} arch={'amd64'} href={`${CLI_RELEASE_PREFIX}-windows-amd64?fileName=meshblu-connector-installer-${otp}`}/></li>
+                  <li><OsArchButton os={'windows'} arch={'386'} href={`${CLI_RELEASE_PREFIX}-windows-386?fileName=meshblu-connector-installer`}/></li>
+                  <li><OsArchButton os={'windows'} arch={'amd64'} href={`${CLI_RELEASE_PREFIX}-windows-amd64?fileName=meshblu-connector-installer`}/></li>
                 </ul>
               </div>
 
               <div className={styles.column}>
                 <h3><FaLinux /></h3>
                 <ul>
-                  <li><OsArchButton os={'linux'} arch={'386'} href={`${CLI_RELEASE_PREFIX}-linux-386?fileName=meshblu-connector-installer-${otp}`}/></li>
-                  <li><OsArchButton os={'linux'} arch={'amd64'} href={`${CLI_RELEASE_PREFIX}-linux-amd64?fileName=meshblu-connector-installer-${otp}`}/></li>
-                  <li><OsArchButton os={'linux'} arch={'arm'} href={`${CLI_RELEASE_PREFIX}-linux-arm?fileName=meshblu-connector-installer-${otp}`}/></li>
+                  <li><OsArchButton os={'linux'} arch={'386'} href={`${CLI_RELEASE_PREFIX}-linux-386?fileName=meshblu-connector-installer`}/></li>
+                  <li><OsArchButton os={'linux'} arch={'amd64'} href={`${CLI_RELEASE_PREFIX}-linux-amd64?fileName=meshblu-connector-installer`}/></li>
+                  <li><OsArchButton os={'linux'} arch={'arm'} href={`${CLI_RELEASE_PREFIX}-linux-arm?fileName=meshblu-connector-installer`}/></li>
                 </ul>
               </div>
 

@@ -12,8 +12,6 @@ const propTypes = {
 const defaultProps = {}
 
 import {
-  Button,
-  FormActions,
   FormField,
   FormInput,
 } from 'zooid-ui'
@@ -22,10 +20,12 @@ import {
   DeviceConfigureSchemaContainer,
 } from 'zooid-meshblu-device-editor'
 
+const SELECTED_PROP = 'schemas.selected.configure'
+
 class DeviceSchema extends Component {
   constructor(props) {
     super(props)
-    this.handleNameChange  = this.handleNameChange.bind(this)
+    this.wrappedSubmit = this.wrappedSubmit.bind(this)
   }
 
   shouldComponentUpdate(nextProps) {
@@ -37,25 +37,25 @@ class DeviceSchema extends Component {
     return true
   }
 
-  handleNameChange() {
-    const ref = this.refs.deviceName
-    const deviceName = ReactDOM.findDOMNode(ref).value
-    const { onSubmit } = this.props
-    onSubmit({ properties: { name: deviceName } })
+  wrappedSubmit({ properties = {}, selected }) {
+    properties.name = ReactDOM.findDOMNode(this.refs.deviceName).value
+    properties[SELECTED_PROP] = selected
+    this.props.onSubmit({ properties })
   }
 
   render() {
-    const { device, onSubmit } = this.props
+    const { device } = this.props
     if (_.isEmpty(_.get(device, 'schemas'))) return null
     return (
       <div className="DeviceSchema">
         <FormField label="Device Name" name="deviceName">
           <FormInput type="text" ref="deviceName" name="deviceName" defaultValue={device.name} />
         </FormField>
-        <FormActions className="DeviceSchema--actions">
-          <Button onClick={this.handleNameChange} kind="no-style">Change Name</Button>
-        </FormActions>
-        <DeviceConfigureSchemaContainer device={device} onSubmit={onSubmit} />
+        <DeviceConfigureSchemaContainer
+          device={device}
+          onSubmit={this.wrappedSubmit}
+          selected={_.get(device, SELECTED_PROP)}
+        />
       </div>
     )
   }

@@ -1,6 +1,6 @@
 {
   "name": "meshblu-connector-factory",
-  "version": "9.0.6",
+  "version": "9.0.7",
   "description": "meshblu-connector-factory",
   "main": "index.js",
   "scripts": {

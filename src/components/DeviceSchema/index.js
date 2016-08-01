@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react'
 import ReactDOM from 'react-dom'
 import _  from 'lodash'
+import JsonSchemaDefaults from 'json-schema-defaults'
 
 import './index.css'
 
@@ -26,15 +27,23 @@ class DeviceSchema extends Component {
   constructor(props) {
     super(props)
     this.wrappedSubmit = this.wrappedSubmit.bind(this)
+    this.handleSelect = this.handleSelect.bind(this)
+    this.state = { device: null, selected: null }
   }
 
-  shouldComponentUpdate(nextProps) {
-    const schemasMatch = _.isEqual(_.get(this.props.device, 'schemas'), _.get(nextProps.device, 'schemas'))
-    const nameMatch = _.isEqual(_.get(this.props.device, 'name'), _.get(nextProps.device, 'name'))
-    if (schemasMatch && nameMatch) {
-      return false
-    }
-    return true
+  getSelectedSchema() {
+    const { device } = this.props
+    var selected = _.get(device, SELECTED_PROP)
+    if (selected) return selected
+    selected = _.get(device, 'schemas.configure.Default')
+    if (selected) return 'Default'
+    return _.head(_.keys(_.get(device, 'schemas.configure')))
+  }
+
+  componentDidMount() {
+    const { device } = this.props
+    const selected = this.getSelectedSchema()
+    this.setState({ device, selected })
   }
 
   wrappedSubmit({ properties = {}, selected }) {
@@ -43,9 +52,23 @@ class DeviceSchema extends Component {
     this.props.onSubmit({ properties })
   }
 
+  handleSelect({ properties = {}, selected }) {
+    var { device } = this.state
+    if(confirm('This will overwrite your data using the schema defaults. Are you sure you want to continue?')) {
+      const schema = device.schemas.configure[selected]
+      const defaults = JsonSchemaDefaults(schema)
+      device = _.assign(device, defaults)
+      this.setState({ device, selected })
+    } else {
+      this.setState({ selected: this.state.selected })
+    }
+  }
+
   render() {
-    const { device } = this.props
+    const { device, selected } = this.state
+    if (!device) return null
     if (_.isEmpty(_.get(device, 'schemas'))) return null
+
     return (
       <div className="DeviceSchema">
         <FormField label="Device Name" name="deviceName">
@@ -53,8 +76,9 @@ class DeviceSchema extends Component {
         </FormField>
         <DeviceConfigureSchemaContainer
           device={device}
+          selected={selected}
           onSubmit={this.wrappedSubmit}
-          selected={_.get(device, SELECTED_PROP)}
+          onSelect={this.handleSelect}
         />
       </div>
     )

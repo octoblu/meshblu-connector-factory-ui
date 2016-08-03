@@ -31,7 +31,7 @@ export default ({ history }) => {
           <Route path="/connectors/generate/:uuid" component={Generate} />
           <Route path="/connectors/configure/:uuid" component={Configure} />
 
-          <Route path="/connectors/generated/:uuid" component={Generated}>
+          <Route path="/connectors/generated/:uuid/:otp" component={Generated}>
             <Route path="/connectors/generated/:uuid/:otp/download" component={Download} />
             <Route path="/connectors/generated/:uuid/:otp/downloading" component={Downloading} />
             <Route path="/connectors/generated/:uuid/:otp/download-options" component={DownloadOptions} />

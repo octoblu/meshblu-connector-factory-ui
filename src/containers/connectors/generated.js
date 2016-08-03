@@ -3,11 +3,13 @@ import { connect } from 'react-redux'
 
 import { fetchDevice } from '../../actions/things/device-actions'
 import { setBreadcrumbs } from '../../actions/page-actions'
+import clearDownloadURL from '../../actions/connectors/clearDownloadURL'
 import DownloadLayout from '../../components/DownloadLayout'
 import PageLayout from '../page-layout'
 
 class Generated extends Component {
   componentWillMount() {
+    this.props.dispatch(clearDownloadURL())
     this.props.dispatch(setBreadcrumbs([
       {
         label: 'Connectors',

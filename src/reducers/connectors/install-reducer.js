@@ -18,6 +18,8 @@ export default function types(state = initialState, action) {
       return { ...initialState, fetching: true }
     case actionTypes.FETCH_DOWNLOAD_URL_SUCCESS:
       return fetchDownloadURLSuccess(state, action)
+    case actionTypes.FETCH_DOWNLOAD_URL_CLEAR:
+      return { ...initialState }
 
     default:
       return state

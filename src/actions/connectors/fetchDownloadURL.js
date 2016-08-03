@@ -2,7 +2,7 @@ import _ from 'lodash'
 import * as actionTypes from '../../constants/action-types'
 import { connectorDetails } from '../../services/detail-service'
 
-export default function fetchElectronDownloadURL({ downloadURL, error, fetching, otp }){
+export default function fetchDownloadURL({ downloadURL, error, fetching, otp }){
   return (dispatch) => {
     if (fetching) return
     if (downloadURL || error) return

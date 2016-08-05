@@ -16,17 +16,20 @@ export function getLatestGoVersion({ githubSlug }, callback) {
 
 export function getLatestIgnitionVersion(callback) {
   const githubSlug = 'octoblu/go-meshblu-connector-ignition'
-  getLatestGoVersion({ githubSlug }, callback)
+  // getLatestGoVersion({ githubSlug }, callback)
+  callback(null, 'v6.1.0')
 }
 
 export function getLatestAssemblerVersion(callback) {
   const githubSlug = 'octoblu/go-meshblu-connector-assembler'
-  getLatestGoVersion({ githubSlug }, callback)
+  // getLatestGoVersion({ githubSlug }, callback)
+  callback(null, 'v14.1.0')
 }
 
 export function getLatestDependencyManagerVersion(callback) {
   const githubSlug = 'octoblu/go-meshblu-connector-dependency-manager'
-  getLatestGoVersion({ githubSlug }, callback)
+  // getLatestGoVersion({ githubSlug }, callback)
+  callback(null, 'v4.0.0')
 }
 
 export function getAllLatestVersions(callback) {

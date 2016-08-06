@@ -29,7 +29,7 @@ export function getLatestAssemblerVersion(callback) {
 export function getLatestDependencyManagerVersion(callback) {
   const githubSlug = 'octoblu/go-meshblu-connector-dependency-manager'
   // getLatestGoVersion({ githubSlug }, callback)
-  callback(null, 'v4.0.0')
+  callback(null, 'v3.1.0')
 }
 
 export function getAllLatestVersions(callback) {

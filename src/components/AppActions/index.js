@@ -9,7 +9,7 @@ const AppActions = () => {
       <li>|</li>
       <li><Link to="/connectors/available" className="Button Button--no-style">Available Connectors</Link></li>
       <li>|</li>
-      <li><Button href="https://meshblu-connectors.readme.io" kind="no-style">Getting Started</Button></li>
+      <li><Button href="https://meshblu-connectors.readme.io" kind="no-style">Documentation</Button></li>
     </ul>
   )
 }

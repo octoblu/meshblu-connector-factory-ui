@@ -29,6 +29,14 @@ export function clearMyDevicesUpdatedAt() {
   }
 }
 
+export function clearDeviceFromCache() {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.CLEAR_DEVICE
+    })
+  }
+}
+
 export function fetchMyDevices({ useBaseProps }) {
   return (dispatch) => {
     dispatch(setFetching(true))

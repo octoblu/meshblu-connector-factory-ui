@@ -15,11 +15,12 @@ import StatusDeviceErrors from '../../components/StatusDeviceErrors'
 import DeviceInfoBar from '../../components/DeviceInfoBar'
 
 import { selectVersion } from '../../actions/connectors/detail-actions'
-import { fetchDevice, updateDeviceAction } from '../../actions/things/device-actions'
+import { fetchDevice, updateDeviceAction, clearDeviceFromCache } from '../../actions/things/device-actions'
 import {
   updateStatusDevice,
   pingStatusDevice,
   fetchStatusDevice,
+  clearStatusDeviceFromCache,
 } from '../../actions/things/status-device-actions'
 
 import { getSchema } from '../../services/schema-service'
@@ -66,6 +67,8 @@ class Configure extends Component {
   }
 
   componentWillUnmount() {
+    this.props.dispatch(clearDeviceFromCache())
+    this.props.dispatch(clearStatusDeviceFromCache())
     clearInterval(this.updateInterval)
   }
 

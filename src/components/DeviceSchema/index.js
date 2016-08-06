@@ -40,10 +40,26 @@ class DeviceSchema extends Component {
     return _.head(_.keys(_.get(device, 'schemas.configure')))
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const { device } = this.props
     const selected = this.getSelectedSchema()
     this.setState({ device, selected })
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // This is here so the device changing doesn't clear the device form.
+    const name = _.get(this.props.device, 'name')
+    const nextName = _.get(nextProps.device, 'name')
+    const matchName = _.isEqual(name, nextName)
+
+    const schemas = _.get(this.props.device, 'schemas')
+    const nextSchemas = _.get(nextProps.device, 'schemas')
+    const matchSchema = _.isEqual(schemas, nextSchemas)
+    const matchSelected = _.isEqual(this.state.selected, nextState.selected)
+    if (matchName && matchSchema && matchSelected) {
+      return false
+    }
+    return true
   }
 
   wrappedSubmit({ properties = {}, selected }) {

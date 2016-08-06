@@ -22,6 +22,9 @@ export default function types(state = initialState, action) {
     case actionTypes.FETCH_DEVICE_SUCCESS:
       return { ...state, item: getDevice(action), githubSlug: getGithubSlug(action), updatedAt: Date.now() }
 
+    case actionTypes.CLEAR_DEVICE:
+      return initialState
+
     default:
       return state
   }

@@ -20,6 +20,11 @@ export function getLatestIgnitionVersion(callback) {
   callback(null, 'v6.1.0')
 }
 
+export function getLatestInstallerVersion(callback) {
+  const githubSlug = 'octoblu/go-meshblu-connector-installer'
+  getLatestGoVersion({ githubSlug }, callback)
+}
+
 export function getLatestAssemblerVersion(callback) {
   const githubSlug = 'octoblu/go-meshblu-connector-assembler'
   // getLatestGoVersion({ githubSlug }, callback)
@@ -37,5 +42,6 @@ export function getAllLatestVersions(callback) {
     dependencyManagerVersion: getLatestDependencyManagerVersion,
     connectorAssemblerVersion: getLatestAssemblerVersion,
     ignitionVersion: getLatestIgnitionVersion,
+    installerVersion: getLatestInstallerVersion,
   }, callback)
 }

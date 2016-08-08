@@ -19,6 +19,7 @@ export function getConnectorMetadata({ connector, githubSlug, version, octoblu }
     if (error != null) return callback(error)
     const {
       ignitionVersion,
+      installerVersion,
       dependencyManagerVersion,
       connectorAssemblerVersion,
     } = versions
@@ -30,6 +31,7 @@ export function getConnectorMetadata({ connector, githubSlug, version, octoblu }
       githubSlug,
       connectorAssemblerVersion,
       dependencyManagerVersion,
+      installerVersion,
       ignitionVersion,
       octoblu,
     })

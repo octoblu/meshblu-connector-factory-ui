@@ -50,7 +50,7 @@ class Create extends Component {
   getRegistryItem() {
     const { items } = this.props.available
     const githubSlug = this.getGithubSlug()
-    return _.find(items, { githubSlug })
+    return _.find(items, { githubSlug }) || {}
   }
 
   getGithubSlug() {

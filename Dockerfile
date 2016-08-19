@@ -23,4 +23,4 @@ RUN sed -e \
   /templates/default.template > \
   /etc/nginx/conf.d/default.conf
 
-RUN cp /templates/gzip.conf /etc/nginx/conf.d/gzip.conf
+RUN cp /templates/*.conf /etc/nginx/conf.d

@@ -7,6 +7,10 @@ branches:
   - /^v[0-9]/
 after_success:
 - npm run build
+- export PKG_VERSION="$(node -e 'console.log(require("./package.json").version)')"
+- if [ -z "$PKG_VERSION" ]; then echo 'Missing PKG_VERSION env' && exit 1; fi
+- mkdir -p dpl_assets/v$PKG_VERSION
+- cp -r dist/assets/* dpl_assets/v$PKG_VERSION 
 deploy:
 - provider: s3
   access_key_id: AKIAJH2D5IPIRHYJT5IA

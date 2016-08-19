@@ -47,37 +47,15 @@ class Create extends Component {
     }
   }
 
-  getConnectorDetails() {
+  getRegistryItem() {
+    const { items } = this.props.available
     const githubSlug = this.getGithubSlug()
-    let found = null
-    _.some(_.values(this.props.available.registries), (registry) => {
-      found = _.find(registry.items, { githubSlug })
-      if (found) {
-        return true
-      }
-      return false
-    })
-    return found || {}
+    return _.find(items, { githubSlug }) || {}
   }
 
   getGithubSlug() {
     const { owner = 'octoblu', connector } = this.props.params
     return `${owner}/${connector}`
-  }
-
-  getRegistryItem() {
-    const githubSlug = this.getGithubSlug()
-    const { registries } = this.props.available
-    let found = null
-    _.some(_.values(registries), (registry) => {
-      found = _.find(registry.items, { githubSlug })
-    })
-    if (!found) {
-      return {
-        githubSlug,
-      }
-    }
-    return found
   }
 
   createDevice() {
@@ -93,7 +71,7 @@ class Create extends Component {
   }
 
   renderContent(content) {
-    const { type, name } = this.getConnectorDetails()
+    const { type, name } = this.getRegistryItem()
     return (
       <PageLayout type={type} title={`Create ${name}`}>
         {content}

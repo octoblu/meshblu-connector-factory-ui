@@ -57,19 +57,9 @@ class Generate extends Component {
   }
 
   getRegistryItem() {
-    const { registries } = this.props.available
+    const { items } = this.props.available
     const githubSlug = this.getGithubSlug()
-    let found = null
-    _.some(_.values(registries), (registry) => {
-      found = _.find(registry.items, { githubSlug })
-      return found
-    })
-    if (!found) {
-      return {
-        githubSlug,
-      }
-    }
-    return found
+    return _.find(items, { githubSlug })
   }
 
   updateAndGenerate() {
@@ -78,7 +68,7 @@ class Generate extends Component {
     const { octoblu, device } = this.props
     let { registryItem } = device.item.octoblu || {}
     if (!registryItem) {
-      registryItem = this.getRegistryItem()
+      registryItem = this.getRegistryItem() 
     }
     const { connector } = device.item
     this.props.dispatch(upsertConnectorAction({ uuid, registryItem, version, connector, octoblu }))

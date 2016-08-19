@@ -24,15 +24,16 @@ export function fetchOctobluUserAction() {
   return (dispatch) => {
     dispatch(setFetching(true))
     fetchOctobluUser((error, user) => {
+      dispatch(setFetching(false))
       if (error || !user) {
         dispatch(authenticateUser())
+        return
       }
       const { uuid, token } = getMeshbluConfig()
       dispatch(fetchOctobluUserSuccess({ user, uuid, token }))
       dispatch(fetchAvailableConnectors({ user }))
       const email = _.get(user, 'octoblu.email')
       ravenSetUserContext({ uuid, email })
-      dispatch(setFetching(false))
     })
   }
 }

@@ -14,16 +14,20 @@ const GUI_RELEASE_PREFIX="https://file-downloader.octoblu.com/github-release/oct
 const CLI_RELEASE_PREFIX="https://file-downloader.octoblu.com/github-release/octoblu/go-meshblu-connector-installer/latest/meshblu-connector-installer"
 
 const propTypes = {
-  onClickNext: PropTypes.func.isRequired,
-  uuid:        PropTypes.string.isRequired,
-  otp:         PropTypes.string.isRequired,
+  fetchAvailableDownloads: PropTypes.func.isRequired,
+  onClickNext:             PropTypes.func.isRequired,
+  availableDownloads:      PropTypes.object.isRequired,
+  uuid:                    PropTypes.string.isRequired,
+  otp:                     PropTypes.string.isRequired,
 }
 
-const DownloadList = ({otp, uuid, onClickNext}) => {
+const DownloadList = ({otp, uuid, availableDownloads, fetchAvailableDownloads, onClickNext}) => {
   const onClick = (event) => {
     event.preventDefault()
     onClickNext({uuid})
   }
+
+  fetchAvailableDownloads({otp})
 
   return (
     <div className={styles.wrapper}>
@@ -42,23 +46,23 @@ const DownloadList = ({otp, uuid, onClickNext}) => {
               <div className={styles.column}>
                 <h3><FaApple /></h3>
                 <ul>
-                  <li><OsArchButton os={'darwin'} arch={'amd64'} href={`${GUI_RELEASE_PREFIX}-darwin-amd64.dmg?fileName=MeshbluConnectorInstaller-${otp}.dmg`}/></li>
+                  <li><OsArchButton os={'darwin'} arch={'amd64'} show={availableDownloads['darwin-amd64']} href={`${GUI_RELEASE_PREFIX}-darwin-amd64.dmg?fileName=MeshbluConnectorInstaller-${otp}.dmg`}/></li>
                 </ul>
               </div>
 
               <div className={styles.column}>
                 <h3><FaWindows /></h3>
                 <ul>
-                  <li><OsArchButton os={'windows'} arch={'amd64'} href={`${GUI_RELEASE_PREFIX}-windows-amd64.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`}/></li>
-                  <li><OsArchButton os={'windows'} arch={'386'} href={`${GUI_RELEASE_PREFIX}-windows-386.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`}/></li>
+                  <li><OsArchButton os={'windows'} arch={'amd64'} show={availableDownloads['windows-amd64']} href={`${GUI_RELEASE_PREFIX}-windows-amd64.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`}/></li>
+                  <li><OsArchButton os={'windows'} arch={'386'} show={availableDownloads['windows-386']} href={`${GUI_RELEASE_PREFIX}-windows-386.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`}/></li>
                 </ul>
               </div>
 
               <div className={styles.column}>
                 <h3><FaLinux /></h3>
                 <ul>
-                  <li><OsArchButton os={'linux'} arch={'amd64'} href={`${GUI_RELEASE_PREFIX}-linux-amd64.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`}/></li>
-                  <li><OsArchButton os={'linux'} arch={'386'} href={`${GUI_RELEASE_PREFIX}-linux-386.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`}/></li>
+                  <li><OsArchButton os={'linux'} arch={'amd64'} show={availableDownloads['linux-amd64']} href={`${GUI_RELEASE_PREFIX}-linux-amd64.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`}/></li>
+                  <li><OsArchButton os={'linux'} arch={'386'} show={availableDownloads['linux-386']} href={`${GUI_RELEASE_PREFIX}-linux-386.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`}/></li>
                 </ul>
               </div>
             </div>
@@ -80,24 +84,24 @@ const DownloadList = ({otp, uuid, onClickNext}) => {
               <div className={styles.column}>
                 <h3><FaApple /></h3>
                 <ul>
-                  <li><OsArchButton os={'darwin'} arch={'amd64'} href={`${CLI_RELEASE_PREFIX}-darwin-amd64?fileName=meshblu-connector-installer`}/></li>
+                  <li><OsArchButton os={'darwin'} arch={'amd64'} show={availableDownloads['darwin-amd64']} href={`${CLI_RELEASE_PREFIX}-darwin-amd64?fileName=meshblu-connector-installer`}/></li>
                 </ul>
               </div>
 
               <div className={styles.column}>
                 <h3><FaWindows /></h3>
                 <ul>
-                  <li><OsArchButton os={'windows'} arch={'386'} href={`${CLI_RELEASE_PREFIX}-windows-386?fileName=meshblu-connector-installer`}/></li>
-                  <li><OsArchButton os={'windows'} arch={'amd64'} href={`${CLI_RELEASE_PREFIX}-windows-amd64?fileName=meshblu-connector-installer`}/></li>
+                  <li><OsArchButton os={'windows'} arch={'386'} show={availableDownloads['windows-386']} href={`${CLI_RELEASE_PREFIX}-windows-386?fileName=meshblu-connector-installer`}/></li>
+                  <li><OsArchButton os={'windows'} arch={'amd64'} show={availableDownloads['windows-amd64']} href={`${CLI_RELEASE_PREFIX}-windows-amd64?fileName=meshblu-connector-installer`}/></li>
                 </ul>
               </div>
 
               <div className={styles.column}>
                 <h3><FaLinux /></h3>
                 <ul>
-                  <li><OsArchButton os={'linux'} arch={'386'} href={`${CLI_RELEASE_PREFIX}-linux-386?fileName=meshblu-connector-installer`}/></li>
-                  <li><OsArchButton os={'linux'} arch={'amd64'} href={`${CLI_RELEASE_PREFIX}-linux-amd64?fileName=meshblu-connector-installer`}/></li>
-                  <li><OsArchButton os={'linux'} arch={'arm'} href={`${CLI_RELEASE_PREFIX}-linux-arm?fileName=meshblu-connector-installer`}/></li>
+                  <li><OsArchButton os={'linux'} arch={'386'} show={availableDownloads['linux-386']} href={`${CLI_RELEASE_PREFIX}-linux-386?fileName=meshblu-connector-installer`}/></li>
+                  <li><OsArchButton os={'linux'} arch={'amd64'} show={availableDownloads['linux-amd64']} href={`${CLI_RELEASE_PREFIX}-linux-amd64?fileName=meshblu-connector-installer`}/></li>
+                  <li><OsArchButton os={'linux'} arch={'arm'} show={availableDownloads['linux-arm']} href={`${CLI_RELEASE_PREFIX}-linux-arm?fileName=meshblu-connector-installer`}/></li>
                 </ul>
               </div>
 
@@ -122,5 +126,7 @@ const DownloadList = ({otp, uuid, onClickNext}) => {
     </div>
   )
 }
+
+DownloadList.propTypes = propTypes;
 
 export default DownloadList

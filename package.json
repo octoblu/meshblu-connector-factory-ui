@@ -1,18 +1,16 @@
 {
-  "name": "meshblu-connector-factory",
+  "name": "meshblu-connector-factory-ui",
   "version": "9.4.2",
   "description": "meshblu-connector-factory",
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist",
-    "build:webpack": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
-    "build": "npm run clean && npm run build:webpack",
-    "start": "node dev-server.js",
+    "build": "node scripts/build.js",
+    "start": "node scripts/start.js",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "mocha": "NODE_ENV=test mocha test/.setup.js src/**/*.spec.js",
-    "test": "npm run mocha",
-    "test:watch": "npm run mocha -- -wR mocha-multi --reporter-options spec=-,mocha-osx-reporter=-"
+    "test": "NODE_ENV=test mocha",
+    "test:watch": "npm run test -- --watch --reporter mocha-multi --reporter-options spec=-,mocha-osx-reporter=-"
   },
   "keywords": [
     "zooid",

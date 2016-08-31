@@ -3,6 +3,7 @@ import FaApple   from 'react-icons/lib/fa/apple'
 import FaWindows from 'react-icons/lib/fa/windows'
 import FaLinux   from 'react-icons/lib/fa/linux'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import Spinner from 'zooid-spinner'
 
 
 import Button from 'zooid-button'
@@ -17,17 +18,24 @@ const propTypes = {
   fetchAvailableDownloads: PropTypes.func.isRequired,
   onClickNext:             PropTypes.func.isRequired,
   availableDownloads:      PropTypes.object.isRequired,
+  fetching:                PropTypes.bool.isRequired,
   uuid:                    PropTypes.string.isRequired,
   otp:                     PropTypes.string.isRequired,
 }
 
-const DownloadList = ({otp, uuid, availableDownloads, fetchAvailableDownloads, onClickNext}) => {
+const DownloadList = ({availableDownloads, fetching, otp, uuid, fetchAvailableDownloads, onClickNext}) => {
   const onClick = (event) => {
     event.preventDefault()
     onClickNext({uuid})
   }
 
-  fetchAvailableDownloads({otp})
+  fetchAvailableDownloads({ otp, fetching, availableDownloads })
+
+  if (fetching) return (
+    <div className={styles.wrapper}>
+      <Spinner size="large" />
+    </div>
+  )
 
   return (
     <div className={styles.wrapper}>

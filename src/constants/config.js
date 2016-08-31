@@ -10,6 +10,7 @@ export const MESHBLU_HOSTNAME = 'meshblu.octoblu.com'
 export const MESHBLU_PORT     = 443
 export const OCTOBLU_API_URL  = 'https://api.octoblu.com'
 export const OCTOBLU_APP_URL  = 'https://app.octoblu.com'
+export const OTP_SERVICE_URI  = 'https://meshblu-otp.octoblu.com'
 export const CONNECTOR_SERVICE_URI = 'https://connector.octoblu.com'
 export const CONNECTOR_FACTORY_UI = 'https://connector-factory.octoblu.com'
 export const OCTOBLU_REGISTRY_OFFICIAL = 'https://raw.githubusercontent.com/octoblu/registry-meshblu-connector-official/master/registry.json'

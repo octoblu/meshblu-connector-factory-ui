@@ -16,7 +16,7 @@ es6Promise.polyfill()
 const middleware = []
 middleware.push(thunkMiddleware)
 if (process.env.NODE_ENV !== 'production') {
-  middleware.push(createLogger())
+  // middleware.push(createLogger())
 } else {
   middleware.push(ravenMiddleware())
 }

@@ -191,11 +191,12 @@ class Configure extends Component {
       )
     }
 
-    return this.renderContent(
-      <div>
-        <DeviceSchema device={device.item} onSubmit={this.handleConfig} />
-      </div>
-    )
+    return this.renderContent()
+    // return this.renderContent(
+    //   <div>
+    //     <DeviceSchema device={device.item} onSubmit={this.handleConfig} />
+    //   </div>
+    // )
   }
 }
 

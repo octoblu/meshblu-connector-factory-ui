@@ -11,7 +11,7 @@
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "mocha": "NODE_ENV=test mocha test/.setup.js src/**/*.spec.js",
-    "test": "npm run mocha",
+    "test": "istanbul cover _mocha -- -R spec --require coffee-coverage/register-istanbul && mocha --reporter json > coverage/mocha.json",
     "test:watch": "npm run mocha -- -wR mocha-multi --reporter-options spec=-,mocha-osx-reporter=-"
   },
   "keywords": [

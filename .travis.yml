@@ -6,9 +6,6 @@ env:
   global:
   - AWS_ACCESS_KEY_ID=AKIAJH2D5IPIRHYJT5IA
   - secure: ugI0RCD5Oyut4JYG1U3WfRVoFS7Lro3tHEZmZcA8X7GQqtBbTLtlMOVqfsdSpPbIPwTHjiDldXoRA3inoQDYeK5HsAhgKHRrXqF0/kmWb/N4zUe+pq12LLnps0QJNT3TGGWolwUIzkcPncrg3JIQzyWKNgWLQQkickM6gt2Saa5B+vSn3eCksOO5AYeTW+1Dmq4gXYT0p7bPAqIZhcZRDUVvK5NgSa3xQa96VYpohK+s2PFEvpblUHYzffNGvArbUx5Tc2pj+mHOO+uTi2+ziQzEJKi2HabV5/2tFY/EavnWDSL+tGiQgH4LGXXlO2eR5z0WYkFoOCl/i9AWE707VYev0VotKERkGMa+Zjzbc6AUFqZTYf1tIy2TvJzs0HpCZnYPyZGVzF72pp3xBkfpdW+eSFqgqPB8odIia1vzO398gsSzzrXi6TPVtZxjRYN4kL6HjSAcvNSjf3FqKOwKi4uZmjKBE9XzryvyxqQPqYlJmkCeTnWZzrL6M5wY35M6Rlg4W7b+Gl1qOKbTTfdVnMcntKfGQnEuyBQbhKho65UPJcvb37V1MnJCamTE0VcNEIQfVt4mrNHL3mQcLYQo6j0QKiRSimJcxsKTPevHrSGHBVAE6DcfAUS33YHtWx12RT8B8ZqQPknnLii33tRqGBOcU4jIGSf28tIsDu7stVg=
-branches:
-  only:
-  - "/^v[0-9]/"
 before_deploy:
 - npm run build
 - cp index.html dist
@@ -30,3 +27,5 @@ deploy:
   region: us-west-2
   on:
     tags: true
+after_success:
+- bash <(curl -s https://codecov.io/bash)

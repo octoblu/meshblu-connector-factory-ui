@@ -11,8 +11,10 @@
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "mocha": "NODE_ENV=test mocha test/.setup.js src/**/*.spec.js",
-    "test": "istanbul cover _mocha -- -R spec --require coffee-coverage/register-istanbul && mocha --reporter json > coverage/mocha.json",
-    "test:watch": "npm run mocha -- -wR mocha-multi --reporter-options spec=-,mocha-osx-reporter=-"
+    "test": "mocha",
+    "test:watch": "mocha -w -R mocha-multi --reporter-options spec=-,mocha-osx-reporter=-",
+    "coverage": "nyc npm test",
+    "mocha:json": "env NPM_ENV=test mocha --reporter json > coverage/mocha.json"
   },
   "keywords": [
     "zooid",
@@ -96,11 +98,11 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "imports-loader": "^0.6.5",
-    "istanbul": "^0.4.5",
     "less-loader": "^2.2.3",
     "mocha": "^2.5.3",
-    "mocha-multi": "^0.9.0",
+    "mocha-multi": "^0.9.1",
     "mocha-osx-reporter": "^0.1.2",
+    "nyc": "^8.3.0",
     "postcss-loader": "^0.9.1",
     "postcss-scss": "^0.1.9",
     "precss": "^1.4.0",
@@ -113,5 +115,16 @@
     "webpack": "^1.13.1",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.10.0"
+  },
+  "nyc": {
+    "cache": true,
+    "reporter": [
+      "text-summary",
+      "lcov",
+      "json"
+    ],
+    "extension": [
+      ".coffee"
+    ]
   }
 }

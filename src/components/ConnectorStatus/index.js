@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { PropTypes } from 'react'
 import { needsUpdate } from '../../helpers/actions'
 import './index.css'
@@ -16,10 +17,17 @@ const getStatusInfo = ({ statusDevice, device }) => {
   }
   if (lastPong && !stopped) {
     const { date, response, error } = lastPong
-    const { running } = response
+    const { running } = response || {}
     if (!needsUpdate({ updatedAt: date }, 60)) {
       if (error != null) {
-        return { statusText: 'connector error', online: true }
+        let msg = ''
+        if (_.get(error, 'message')) {
+          msg = ` ( ${_.get(error, 'message')} ) `
+        }
+        if (_.get(error, 'code')) {
+          msg = ` ( ${_.get(error, 'code')} ) `
+        }
+        return { statusText: `connector error${msg}`, online: true }
       }
       if (running) {
         return { statusText: 'connector is running', online: true }

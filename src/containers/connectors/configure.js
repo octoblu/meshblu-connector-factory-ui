@@ -9,7 +9,6 @@ import {
 } from 'zooid-ui'
 
 import DeviceActions from '../../components/DeviceActions'
-import DeviceSchema from '../../components/DeviceSchema'
 import VersionsSelect from '../../components/VersionsSelect'
 import StatusDeviceErrors from '../../components/StatusDeviceErrors'
 import DeviceInfoBar from '../../components/DeviceInfoBar'
@@ -160,7 +159,7 @@ class Configure extends Component {
   }
 
   render() {
-    const { device, statusDevice } = this.props
+    const { statusDevice } = this.props
     const { changeVersion, showErrors } = this.state
 
     if (changeVersion) {
@@ -192,11 +191,6 @@ class Configure extends Component {
     }
 
     return this.renderContent()
-    // return this.renderContent(
-    //   <div>
-    //     <DeviceSchema device={device.item} onSubmit={this.handleConfig} />
-    //   </div>
-    // )
   }
 }
 

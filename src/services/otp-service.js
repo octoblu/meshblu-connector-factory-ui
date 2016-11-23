@@ -1,5 +1,5 @@
 import request from 'superagent'
-import {OTP_SERVICE_URI} from '../constants/config'
+import { OTP_SERVICE_URI } from '../constants/config'
 
 export function resolveOtp({ otp }, callback) {
   request

@@ -27,7 +27,7 @@ const getStatusInfo = ({ statusDevice, device }) => {
         if (_.get(error, 'code')) {
           msg = ` ( ${_.get(error, 'code')} ) `
         }
-        return { statusText: `connector error${msg}`, online: true }
+        return { statusText: `connector is online but had error: '${msg}'`, online: true }
       }
       if (running) {
         return { statusText: 'connector is running', online: true }

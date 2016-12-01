@@ -1,7 +1,7 @@
 import async from 'async'
 
 export function getLatestIgnitionVersion(callback) {
-  callback(null, 'v8.0.0')
+  callback(null, 'v8.0.2')
 }
 
 export function getLatestInstallerVersion(callback) {

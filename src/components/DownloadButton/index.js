@@ -6,21 +6,21 @@ import Spinner from 'zooid-spinner'
 import ErrorState from 'zooid-error-state'
 
 const propTypes = {
-  downloadURL:      PropTypes.string,
+  downloadURL: PropTypes.string,
   fetchDownloadURL: PropTypes.func.isRequired,
-  fetching:         PropTypes.bool,
-  onClickDownload:  PropTypes.func.isRequired,
-  uuid:             PropTypes.string.isRequired,
-  otp:              PropTypes.string.isRequired,
-  os:               PropTypes.string,
-  arch:             PropTypes.string,
+  fetching: PropTypes.bool,
+  onClickDownload: PropTypes.func.isRequired,
+  uuid: PropTypes.string.isRequired,
+  otp: PropTypes.string.isRequired,
+  os: PropTypes.string,
+  arch: PropTypes.string,
 }
 
-const OS_MAP   = {'darwin': 'macOS', 'linux': 'Linux', 'windows': 'Windows'}
-const ARCH_MAP = {'amd64': 'x64', '386': 'x86', 'arm': 'ARM'}
+const OS_MAP   = { darwin: 'macOS', linux: 'Linux', windows: 'Windows' }
+const ARCH_MAP = { amd64: 'x64', 386: 'x86', arm: 'ARM' }
 
-const DownloadButton = ({downloadURL, error, fetchDownloadURL, fetching, onClickDownload, otp, uuid, os, arch}) => {
-  const onClick = (event) => onClickDownload({otp, uuid})
+const DownloadButton = ({ downloadURL, error, fetchDownloadURL, fetching, onClickDownload, otp, uuid, os, arch }) => {
+  const onClick = () => onClickDownload({ otp, uuid })
   const fancyOS = _.get(OS_MAP, os, os)
   const fancyArch = _.get(ARCH_MAP, arch, arch)
 

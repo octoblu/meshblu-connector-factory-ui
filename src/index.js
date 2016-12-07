@@ -1,7 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import createLogger from 'redux-logger'
 import { applyMiddleware, createStore } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux'

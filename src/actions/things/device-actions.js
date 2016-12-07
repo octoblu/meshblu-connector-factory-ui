@@ -32,7 +32,7 @@ export function clearMyDevicesUpdatedAt() {
 export function clearDeviceFromCache() {
   return (dispatch) => {
     dispatch({
-      type: actionTypes.CLEAR_DEVICE
+      type: actionTypes.CLEAR_DEVICE,
     })
   }
 }

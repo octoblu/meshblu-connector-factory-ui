@@ -7,21 +7,21 @@ import DownloadButton from '../DownloadButton'
 import styles from './styles.css'
 
 const propTypes = {
-  downloadURL:      PropTypes.string,
+  downloadURL: PropTypes.string,
   fetchDownloadURL: PropTypes.func.isRequired,
-  fetching:         PropTypes.bool,
-  onClickDownload:  PropTypes.func.isRequired,
-  onClickSkip:      PropTypes.func.isRequired,
-  uuid:             PropTypes.string.isRequired,
-  otp:              PropTypes.string.isRequired,
-  os:               PropTypes.string,
-  arch:             PropTypes.string,
+  fetching: PropTypes.bool,
+  onClickDownload: PropTypes.func.isRequired,
+  onClickSkip: PropTypes.func.isRequired,
+  uuid: PropTypes.string.isRequired,
+  otp: PropTypes.string.isRequired,
+  os: PropTypes.string,
+  arch: PropTypes.string,
 }
 
-const DownloadButtons = ({downloadURL, error, fetchDownloadURL, fetching, onClickDownload, onClickSkip, otp, uuid, os, arch}) => {
+const DownloadButtons = ({ downloadURL, error, fetchDownloadURL, fetching, onClickDownload, onClickSkip, otp, uuid, os, arch }) => {
   const onClick = (event) => {
     event.preventDefault()
-    onClickSkip({uuid})
+    onClickSkip({ uuid })
   }
 
   return (
@@ -35,7 +35,8 @@ const DownloadButtons = ({downloadURL, error, fetchDownloadURL, fetching, onClic
         otp={otp}
         uuid={uuid}
         os={os}
-        arch={arch} />
+        arch={arch}
+      />
       <Link to={`/connectors/generated/${uuid}/${otp}/download-options`}>Other Install Options</Link>
 
       <Button kind="hollow-neutral" href={`/connectors/configure/${uuid}`} onClick={onClick} className={styles.skip}>Skip to Configure</Button>

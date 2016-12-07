@@ -1,7 +1,4 @@
 import React, { PropTypes } from 'react'
-import { Link } from 'react-router'
-
-import Download from '../Download'
 
 import styles from './styles.css'
 
@@ -13,7 +10,7 @@ const propTypes = {
 }
 const defaultProps = {}
 
-const GeneratedContent = ({key, onDownload, selectedVersion, uuid} ) => {
+const GeneratedContent = () => {
   return (
     <div className={styles.Wrapper}>
     </div>

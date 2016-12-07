@@ -22,7 +22,7 @@ export default function types(state = initialState, action) {
       return { ...state, item: getDevice(action), updatedAt: Date.now() }
 
     case actionTypes.CLEAR_STATUS_DEVICE:
-      return initialState 
+      return initialState
 
     case actionTypes.PING_STATUS_DEVICE_SUCCESS:
       return { ...state, pingSentAt: Date.now() }

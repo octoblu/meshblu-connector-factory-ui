@@ -1,8 +1,7 @@
-import _ from 'lodash'
 import * as actionTypes from '../../constants/action-types'
 import { connectorDetails } from '../../services/detail-service'
 
-export default function fetchDownloadURL({ downloadURL, error, fetching, otp }){
+export default function fetchDownloadURL({ downloadURL, error, fetching, otp }) {
   return (dispatch) => {
     if (fetching) return
     if (downloadURL || error) return
@@ -34,7 +33,7 @@ function fetchDownloadURLFailure() {
 function fetchDownloadURLSuccess({ details, otp }) {
   return {
     type: actionTypes.FETCH_DOWNLOAD_URL_SUCCESS,
-    details: details,
-    otp: otp,
+    details,
+    otp,
   }
 }

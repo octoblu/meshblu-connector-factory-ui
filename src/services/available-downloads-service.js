@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import request from 'superagent'
 
 import { resolveOtp } from './otp-service'
 import { connectorDetails } from '../services/detail-service'
@@ -22,9 +21,7 @@ function getLatestReleases({ githubSlug }, callback) {
 }
 
 function parseAvailableDownloads(details) {
-  const { assets } = details.latest
-
-  var availableDownloads = {}
+  const availableDownloads = {}
 
   _.each(details.latest.assets, (asset) => {
     const osArch = parseOSArch(asset.name)

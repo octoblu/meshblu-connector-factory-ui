@@ -19,9 +19,9 @@ function noStatusDevice() {
 export function clearStatusDeviceFromCache() {
   return (dispatch) => {
     dispatch({
-      type: actionTypes.CLEAR_STATUS_DEVICE
+      type: actionTypes.CLEAR_STATUS_DEVICE,
     })
-  }  
+  }
 }
 
 function pingStatusDeviceSuccess() {

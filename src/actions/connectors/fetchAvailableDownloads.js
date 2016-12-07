@@ -2,7 +2,7 @@ import _ from 'lodash'
 import * as actionTypes from '../../constants/action-types'
 import { getAvailableDownloads } from '../../services/available-downloads-service'
 
-export default function fetchAvailableDownloads({ availableDownloads, error, fetching, otp }){
+export default function fetchAvailableDownloads({ availableDownloads, error, fetching, otp }) {
   return (dispatch) => {
     if (error) return
     if (fetching) return
@@ -29,13 +29,13 @@ function fetchAvailableDownloadsFetching() {
 function fetchAvailableDownloadsFailure({ error }) {
   return {
     type: actionTypes.FETCH_AVAILABLE_DOWNLOADS_FAILURE,
-    error: error,
+    error,
   }
 }
 
 function fetchAvailableDownloadsSuccess({ availableDownloads }) {
   return {
     type: actionTypes.FETCH_AVAILABLE_DOWNLOADS_SUCCESS,
-    availableDownloads: availableDownloads,
+    availableDownloads,
   }
 }

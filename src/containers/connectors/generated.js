@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { fetchDevice } from '../../actions/things/device-actions'
 import { setBreadcrumbs } from '../../actions/page-actions'
 import clearDownloadURL from '../../actions/connectors/clearDownloadURL'
 import DownloadLayout from '../../components/DownloadLayout'
@@ -25,14 +24,14 @@ class Generated extends Component {
     ]))
   }
 
-  render(){
+  render() {
     const { children } = this.props
 
     return <PageLayout><DownloadLayout>{children}</DownloadLayout></PageLayout>
   }
 }
 
-function mapStateToProps({}) {
+function mapStateToProps() {
   return {}
 }
 

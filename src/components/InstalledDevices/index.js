@@ -17,9 +17,9 @@ const InstalledDevices = ({ devices, type, className }) => {
     devicesList = _.slice(devices, 0, 6)
   }
 
-  let items = _.map(devicesList, (device) => {
+  const items = _.map(devicesList, (device) => {
     const { name, uuid } = device
-    let type = device.type || 'device:other'
+    const type = device.type || 'device:other'
 
     const nameStr = name || 'Unknown Name'
     return (

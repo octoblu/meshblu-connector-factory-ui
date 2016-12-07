@@ -5,13 +5,13 @@ import styles from './styles.css'
 
 const propTypes = {
   onClickNext: PropTypes.func.isRequired,
-  uuid:        PropTypes.string.isRequired,
+  uuid: PropTypes.string.isRequired,
 }
 
-const DownloadingInfo = ({uuid, onClickNext}) => {
+const DownloadingInfo = ({ uuid, onClickNext }) => {
   const onClick = (event) => {
     event.preventDefault()
-    onClickNext({uuid})
+    onClickNext({ uuid })
   }
 
   return (

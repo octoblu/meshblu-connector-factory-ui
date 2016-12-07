@@ -1,14 +1,14 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import styles from './styles.css'
 
 const propTypes = {}
 const defaultProps = {}
 
 const DownloadLayout = ({ children }) => {
-  return <div>
+  return (<div>
     <h1 className={styles.header}>Install</h1>
     {children}
-  </div>
+  </div>)
 }
 
 DownloadLayout.propTypes    = propTypes

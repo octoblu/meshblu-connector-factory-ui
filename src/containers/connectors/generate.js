@@ -68,7 +68,7 @@ class Generate extends Component {
     const { octoblu, device } = this.props
     let { registryItem } = device.item.octoblu || {}
     if (!registryItem) {
-      registryItem = this.getRegistryItem() 
+      registryItem = this.getRegistryItem()
     }
     const { connector } = device.item
     this.props.dispatch(upsertConnectorAction({ uuid, registryItem, version, connector, octoblu }))

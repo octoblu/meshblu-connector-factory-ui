@@ -10,7 +10,15 @@ const initialState = {
 }
 
 function flatten(registries) {
-  return _.flatten(_.map(_.values(registries), 'items'))
+  let allItems = []
+  _.each(_.values(registries), (registry) => {
+    let items = _.get(registry, 'items', [])
+    if (_.isPlainObject(items)) {
+      items = _.values(items)
+    }
+    allItems = _.union(allItems, items)
+  })
+  return allItems
 }
 
 export default function types(state = initialState, action) {

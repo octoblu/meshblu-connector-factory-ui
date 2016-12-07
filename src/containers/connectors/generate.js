@@ -7,7 +7,6 @@ import PageLayout from '../page-layout'
 import VersionsSelect from '../../components/VersionsSelect'
 
 import { upsertConnectorAction, gotToGeneratedConnector } from '../../actions/connectors/connector-actions'
-import { selectVersion } from '../../actions/connectors/detail-actions'
 import { fetchDevice } from '../../actions/things/device-actions'
 
 class Generate extends Component {
@@ -62,20 +61,13 @@ class Generate extends Component {
     return _.find(items, { githubSlug })
   }
 
-  updateAndGenerate() {
+  updateAndGenerate(selectedVersion) {
     const { uuid } = this.props.params
-    const { version } = this.props.details.selectedVersion
+    const { version } = selectedVersion || _.get(this.props, 'details.selectedVersion')
     const { octoblu, device } = this.props
-    let { registryItem } = device.item.octoblu || {}
-    if (!registryItem) {
-      registryItem = this.getRegistryItem()
-    }
+    const registryItem = _.get(device, 'item.octoblu.registryItem') || this.getRegistryItem()
     const { connector } = device.item
     this.props.dispatch(upsertConnectorAction({ uuid, registryItem, version, connector, octoblu }))
-  }
-
-  versionSelect(selectedVersion) {
-    this.props.dispatch(selectVersion(selectedVersion))
   }
 
   render() {

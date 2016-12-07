@@ -7,7 +7,7 @@ import { setBreadcrumbs } from '../../actions/page-actions'
 
 import VersionsSelect from '../../components/VersionsSelect'
 
-import { fetchConnectorDetails, selectVersion } from '../../actions/connectors/detail-actions'
+import { fetchConnectorDetails } from '../../actions/connectors/detail-actions'
 import { upsertConnectorAction, gotToGeneratedConnector } from '../../actions/connectors/connector-actions'
 
 class Create extends Component {
@@ -16,7 +16,6 @@ class Create extends Component {
     this.state = {
       selectedVersion: null,
     }
-    this.versionSelect = this.versionSelect.bind(this)
     this.createDevice = this.createDevice.bind(this)
     this.getGithubSlug = this.getGithubSlug.bind(this)
     this.getRegistryItem = this.getRegistryItem.bind(this)
@@ -50,7 +49,7 @@ class Create extends Component {
   getRegistryItem() {
     const { items } = this.props.available
     const githubSlug = this.getGithubSlug()
-    return _.find(items, { githubSlug }) || {}
+    return _.find(items, { githubSlug }) || { githubSlug }
   }
 
   getGithubSlug() {
@@ -58,16 +57,12 @@ class Create extends Component {
     return `${owner}/${connector}`
   }
 
-  createDevice() {
+  createDevice(selectedVersion) {
     const { octoblu } = this.props
-    const { version } = this.props.details.selectedVersion
+    const { version } = selectedVersion || _.get(this.props, 'details.selectedVersion')
     const registryItem = this.getRegistryItem()
     const { connector } = this.props.params
     this.props.dispatch(upsertConnectorAction({ registryItem, version, connector, octoblu }))
-  }
-
-  versionSelect(selectedVersion) {
-    this.props.dispatch(selectVersion(selectedVersion))
   }
 
   renderContent(content) {
@@ -81,7 +76,6 @@ class Create extends Component {
 
   render() {
     const { info, selectedVersion } = this.props.details
-
     return this.renderContent(<VersionsSelect
       onSelect={this.createDevice}
       selected={selectedVersion}

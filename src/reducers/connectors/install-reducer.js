@@ -46,12 +46,7 @@ function fetchDownloadURLSuccess(state, action) {
 }
 
 function downloadURLFromDetails(details, { os, arch, extension, otp }) {
-  const urlSuffix = getURLSuffix({ os, arch, extension })
   const filename  = getFilename({ os, arch, extension, otp })
-  const assets = _.get(details, 'latest.assets')
-  const asset = _.find(assets, (asset) => _.endsWith(asset.name, urlSuffix))
-
-  if (!asset) return null
   return `${RELEASE_PREFIX}/${os}/${arch}?fileName=${filename}`
 }
 
@@ -71,9 +66,9 @@ function getOsArchAndExtension() {
   return { os, arch, extension: 'zip' }
 }
 
-function getURLSuffix({ os, arch, extension }) {
-  return `${os}-${arch}.${extension}`
-}
+// function getURLSuffix({ os, arch, extension }) {
+//   return `${os}-${arch}.${extension}`
+// }
 
 function noInstallerAvailableError({ os, arch }) {
   if (!os || !arch) return new Error('Failed to detect operating system/architecture. Please choose an installer manually from the Other Install Options.')

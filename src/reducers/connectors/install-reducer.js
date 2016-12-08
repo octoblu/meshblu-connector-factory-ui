@@ -34,7 +34,7 @@ const ARCH_MAP = {
   'amd 64': 'amd64',
 }
 
-const RELEASE_PREFIX = 'https://file-downloader.octoblu.com/github-release/octoblu/electron-meshblu-connector-installer/latest'
+const RELEASE_PREFIX = 'https://file-downloader.octoblu.com/installer/octoblu/electron-meshblu-connector-installer'
 
 function fetchDownloadURLSuccess(state, action) {
   const { os, arch, extension }  = getOsArchAndExtension()
@@ -52,7 +52,7 @@ function downloadURLFromDetails(details, { os, arch, extension, otp }) {
   const asset = _.find(assets, (asset) => _.endsWith(asset.name, urlSuffix))
 
   if (!asset) return null
-  return `${RELEASE_PREFIX}/MeshbluConnectorInstaller-${urlSuffix}?fileName=${filename}`
+  return `${RELEASE_PREFIX}/${os}/${arch}?fileName=${filename}`
 }
 
 function getFilename({ extension, otp }) {

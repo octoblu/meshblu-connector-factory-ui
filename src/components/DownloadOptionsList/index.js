@@ -10,7 +10,7 @@ import OsArchButton from '../OsArchButton'
 
 import styles from './styles.css'
 
-const GUI_RELEASE_PREFIX = 'https://file-downloader.octoblu.com/github-release/octoblu/electron-meshblu-connector-installer/latest/MeshbluConnectorInstaller'
+const GUI_RELEASE_PREFIX = 'https://file-downloader.octoblu.com/installer/octoblu/electron-meshblu-connector-installer'
 const CLI_RELEASE_PREFIX = 'https://file-downloader.octoblu.com/github-release/octoblu/go-meshblu-connector-installer/latest/meshblu-connector-installer'
 
 const propTypes = {
@@ -55,23 +55,24 @@ const DownloadList = ({ availableDownloads, fetching, otp, uuid, fetchAvailableD
               <div className={styles.column}>
                 <h3><FaApple /></h3>
                 <ul>
-                  <li><OsArchButton os={'darwin'} arch={'amd64'} show={availableDownloads['darwin-amd64']} href={`${GUI_RELEASE_PREFIX}-darwin-amd64.dmg?fileName=MeshbluConnectorInstaller-${otp}.dmg`} /></li>
+                  <li><OsArchButton os={'darwin'} arch={'amd64'} show={availableDownloads['darwin-amd64']} href={`${GUI_RELEASE_PREFIX}/darwin/amd64?fileName=MeshbluConnectorInstaller-${otp}.dmg`} /></li>
                 </ul>
               </div>
 
               <div className={styles.column}>
                 <h3><FaWindows /></h3>
                 <ul>
-                  <li><OsArchButton os={'windows'} arch={'amd64'} show={availableDownloads['windows-amd64']} href={`${GUI_RELEASE_PREFIX}-windows-amd64.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`} /></li>
-                  <li><OsArchButton os={'windows'} arch={'386'} show={availableDownloads['windows-386']} href={`${GUI_RELEASE_PREFIX}-windows-386.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`} /></li>
+                  <li><OsArchButton os={'windows'} arch={'amd64'} show={availableDownloads['windows-amd64']} href={`${GUI_RELEASE_PREFIX}/windows/amd64?fileName=MeshbluConnectorInstaller-${otp}.zip`} /></li>
+                  <li><OsArchButton os={'windows'} arch={'386'} show={availableDownloads['windows-386']} href={`${GUI_RELEASE_PREFIX}/windows/386?fileName=MeshbluConnectorInstaller-${otp}.zip`} /></li>
                 </ul>
               </div>
 
               <div className={styles.column}>
                 <h3><FaLinux /></h3>
                 <ul>
-                  <li><OsArchButton os={'linux'} arch={'amd64'} show={availableDownloads['linux-amd64']} href={`${GUI_RELEASE_PREFIX}-linux-amd64.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`} /></li>
-                  <li><OsArchButton os={'linux'} arch={'386'} show={availableDownloads['linux-386']} href={`${GUI_RELEASE_PREFIX}-linux-386.zip?fileName=MeshbluConnectorInstaller-${otp}.zip`} /></li>
+                  <li><OsArchButton os={'linux'} arch={'amd64'} show={availableDownloads['linux-amd64']} href={`${GUI_RELEASE_PREFIX}/linux/amd64?fileName=MeshbluConnectorInstaller-${otp}.zip`} /></li>
+                  <li><OsArchButton os={'linux'} arch={'386'} show={availableDownloads['linux-386']} href={`${GUI_RELEASE_PREFIX}/linux/386?fileName=MeshbluConnectorInstaller-${otp}.zip`} /></li>
+                  <li><OsArchButton os={'linux'} arch={'amd'} show={availableDownloads['linux-amd']} href={`${GUI_RELEASE_PREFIX}/linux/amd?fileName=MeshbluConnectorInstaller-${otp}.zip`} /></li>
                 </ul>
               </div>
             </div>

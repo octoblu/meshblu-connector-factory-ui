@@ -12,7 +12,6 @@ import { fetchDevice } from '../../actions/things/device-actions'
 class Generate extends Component {
   constructor(props) {
     super(props)
-    this.versionSelect = this.versionSelect.bind(this)
     this.updateAndGenerate = this.updateAndGenerate.bind(this)
     this.getGithubSlug = this.getGithubSlug.bind(this)
     this.getRegistryItem = this.getRegistryItem.bind(this)

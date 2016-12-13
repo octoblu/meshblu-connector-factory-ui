@@ -1,8 +1,8 @@
 import request from 'superagent'
-import { CONNECTOR_SERVICE_URI } from '../constants/config'
+import { CONNECTOR_DETAIL_SERVICE_URI } from '../constants/config'
 
 export function connectorDetails({ githubSlug }, callback) {
-  request.get(`${CONNECTOR_SERVICE_URI}/github/${githubSlug}`)
+  request.get(`${CONNECTOR_DETAIL_SERVICE_URI}/github/${githubSlug}`)
     .end((error, response) => {
       if (error) {
         callback(error)

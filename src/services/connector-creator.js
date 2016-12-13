@@ -30,7 +30,7 @@ function generateKeyWrapper({ registryItem, connector, version, octoblu }, callb
 
 function updateConnector({ uuid, properties }, callback) {
   request
-    .put(`${CONNECTOR_SERVICE_URI}/upgrade/${uuid}`)
+    .put(`${CONNECTOR_SERVICE_URI}/users/${getMeshbluConfig().uuid}/connectors/${uuid}`)
     .send(properties)
     .auth(getMeshbluConfig().uuid, getMeshbluConfig().token)
     .accept('application/json')
@@ -50,7 +50,7 @@ function updateConnector({ uuid, properties }, callback) {
 
 function createConnector({ properties }, callback) {
   request
-    .post(`${CONNECTOR_SERVICE_URI}/create`)
+    .post(`${CONNECTOR_SERVICE_URI}/users/${getMeshbluConfig().uuid}/connectors`)
     .send(properties)
     .auth(getMeshbluConfig().uuid, getMeshbluConfig().token)
     .accept('application/json')

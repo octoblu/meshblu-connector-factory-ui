@@ -9,19 +9,21 @@ env:
 branches:
   only:
   - "/^v[0-9]/"
+cache:
+  yarn: true
 before_install:
 - npm install --global yarn
 install:
 - yarn install
 before_deploy:
-- npm run build
+- yarn run build
 - cp index.html dist
 - mkdir -p dist/assets
 - cp assets/* dist/assets
 - for file in `find dist -type f`; do gzip --best $file && mv $file.gz $file; done
 after_success:
-- npm run coverage
-- npm run mocha:json
+- yarn run coverage
+- yarn run mocha:json
 - bash <(curl -s https://codecov.io/bash)
 - bash <(curl -s https://codecov.octoblu.com/bash)
 after_deploy:

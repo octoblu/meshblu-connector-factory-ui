@@ -73,7 +73,6 @@ export function upsertConnector({ uuid, registryItem, version, connector, octobl
   version = `v${version.replace('v', '')}`
   const generateKey = generateKeyWrapper({ uuid, registryItem, version, connector, octoblu }, callback)
   const properties = {
-    name: getFriendlyName(connector),
     type: registryItem.type,
     connector,
     owner: getMeshbluConfig().uuid,
@@ -84,5 +83,6 @@ export function upsertConnector({ uuid, registryItem, version, connector, octobl
   if (uuid) {
     return updateConnector({ uuid, properties }, generateKey)
   }
+  _.set(properties, 'name', getFriendlyName(connector))
   return createConnector({ properties }, generateKey)
 }

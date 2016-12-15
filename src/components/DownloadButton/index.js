@@ -44,6 +44,10 @@ const DownloadButton = ({ downloadURL, error, fetchDownloadURL, fetching, onClic
       <Button href={downloadURL} onClick={onClick} className={styles.DownloadButton} kind="primary">
         Download for {fancyOS} {fancyArch}
       </Button>
+      <section>
+        <h4>Your One Time Password</h4>
+        <pre><code className={styles.command}>{otp}</code></pre>
+      </section>
     </div>
   )
 }

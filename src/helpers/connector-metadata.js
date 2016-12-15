@@ -10,8 +10,7 @@ export function getFriendlyName(connector) {
   return `Connector ${_.startCase(name)}`
 }
 
-export function getConnectorMetadata({ connector, githubSlug, version, octoblu }, callback) {
-  const connectorName = getConnectorName(connector)
+export function getConnectorMetadata({ connector, githubSlug, version, octoblu, meshblu }, callback) {
   const betterVersion = version.replace('v', '')
   const tag = `v${betterVersion}`
 
@@ -20,20 +19,20 @@ export function getConnectorMetadata({ connector, githubSlug, version, octoblu }
     const {
       ignitionVersion,
       installerVersion,
-      dependencyManagerVersion,
-      connectorAssemblerVersion,
     } = versions
 
-    callback(null, {
-      legacy: false,
-      connector: connectorName,
+    const defaults = {
+      meshblu: { domain: 'octoblu.com' },
+    }
+
+    callback(null, _.defaultsDeep({
+      connector: getConnectorName(connector),
       tag,
       githubSlug,
-      connectorAssemblerVersion,
-      dependencyManagerVersion,
       installerVersion,
       ignitionVersion,
       octoblu,
-    })
+      meshblu,
+    }, defaults))
   })
 }

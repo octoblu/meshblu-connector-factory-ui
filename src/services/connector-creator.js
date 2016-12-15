@@ -7,16 +7,27 @@ import { CONNECTOR_SERVICE_URI } from '../constants/config'
 
 import {
   generateAndStoreToken,
+  getDevice,
 } from '../services/device-service'
 
 import { generateOtp } from '../services/otp-service'
 
 function generateKeyWrapper({ registryItem, connector, version, octoblu }, callback) {
-  return (error, uuid) => {
+  return (error, device) => {
     if (error) return callback(error)
+    const { uuid } = device
+    const meshblu = _.get(device, 'connectorMetadata.meshblu')
     generateAndStoreToken({ uuid }, (error, { token } = {}) => {
       if (error != null) return callback(error)
-      getConnectorMetadata({ connector, githubSlug: registryItem.githubSlug, version, octoblu }, (error, metadata) => {
+      const { githubSlug } = registryItem
+      const options = {
+        connector,
+        githubSlug,
+        version,
+        octoblu,
+        meshblu,
+      }
+      getConnectorMetadata(options, (error, metadata) => {
         if (error != null) return callback(error)
         generateOtp({ uuid, token, metadata }, (error, response) => {
           if (error != null) return callback(error)
@@ -41,10 +52,10 @@ function updateConnector({ uuid, properties }, callback) {
         return
       }
       if (!response.ok) {
-        callback(new Error(_.get(response, 'body', 'Unable to update the connector')))
+        callback(new Error(_.get(response, 'body.error', 'Unable to update the connector')))
         return
       }
-      callback(null, uuid)
+      getDevice({ uuid }, callback)
     })
 }
 
@@ -61,11 +72,10 @@ function createConnector({ properties }, callback) {
         return
       }
       if (!response.ok) {
-        callback(new Error(_.get(response, 'body', 'Unable to update the connector')))
+        callback(new Error(_.get(response, 'body.error', 'Unable to update the connector')))
         return
       }
-      const uuid = _.get(response, 'body.uuid')
-      callback(null, uuid)
+      callback(null, response.body)
     })
 }
 

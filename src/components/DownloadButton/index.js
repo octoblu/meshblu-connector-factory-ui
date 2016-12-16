@@ -1,9 +1,11 @@
-import React, { PropTypes } from 'react'
-import styles from './styles.css'
 import _ from 'lodash'
+import React, { PropTypes } from 'react'
 import Button from 'zooid-button'
 import Spinner from 'zooid-spinner'
 import ErrorState from 'zooid-error-state'
+
+import OneTimePassword from '../OneTimePassword'
+import styles from './styles.css'
 
 const propTypes = {
   downloadURL: PropTypes.string,
@@ -40,14 +42,11 @@ const DownloadButton = ({ downloadURL, error, fetchDownloadURL, fetching, onClic
   }
 
   return (
-    <div>
+    <div className={styles.wrapper}>
       <Button href={downloadURL} onClick={onClick} className={styles.DownloadButton} kind="primary">
         Download for {fancyOS} {fancyArch}
       </Button>
-      <section>
-        <h4>Your One Time Password</h4>
-        <pre><code className={styles.command}>{otp}</code></pre>
-      </section>
+      <OneTimePassword otp={otp} />
     </div>
   )
 }

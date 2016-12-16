@@ -1,0 +1,19 @@
+:local .wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+:local .box {
+  background-color: #fff;
+  padding: 0.5em;
+  margin: 0.5em;
+  text-align: left;
+}
+
+:local .key {
+  background-color: #fff;
+  padding: 0.5em;
+  margin: 0.5em;
+}

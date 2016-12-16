@@ -7,6 +7,7 @@ import Spinner from 'zooid-spinner'
 
 import Button from 'zooid-button'
 import OsArchButton from '../OsArchButton'
+import OneTimePassword from '../OneTimePassword'
 
 import styles from './styles.css'
 
@@ -89,8 +90,7 @@ const DownloadList = ({ availableDownloads, fetching, otp, uuid, fetchAvailableD
               then click next to configure your device
             </p>
 
-            <h4>Your One Time Password</h4>
-            <pre><code className={styles.command}>{otp}</code></pre>
+            <OneTimePassword otp={otp} />
 
             <div className={styles.columns}>
               <div className={styles.column}>

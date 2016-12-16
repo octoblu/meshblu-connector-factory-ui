@@ -7240,9 +7240,9 @@ superagent@^1.8.0:
     readable-stream "1.0.27-1"
     reduce-component "1.0.1"
 
-superagent@^3.1.0, superagent@^3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/superagent/-/superagent-3.2.1.tgz#4467c36656213b64fa4dda1fe6d72ee755cf7b96"
+superagent@^3.1.0, superagent@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/superagent/-/superagent-3.3.0.tgz#2ef4ee8cf03b2ca5213bcb302c95754b3af37754"
   dependencies:
     component-emitter "^1.2.0"
     cookiejar "^2.0.6"
@@ -8168,9 +8168,9 @@ zooid-octoblu-intercom@^1.0.1:
     react "^15.0.2"
     react-intercom "^1.0.10"
 
-zooid-spinner@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/zooid-spinner/-/zooid-spinner-1.0.1.tgz#1b74d7a7a35a5be1c3bc50527f1f676fbf965acb"
+zooid-spinner@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/zooid-spinner/-/zooid-spinner-1.0.2.tgz#41ac5729f4d2999891da669e85527c37bd287c17"
   dependencies:
     classnames "^2.2.5"
     react "^15.0.1"
@@ -8190,9 +8190,9 @@ zooid-ui-toast@^1.1.1:
     classnames "^2.2.5"
     react "^15.0.1"
 
-zooid-ui@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/zooid-ui/-/zooid-ui-8.0.0.tgz#2a30001f09fbebd7867a6e7bbcb22410f50fe58b"
+zooid-ui@^8.0.2:
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/zooid-ui/-/zooid-ui-8.0.2.tgz#dba3d5aa093f39771446264c19f690266d6cc6aa"
   dependencies:
     blacklist "^1.1.2"
     classnames "^2.2.5"

@@ -35,7 +35,6 @@ export function fetchOctobluUser(callback) {
   if (!getBearerToken()) {
     return callback()
   }
-
   const meshbluConfig = getMeshbluConfig()
   const meshbluHttp = new MeshbluHttp(meshbluConfig)
   return meshbluHttp.whoami(callback)

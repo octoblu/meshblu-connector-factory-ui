@@ -5,7 +5,7 @@ export function getLatestIgnitionVersion(callback) {
 }
 
 export function getLatestInstallerVersion(callback) {
-  callback(null, 'v2.0.10')
+  callback(null, 'v2.2.1')
 }
 
 export function getAllLatestVersions(callback) {

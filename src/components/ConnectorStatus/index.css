@@ -2,10 +2,20 @@
   padding: 0 1rem;
 }
 
-.ConnectorStatus--Online {
+.ConnectorStatus--Running {
   color: #017401;
+  font-weight: bold;
+}
+
+.ConnectorStatus--Online {
+  color: #013B74;
 }
 
 .ConnectorStatus--Offline {
+  color: #676767;
+  font-weight: bold;
+}
+
+.ConnectorStatus--Errored {
   color: #CA2329;
 }

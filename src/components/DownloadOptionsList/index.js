@@ -41,6 +41,7 @@ const DownloadList = ({ availableDownloads, fetching, otp, uuid, fetchAvailableD
 
   return (
     <div className={styles.wrapper}>
+      <OneTimePassword otp={otp} />
 
       <Tabs selectedIndex={0}>
         <TabList>
@@ -90,7 +91,6 @@ const DownloadList = ({ availableDownloads, fetching, otp, uuid, fetchAvailableD
               then click next to configure your device
             </p>
 
-            <OneTimePassword otp={otp} />
 
             <div className={styles.columns}>
               <div className={styles.column}>

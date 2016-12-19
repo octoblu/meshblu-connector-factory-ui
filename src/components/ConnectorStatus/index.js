@@ -8,37 +8,43 @@ const propTypes = {
   statusDevice: PropTypes.object.isRequired,
 }
 
-const getStatusInfo = ({ statusDevice, device }) => {
-  const { lastPong } = statusDevice || {}
-  let stopped = false
-  const { connectorMetadata, online } = device || {}
-  if (connectorMetadata != null) {
-    stopped = connectorMetadata.stopped
+const getErrorMessage = (error) => {
+  if (_.isString(error)) {
+    return error
   }
+  const message = _.get(error, 'message')
+  if (message) {
+    return message
+  }
+  const code = _.get(error, 'code')
+  if (code) {
+    return code
+  }
+  return null
+}
+
+const getStatusInfo = ({ statusDevice = {}, device = {} }) => {
+  const lastPong = _.get(statusDevice, 'lastPong')
+  const stopped = _.get(device, 'connectorMetadata.stopped', false)
   if (lastPong && !stopped) {
-    const { date, response, error } = lastPong
-    const { running } = response || {}
+    const running = _.get(statusDevice, 'lastPong.response.running', false)
+    const error = _.get(statusDevice, 'lastPong.response.error')
+    const date = _.get(statusDevice, 'lastPong.date', new Date())
     if (!needsUpdate({ updatedAt: date }, 60)) {
       if (error != null) {
-        let msg = ''
-        if (_.get(error, 'message')) {
-          msg = ` ( ${_.get(error, 'message')} ) `
+        const msg = getErrorMessage(error)
+        if (msg) {
+          return { statusText: `connector responded with the error: "${msg}"`, className: 'ConnectorStatus--Errored' }
         }
-        if (_.get(error, 'code')) {
-          msg = ` ( ${_.get(error, 'code')} ) `
-        }
-        return { statusText: `connector is online but had error: '${msg}'`, online: true }
+        return { statusText: 'connector responded with an error', className: 'ConnectorStatus--Errored' }
       }
       if (running) {
-        return { statusText: 'connector is running', online: true }
+        return { statusText: 'connector is running', className: 'ConnectorStatus--Running' }
       }
-      return { statusText: 'connector is responding to pings', online: true }
+      return { statusText: 'connector is online', className: 'ConnectorStatus--Online' }
     }
   }
-  if (online) {
-    return { statusText: 'thing is online', online: true }
-  }
-  return { statusText: 'thing is offline', online: false }
+  return { statusText: 'connector is offline', className: 'ConnectorStatus--Offline' }
 }
 
 const renderContent = (content) => {
@@ -49,11 +55,8 @@ const ConnectorStatus = ({ statusDevice, device }) => {
   if (statusDevice == null || device == null) {
     return null
   }
-  const { statusText, online } = getStatusInfo({ device, statusDevice }) || {}
-  if (online) {
-    return renderContent(<span className="ConnectorStatus--Online">{statusText}</span>)
-  }
-  return renderContent(<span className="ConnectorStatus--Offline">{statusText}</span>)
+  const { statusText, className } = getStatusInfo({ device, statusDevice })
+  return renderContent(<span className={className}>{statusText}</span>)
 }
 
 

@@ -1,0 +1,14 @@
+.ConnectorMetadata {
+  padding: 0 1rem;
+  font-size: 1.7rem;
+}
+
+.ConnectorMetadata--value {
+  color: #017474;
+  padding: 0 1rem;
+}
+
+.ConnectorMetadata--title {
+  color: #017474;
+  font-weight: bold;
+}

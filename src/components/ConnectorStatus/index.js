@@ -48,7 +48,7 @@ const getStatusInfo = ({ statusDevice = {}, device = {} }) => {
 }
 
 const renderContent = (content) => {
-  return <span className="ConnectorStatus">{content}</span>
+  return <div className="ConnectorStatus">{content}</div>
 }
 
 const ConnectorStatus = ({ statusDevice, device }) => {

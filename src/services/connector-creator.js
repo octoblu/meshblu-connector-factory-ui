@@ -1,40 +1,22 @@
 import _ from 'lodash'
 import request from 'superagent'
 import { getMeshbluConfig } from '../helpers/authentication'
-import { getFriendlyName, getConnectorMetadata } from '../helpers/connector-metadata'
+import { getFriendlyName } from '../helpers/connector-metadata'
 
 import { CONNECTOR_SERVICE_URI } from '../constants/config'
 
 import {
-  generateAndStoreToken,
   getDevice,
 } from '../services/device-service'
-
-import { generateOtp } from '../services/otp-service'
 
 function generateKeyWrapper({ registryItem, connector, version, octoblu }, callback) {
   return (error, device) => {
     if (error) return callback(error)
     const { uuid } = device
-    const meshblu = _.get(device, 'connectorMetadata.meshblu')
-    generateAndStoreToken({ uuid }, (error, { token } = {}) => {
-      if (error != null) return callback(error)
-      const { githubSlug } = registryItem
-      const options = {
-        connector,
-        githubSlug,
-        version,
-        octoblu,
-        meshblu,
-      }
-      getConnectorMetadata(options, (error, metadata) => {
-        if (error != null) return callback(error)
-        generateOtp({ uuid, token, metadata }, (error, response) => {
-          if (error != null) return callback(error)
-          const { key } = response || {}
-          return callback(null, { key, uuid })
-        })
-      })
+    generateOtp({ uuid }, (error, response) => {
+      if (error) return callback(error)
+      const { key } = response || {}
+      return callback(null, { key, uuid })
     })
   }
 }
@@ -56,6 +38,27 @@ function updateConnector({ uuid, properties }, callback) {
         return
       }
       getDevice({ uuid }, callback)
+    })
+}
+
+function generateOtp({ uuid }, callback) {
+  request
+    .post(`${CONNECTOR_SERVICE_URI}/connectors/${uuid}/otp`)
+    .auth(getMeshbluConfig().uuid, getMeshbluConfig().token)
+    .accept('application/json')
+    .set('Content-Type', 'application/json')
+    .end((error, response) => {
+      if (error) {
+        callback(error)
+        return
+      }
+      if (!response.ok) {
+        callback(new Error(_.get(response, 'body.error', 'Unable to update the connector')))
+        return
+      }
+      const key = _.get(response, 'body.key')
+      if (!key) return callback(new Error('Unable to generate OTP'))
+      callback(null, { key })
     })
 }
 

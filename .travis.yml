@@ -1,43 +1,16 @@
 language: node_js
-sudo: false
 node_js:
-- '6'
-env:
-  global:
-  - AWS_ACCESS_KEY_ID=AKIAJH2D5IPIRHYJT5IA
-  - secure: ugI0RCD5Oyut4JYG1U3WfRVoFS7Lro3tHEZmZcA8X7GQqtBbTLtlMOVqfsdSpPbIPwTHjiDldXoRA3inoQDYeK5HsAhgKHRrXqF0/kmWb/N4zUe+pq12LLnps0QJNT3TGGWolwUIzkcPncrg3JIQzyWKNgWLQQkickM6gt2Saa5B+vSn3eCksOO5AYeTW+1Dmq4gXYT0p7bPAqIZhcZRDUVvK5NgSa3xQa96VYpohK+s2PFEvpblUHYzffNGvArbUx5Tc2pj+mHOO+uTi2+ziQzEJKi2HabV5/2tFY/EavnWDSL+tGiQgH4LGXXlO2eR5z0WYkFoOCl/i9AWE707VYev0VotKERkGMa+Zjzbc6AUFqZTYf1tIy2TvJzs0HpCZnYPyZGVzF72pp3xBkfpdW+eSFqgqPB8odIia1vzO398gsSzzrXi6TPVtZxjRYN4kL6HjSAcvNSjf3FqKOwKi4uZmjKBE9XzryvyxqQPqYlJmkCeTnWZzrL6M5wY35M6Rlg4W7b+Gl1qOKbTTfdVnMcntKfGQnEuyBQbhKho65UPJcvb37V1MnJCamTE0VcNEIQfVt4mrNHL3mQcLYQo6j0QKiRSimJcxsKTPevHrSGHBVAE6DcfAUS33YHtWx12RT8B8ZqQPknnLii33tRqGBOcU4jIGSf28tIsDu7stVg=
+  - '7'
 branches:
   only:
-  - "/^v[0-9]/"
-cache:
-  yarn: true
-before_install:
-- npm install --global yarn
-install:
-- yarn install
-before_deploy:
-- yarn run build
-- cp index.html dist
-- mkdir -p dist/assets
-- cp assets/* dist/assets
-- for file in `find dist -type f`; do gzip --best $file && mv $file.gz $file; done
+    - '/^v[0-9]/'
 after_success:
-- yarn run coverage
-- yarn run mocha:json
-- bash <(curl -s https://codecov.io/bash)
-- bash <(curl -s https://codecov.octoblu.com/bash)
-after_deploy:
-- "./deploy/invalidate-cloudfront.sh $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY $TRAVIS_BRANCH"
-deploy:
-- provider: s3
-  access_key_id: AKIAJH2D5IPIRHYJT5IA
-  secret_access_key:
-    secure: sgPs40UBTfMYwSJyOceG/I/ZCKwqr7ZeWsIbWHqHX6T9tBDXGm03ySxRmiTziCJgwrAjDkApNThAZuhiT36oCFB2nfJUXpeRB6xjbevK1lqejqUofR7QKO4mKgmfMlMLS2S8nIWMD2E0bXIG1p/IzWtvtSnVLLBXMRmlvSHI1USGDLoVUVXFd0cAqQ58Td+99Mmkb0bNtetFjkxf44e4NLdVi06wliWgFqi5ZibpikbuDd3QA4YrLBTX0pAcmcr3CHU3MxBQvguCzjpZTkmN1uZ1jOQTUIWMDDDUiAe3ZHwA015XMfdUEZcBfeT/izQZIK2uYuf9vB8Vb1yrucUOG+E3IINqkzEv/QX6yK+0Uz970e1g5BF2yBUVrMOfK8OTBWq815qks+SRrMCYi+Zn57/tkxIge8Pjb23ZEnIi/qLNiAm3QDbR9nTcqMdh6SWuolh7zh5FGKofiM+PF7wm4GQR6dFgHRaryZDa67ealMNq0PESnK2uli3OayJ5xsYxs6Q7XfeCU8vIvoa9+0U9vHbyAhXDlaRwnx03fVAk343wySaTuBFPnpDGWut3Wi9Ewg0rAec1sIg1xnjYAcbQZf/wInqYAb3iPTQV3+vb9P64eEBUK+JAANBIxgEnhUVIOfLIstKzP11G/NcjmY92Yp6mi0QiXQkjP92zJJn0qzM=
-  bucket: connector-factory.octoblu.com
-  local_dir: dist
-  skip_cleanup: true
-  endpoint: connector-factory.octoblu.com.s3-website-us-west-2.amazonaws.com
-  detect_encoding: true
-  region: us-west-2
-  on:
-    tags: true
+  - yarn run coverage
+  - 'yarn run mocha:json'
+  - npm run coverage
+  - 'npm run mocha:json'
+  - 'bash <(curl -s https://codecov.io/bash)'
+  - 'bash <(curl -s https://codecov.octoblu.com/bash)'
+notifications:
+  webhooks:
+    - 'https://beekeeper.octoblu.com/webhooks/travis:ci'

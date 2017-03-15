@@ -1,12 +1,12 @@
 {
-  "name": "meshblu-connector-factory",
-  "version": "10.0.0",
-  "description": "meshblu-connector-factory",
+  "name": "meshblu-connector-factory-ui",
+  "version": "11.0.0",
+  "description": "meshblu-connector-factory-ui",
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist",
     "build:webpack": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
-    "build": "npm run clean && npm run build:webpack",
+    "build": "npm run clean && npm run build:webpack && cp -rfp index.html assets dist",
     "start": "node dev-server.js",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",

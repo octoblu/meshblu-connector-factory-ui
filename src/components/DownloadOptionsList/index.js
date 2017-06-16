@@ -74,7 +74,7 @@ const DownloadList = ({ availableDownloads, fetching, otp, uuid, fetchAvailableD
                 <ul>
                   <li><OsArchButton os={'linux'} arch={'amd64'} show={availableDownloads['linux-amd64']} href={`${GUI_RELEASE_PREFIX}/linux/amd64?fileName=MeshbluConnectorInstaller-${otp}.zip`} /></li>
                   <li><OsArchButton os={'linux'} arch={'386'} show={availableDownloads['linux-386']} href={`${GUI_RELEASE_PREFIX}/linux/386?fileName=MeshbluConnectorInstaller-${otp}.zip`} /></li>
-                  <li><OsArchButton os={'linux'} arch={'amd'} show={availableDownloads['linux-amd']} href={`${GUI_RELEASE_PREFIX}/linux/amd?fileName=MeshbluConnectorInstaller-${otp}.zip`} /></li>
+                  <li><OsArchButton os={'linux'} arch={'arm'} show={availableDownloads['linux-arm']} href={`${GUI_RELEASE_PREFIX}/linux/amd?fileName=MeshbluConnectorInstaller-${otp}.zip`} /></li>
                 </ul>
               </div>
             </div>

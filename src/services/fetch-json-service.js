@@ -3,7 +3,7 @@ import request from 'superagent'
 export function getJSON({ uri }, callback) {
   request.get(uri).end((error, response) => {
     if (error) {
-      if (error.clientError) {
+      if (error.status === 404) {
         callback(null, {})
         return
       }

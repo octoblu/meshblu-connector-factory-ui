@@ -3,11 +3,11 @@ import request from 'superagent'
 export function getJSON({ uri }, callback) {
   request.get(uri).end((error, response) => {
     if (error) {
+      if (error.clientError) {
+        callback(null, {})
+        return
+      }
       callback(error)
-      return
-    }
-    if (response.clientError) {
-      callback(null, {})
       return
     }
     if (!response.ok) {
